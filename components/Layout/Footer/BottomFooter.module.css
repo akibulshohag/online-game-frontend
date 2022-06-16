@@ -1,0 +1,13 @@
+.main {
+  color: #85898d;
+  padding: 30px;
+  position: relative;
+  background-color: #25282b;
+}
+.main p {
+  margin: 0 auto;
+  font-size: 14px;
+  max-width: 947px;
+  text-align: center;
+  font-weight: 700;
+}
