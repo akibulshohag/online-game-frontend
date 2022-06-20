@@ -10,7 +10,7 @@ export default function Footer() {
         <div className={styles.content__wrapper}>
           <div className={styles.brand__content__wrapper}>
             <div>
-              <Image src={`/assets/images/logo.svg`} height={40} width={140} />
+              <Image src={`/assets/images/logo__transparent.png`} height={60} width={150} />
               <ul>
                 <li>
                   <a href="https://discord.com">
