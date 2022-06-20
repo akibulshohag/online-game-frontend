@@ -1,5 +1,5 @@
 .main{
-    background-color: #00ACF6;
+    background-color: #0A1861;
     position: fixed;
     top: 0;
     width: 100%;
@@ -8,13 +8,13 @@
 .container{
     max-width: 1420px;
     margin: 0px auto;
-    padding: 10px 0px;
+    padding: 0px 0px;
     display: grid;
     grid-template-columns: 1fr auto auto;
     grid-gap: 25px;
 }
 .container a{
-    color: #00ACF6 !important;
+    color: #F35237 !important;
     background-color: white !important;
     margin: auto 0px;
     padding: 5px 15px;
@@ -23,5 +23,5 @@
 }
 .container a:hover{
     color: white !important;
-    background-color: #FFB130 !important;
+    background-color: #F35237 !important;
 }

@@ -90,7 +90,7 @@ const Home: NextPage = () => {
           </div>
         </Container>
       </div>
-      <div style={{backgroundColor: '#00ACF6'}}>
+      <div style={{backgroundColor: '#0A1861'}}>
         <Container>
           <div className={styles.result__board__container}>
             <div>
