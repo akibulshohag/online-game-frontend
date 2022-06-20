@@ -11,6 +11,9 @@ a {
   color: inherit;
   text-decoration: none;
 }
+p{
+  margin-bottom: 0px;
+}
 
 * {
   box-sizing: border-box;
