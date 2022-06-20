@@ -9,7 +9,7 @@ export default async function putRequest(url: string, data: object) {
   };
 
   try {
-    const res = await axios.put(`${hostname}/api/v1/${url}`, data, config);
+    const res = await axios.put(`${hostname}/api/${url}`, data, config);
     if (res.hasOwnProperty("data")) {
       return res?.data;
     } else {

@@ -9,7 +9,7 @@ export default async function deleteRequest(url: string) {
   };
 
   try {
-    const res = await axios.delete(`${hostname}/api/v1/${url}`, config);
+    const res = await axios.delete(`${hostname}/api/${url}`, config);
     if (res.hasOwnProperty("data")) {
       return res?.data;
     } else {

@@ -35,7 +35,7 @@ const Home: NextPage = () => {
       </div>
       <Container>
         <div className={styles.games__container}>
-          <h3>Available Games</h3>
+          <h3 style={{color: 'black'}}>Available Games</h3>
           <p>We are constantly adding new games</p>
           <div style={{position: 'absolute', right: '10px', marginTop: '-140px', backgroundColor: '#F35237', color: 'white', padding: '8px 30px', cursor: 'pointer'}}>
             <a>

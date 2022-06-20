@@ -9,7 +9,7 @@ export default async function request(url: string, token: string | null) {
   };
 
   try {
-    const res = await axios.get(`${hostname}/api/v1/${url}`, config);
+    const res = await axios.get(`${hostname}/api/${url}`, config);
     return res?.data;
   } catch (error: any) {
     console.log("error from get request", error.response);
