@@ -9,4 +9,19 @@
     max-width: 1420px;
     margin: 0px auto;
     padding: 10px 0px;
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    grid-gap: 25px;
+}
+.container a{
+    color: #00ACF6 !important;
+    background-color: white !important;
+    margin: auto 0px;
+    padding: 5px 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.container a:hover{
+    color: white !important;
+    background-color: #FFB130 !important;
 }

@@ -62,6 +62,60 @@ const Home: NextPage = () => {
           </div>
         </div>
       </Container>
+      <div className={styles.unlimited__container}>
+        <h3 style={{color: '#FFB130', textAlign: 'center', padding: '50px 0px', fontSize: '115px', fontWeight: '700'}}>UNLIMITED</h3>
+        <Container>
+          <div className={styles.inner__unlimited__container}>
+            <h3>Play Unlimited</h3>
+            <h3 style={{marginBottom: '50px'}}>Tournaments</h3>
+            <p>On Repeat you can play in an unlimited number of tournaments, any</p>
+            <p>time, for any game. The best thing is that your scores will count in</p>
+            <p style={{marginBottom: '50px'}}>every single active tournament you enter.</p>
+            <a>Join Now</a>
+          </div>
+        </Container>
+      </div>
+      <div style={{backgroundColor: '#F0F0F0'}}>
+        <Container>
+          <div className={styles.leader__board__container}>
+            <div>
+              <Image src={`/assets/images/leader.png`} height={550} width={500} />
+            </div>
+            <div>
+              <h3>Climb to the top of</h3>
+              <h3>the leaderboard</h3>
+              <p style={{padding: '20px 80px 50px 0px'}}>In our tournaments everyone has a chance to shine. Play as many games as you want and we will only track your best scores meaning that you can never have a worse score than the current one.</p>
+              <a>Join Now</a>
+            </div>
+          </div>
+        </Container>
+      </div>
+      <div style={{backgroundColor: '#00ACF6'}}>
+        <Container>
+          <div className={styles.result__board__container}>
+            <div>
+              <h3>Automated Result</h3>
+              <h3>Tracking</h3>
+              <p style={{padding: '20px 80px 50px 0px'}}>Once you’ve connected your game account to Repeat.gg Profile you are good to go. Everything afterwards is on us, no downloads and no match & result submission.</p>
+              <a>Join Now</a>
+            </div>
+            <div>
+              <Image src={`/assets/images/result.png`} height={550} width={500} />
+            </div>
+          </div>
+          <div className={styles.start__board__container}>
+            <div>
+              <Image src={`/assets/images/game/6.png`} height={550} width={500} />
+            </div>
+            <div style={{margin: '50px 0px'}}>
+              <h3>Stop Scrolling, Start</h3>
+              <h3>Playing</h3>
+              <p style={{padding: '30px 0px 30px 0px'}}>Create your account now and earn 500 coins</p>
+              <a>Join Now</a>
+            </div>
+          </div>
+        </Container>
+      </div>
     </div>
   )
 }
