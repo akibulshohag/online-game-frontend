@@ -66,8 +66,8 @@ const Home: NextPage = () => {
         <h3 style={{color: '#F35237', textAlign: 'center', padding: '50px 0px', fontSize: '115px', fontWeight: '700'}}>UNLIMITED</h3>
         <Container>
           <div className={styles.inner__unlimited__container}>
-            <h3>Play Unlimited</h3>
-            <h3 style={{marginBottom: '50px'}}>Tournaments</h3>
+            <h3 style={{color: 'black'}}>Play Unlimited</h3>
+            <h3 style={{marginBottom: '50px', color: 'black'}}>Tournaments</h3>
             <p>On Repeat you can play in an unlimited number of tournaments, any</p>
             <p>time, for any game. The best thing is that your scores will count in</p>
             <p style={{marginBottom: '50px'}}>every single active tournament you enter.</p>
@@ -82,8 +82,8 @@ const Home: NextPage = () => {
               <Image src={`/assets/images/leader.png`} height={550} width={500} />
             </div>
             <div>
-              <h3>Climb to the top of</h3>
-              <h3>the leaderboard</h3>
+              <h3 style={{color: 'black'}}>Climb to the top of</h3>
+              <h3 style={{color: 'black'}}>the leaderboard</h3>
               <p style={{padding: '20px 80px 50px 0px'}}>In our tournaments everyone has a chance to shine. Play as many games as you want and we will only track your best scores meaning that you can never have a worse score than the current one.</p>
               <a>Join Now</a>
             </div>
