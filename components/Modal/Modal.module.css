@@ -12,7 +12,7 @@
     position:fixed;
     background: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 7px;
     width: 380px;
     height: auto;
     top:50%;
@@ -32,7 +32,7 @@
     display: grid;
     grid-template-columns: 1fr auto;
     padding: 10px;
-    background-color: #00ACF6;
+    background-color: #0A1861;
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
     /* box-shadow: var(--dk-box-shadow); */

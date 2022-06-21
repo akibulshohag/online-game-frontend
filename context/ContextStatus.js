@@ -1,17 +1,22 @@
+import jwt_decode from "jwt-decode";
+import { parseCookies } from "nookies";
 import { createContext, useContext, useState } from "react";
 
 const ContextStatus = createContext();
-
 const ContextStatusProvider = ContextStatus.Provider;
 
 function StatusProvider({ children }) {
+  const cookie = parseCookies();
   const [modal, setModal] = useState('');
+  const [token, setToken] = useState(cookie?.token ? cookie?.token : null);
 
   return (
     <ContextStatusProvider
       value={{
         modal,
         setModal,
+        token,
+        setToken,
       }}
     >
       {children}
