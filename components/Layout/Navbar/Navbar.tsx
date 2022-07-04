@@ -111,7 +111,7 @@ export default function Navbar() {
       password: data?.password,
     });
     console.log("response from registration.........", registrationResponse);
-    if (registrationResponse?.status == 'success') {
+    if (registrationResponse?.status == "success") {
       openNotificationWithIcon(registrationResponse?.message, "success");
       setModal("");
     } else {
@@ -439,8 +439,15 @@ export default function Navbar() {
                       </div>
                       <div>
                         <label className={styles.label}>Country</label>
-                        <select className={styles.input} {...register2("country", {required: true})}>
-                          {allCountry?.map((item, index) => <option value={item?.name?.common} key={index}>{item?.name?.common?.slice(0, 35)}</option>)}
+                        <select
+                          className={styles.input}
+                          {...register2("country", { required: true })}
+                        >
+                          {allCountry?.map((item, index) => (
+                            <option value={item?.name?.common} key={index}>
+                              {item?.name?.common?.slice(0, 35)}
+                            </option>
+                          ))}
                         </select>
                         {/* <input
                           className={styles.input}
