@@ -1,4 +1,3 @@
-import jwt_decode from "jwt-decode";
 import { parseCookies } from "nookies";
 import { createContext, useContext, useState } from "react";
 
@@ -9,6 +8,9 @@ function StatusProvider({ children }) {
   const cookie = parseCookies();
   const [modal, setModal] = useState('');
   const [token, setToken] = useState(cookie?.token ? cookie?.token : null);
+  const [username, setUsername] = useState(cookie?.username ? cookie?.username : null);
+  const [userEmail, setUserEmail] = useState(cookie?.userEmail ? cookie?.userEmail : null);
+  const [userId, setUserId] = useState(cookie?.userId ? cookie?.userId : null);
 
   return (
     <ContextStatusProvider
@@ -17,6 +19,12 @@ function StatusProvider({ children }) {
         setModal,
         token,
         setToken,
+        username,
+        setUsername,
+        userEmail,
+        setUserEmail,
+        userId,
+        setUserId,
       }}
     >
       {children}
@@ -30,33 +38,3 @@ function useStatus() {
 }
 
 export { StatusProvider, useStatus };
-
-
-// import { createContext, useState, FC } from 'react';
-// import { ContextStateType } from './interfaces';
-
-// const contextDefaultValues : ContextStateType = {
-//     loginModal: '',
-// };
-
-// export const ContextStatus = createContext<ContextStateType>(
-//     contextDefaultValues
-// );
-
-// const ContextStatusProvider: FC = ({ children }) => {
-//     const [loginModal, setLoginModal] = useState<string>(contextDefaultValues.loginModal)
-
-//     return (
-//         <ContextStatus.Provider value={{loginModal}}>{children}</ContextStatus.Provider>
-//     )
-// }
-
-// export default ContextStatusProvider;
-
-// export interface LoginModalData {
-//   loginModals: LoginModal
-// }
-
-// export const loginModalDefaultValue: LoginModal = {
-
-// }

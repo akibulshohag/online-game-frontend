@@ -1,9 +1,6 @@
-import {
-  faAngleLeft,
-  faAngleRight,
-  faPaperPlane,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { CgProfile } from "react-icons/cg";
+import { FaAngleLeft, FaAngleRight, FaPaperPlane } from "react-icons/fa";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useStatus } from "../../../context/ContextStatus";
@@ -11,6 +8,9 @@ import Modal from "../../Modal/Modal";
 // import ContextStatus from '../../../context/ContextStatus.js';
 import { notification } from "antd";
 import axios from "axios";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { destroyCookie, setCookie } from "nookies";
 import { SubmitHandler, useForm } from "react-hook-form";
 import postRequest from "../../../lib/postRequest";
 import styles from "./Navbar.module.css";
@@ -46,7 +46,19 @@ type RegistrationInputs = {
 
 export default function Navbar() {
   const [allCountry, setAllCountry] = useState<allCountryType[]>([]);
-  const { modal, setModal } = useStatus();
+  const {
+    modal,
+    setModal,
+    token,
+    setToken,
+    username,
+    setUsername,
+    userEmail,
+    setUserEmail,
+    userId,
+    setUserId,
+  } = useStatus();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -85,7 +97,7 @@ export default function Navbar() {
 
   const onLoginSubmit: SubmitHandler<LoginInputs> = async (data) => {
     console.log(data);
-    const res = await postRequest(`player-login`, {
+    const res = await postRequest(`player-login`, null, {
       email: data?.email,
       password: data?.password,
       device_token: "",
@@ -93,7 +105,28 @@ export default function Navbar() {
     console.log("response from login.........", res);
     if (res?.status) {
       openNotificationWithIcon(res?.message, "success");
+      setToken(res?.data?.access_token);
+      setUsername(res?.data?.user?.username);
+      setUserEmail(res?.data?.user?.email);
+      setUserId(res?.data?.user?.id);
+      setCookie(null, "token", res?.data?.access_token, {
+        maxAge: res?.data?.expires_in,
+        path: "/",
+      });
+      setCookie(null, "username", res?.data?.user?.username, {
+        maxAge: res?.data?.expires_in,
+        path: "/",
+      });
+      setCookie(null, "userEmail", res?.data?.user?.email, {
+        maxAge: res?.data?.expires_in,
+        path: "/",
+      });
+      setCookie(null, "userId", res?.data?.user?.id, {
+        maxAge: res?.data?.expires_in,
+        path: "/",
+      });
       setModal("");
+      router.push("/user/profile");
     } else {
       openNotificationWithIcon(res?.message, "error");
     }
@@ -103,7 +136,7 @@ export default function Navbar() {
     data
   ) => {
     console.log(data);
-    const registrationResponse = await postRequest(`player-registration`, {
+    const registrationResponse = await postRequest(`player-registration`, null, {
       username: data?.username,
       email: data?.email,
       date_of_birth: data?.dateOfBirth,
@@ -113,20 +146,94 @@ export default function Navbar() {
     console.log("response from registration.........", registrationResponse);
     if (registrationResponse?.status == "success") {
       openNotificationWithIcon(registrationResponse?.message, "success");
+      setToken(registrationResponse?.response?.access_token);
+      setUsername(registrationResponse?.response?.user?.username);
+      setUserEmail(registrationResponse?.response?.user?.email);
+      setUserId(registrationResponse?.response?.user?.id);
+      setCookie(null, "token", registrationResponse?.response?.access_token, {
+        maxAge: registrationResponse?.response?.expires_in,
+        path: "/",
+      });
+      setCookie(
+        null,
+        "username",
+        registrationResponse?.response?.user?.username,
+        {
+          maxAge: registrationResponse?.response?.expires_in,
+          path: "/",
+        }
+      );
+      setCookie(
+        null,
+        "userEmail",
+        registrationResponse?.response?.user?.email,
+        {
+          maxAge: registrationResponse?.response?.expires_in,
+          path: "/",
+        }
+      );
+      setCookie(null, "userId", registrationResponse?.response?.user?.id, {
+        maxAge: registrationResponse?.response?.expires_in,
+        path: "/",
+      });
       setModal("");
+      router.push("/user/profile");
     } else {
       openNotificationWithIcon(registrationResponse?.message, "error");
     }
+  };
+
+  const handleLogout = () => {
+    setToken(null);
+    setUsername(null);
+    setUserEmail(null);
+    setUserId(null);
+    destroyCookie(null, "token");
+    destroyCookie(null, "username");
+    destroyCookie(null, "userEmail");
+    destroyCookie(null, "userId");
+    router.push("/");
   };
 
   return (
     <div className={styles.main}>
       <div className={styles.container}>
         <div>
-          <Image src={`/assets/images/logo.png`} height={60} width={160} />
+          <Link href="/">
+            <a>
+              <Image src={`/assets/images/logo.png`} height={60} width={160} />
+            </a>
+          </Link>
         </div>
-        <a onClick={() => setModal("login")}>Login</a>
-        <a onClick={() => setModal("signup")}>Sign up</a>
+        {token ? null : (
+          <a className={styles.login__button} onClick={() => setModal("login")}>
+            Login
+          </a>
+        )}
+        {token ? null : (
+          <a
+            className={styles.login__button}
+            onClick={() => setModal("signup")}
+          >
+            Sign up
+          </a>
+        )}
+        {token ? (
+          <div className={styles.dropdown}>
+            <a className={styles.user__button} onClick={handleLogout}>
+              <CgProfile size={35} />
+            </a>
+            <div className={styles.dropdown__content}>
+              <Link href="/user/profile">
+                <a>Profile</a>
+              </Link>
+              <Link href="/user/available-games">
+                <a>Available Games</a>
+              </Link>
+              <a onClick={handleLogout}>Logout</a>
+            </div>
+          </div>
+        ) : null}
       </div>
       {modal == "login" ? (
         <Modal title={"Login"} handleClose={() => setModal("")}>
@@ -150,11 +257,7 @@ export default function Navbar() {
                     </div>
                     <div className={styles.arrow}>
                       <p style={{ marginLeft: 10 }}>Login With Google</p>
-                      <FontAwesomeIcon
-                        icon={faAngleRight}
-                        height={20}
-                        width={20}
-                      />
+                      <FaAngleRight />
                     </div>
                   </div>
                   <div className={styles.google__box}>
@@ -168,11 +271,7 @@ export default function Navbar() {
                     </div>
                     <div className={styles.arrow}>
                       <p style={{ marginLeft: 10 }}>Login With Facebook</p>
-                      <FontAwesomeIcon
-                        icon={faAngleRight}
-                        height={20}
-                        width={20}
-                      />
+                      <FaAngleRight />
                     </div>
                   </div>
                   <div
@@ -180,20 +279,11 @@ export default function Navbar() {
                     className={styles.google__box}
                   >
                     <div className={styles.image__border}>
-                      <FontAwesomeIcon
-                        icon={faPaperPlane}
-                        height={25}
-                        width={25}
-                        color={"#00ACF6"}
-                      />
+                      <FaPaperPlane />
                     </div>
                     <div className={styles.arrow}>
                       <p style={{ marginLeft: 10 }}>Login With Email</p>
-                      <FontAwesomeIcon
-                        icon={faAngleRight}
-                        height={20}
-                        width={20}
-                      />
+                      <FaAngleRight />
                     </div>
                   </div>
                 </div>
@@ -205,12 +295,7 @@ export default function Navbar() {
                   onClick={() => setactiveTab(0)}
                   className={styles.input__header}
                 >
-                  <FontAwesomeIcon
-                    icon={faAngleLeft}
-                    height={15}
-                    width={15}
-                    color={"#1234"}
-                  />
+                  <FaAngleLeft />
                   <p style={{ marginLeft: 5 }}>Back To All options</p>
                 </div>
                 <div>
@@ -295,11 +380,7 @@ export default function Navbar() {
                     </div>
                     <div className={styles.arrow}>
                       <p style={{ marginLeft: 10 }}>Sign Up With Google</p>
-                      <FontAwesomeIcon
-                        icon={faAngleRight}
-                        height={20}
-                        width={20}
-                      />
+                      <FaAngleRight />
                     </div>
                   </div>
                   <div className={styles.google__box}>
@@ -313,11 +394,7 @@ export default function Navbar() {
                     </div>
                     <div className={styles.arrow}>
                       <p style={{ marginLeft: 10 }}>Sign Up With Facebook</p>
-                      <FontAwesomeIcon
-                        icon={faAngleRight}
-                        height={20}
-                        width={20}
-                      />
+                      <FaAngleRight />
                     </div>
                   </div>
                   <div
@@ -325,20 +402,11 @@ export default function Navbar() {
                     className={styles.google__box}
                   >
                     <div className={styles.image__border}>
-                      <FontAwesomeIcon
-                        icon={faPaperPlane}
-                        height={25}
-                        width={25}
-                        color={"#00ACF6"}
-                      />
+                      <FaPaperPlane />
                     </div>
                     <div className={styles.arrow}>
                       <p style={{ marginLeft: 10 }}>Sign Up With Email</p>
-                      <FontAwesomeIcon
-                        icon={faAngleRight}
-                        height={20}
-                        width={20}
-                      />
+                      <FaAngleRight />
                     </div>
                   </div>
                 </div>
@@ -350,12 +418,7 @@ export default function Navbar() {
                   onClick={() => setactiveTab(0)}
                   className={styles.input__header}
                 >
-                  <FontAwesomeIcon
-                    icon={faAngleLeft}
-                    height={15}
-                    width={15}
-                    color={"#1234"}
-                  />
+                  <FaAngleLeft />
                   <p style={{ marginLeft: 5 }}>Back To All options</p>
                 </div>
                 <div>

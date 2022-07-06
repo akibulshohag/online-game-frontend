@@ -50,8 +50,8 @@ export default function Footer() {
                 </li>
               </ul>
             </div>
-            <p>Repeat.gg allows you to enter free tournaments to win cash and other prizes</p>
-            <p><span className={styles.copyright__text}>Repeat.gg 2022 All Rights Reserved.</span></p>
+            <p>Ultimate Players Arena allows you to enter free tournaments to win cash and other prizes</p>
+            <p><span className={styles.copyright__text}>Ultimate Players Arena(UPA) 2022 All Rights Reserved.</span></p>
           </div>
           <div className={styles.page__content__wrapper}>
             <div className={styles.page__info__content}>

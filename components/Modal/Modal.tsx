@@ -1,5 +1,5 @@
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FaTimes } from 'react-icons/fa';
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useStatus } from "../../context/ContextStatus.js";
 import styles from "./Modal.module.css";
 
@@ -23,14 +23,7 @@ export default function Modal(props: PropType) {
       <section className={styles.mainModal}>
         <div className={styles.modal__title}>
           <h4 style={{ color: "white" }}>{title}</h4>
-          <FontAwesomeIcon
-            icon={faTimes}
-            height={25}
-            width={25}
-            color="white"
-            style={{ cursor: "pointer" }}
-            onClick={handleClose}
-          />
+          <FaTimes style={{ cursor: "pointer", color: 'white' }} onClick={handleClose} />
           {/* <button type="button" onClick={handleClose}>
                         Close
                     </button> */}
