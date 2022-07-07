@@ -227,6 +227,7 @@ export default function Navbar() {
               <Link href="/user/profile">
                 <a>Profile</a>
               </Link>
+              <Link href="/user/launch-game"><a>Launch Game</a></Link>
               <Link href="/user/available-games">
                 <a>Available Games</a>
               </Link>
