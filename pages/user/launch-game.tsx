@@ -1,6 +1,8 @@
+import { useStatus } from "../../context/ContextStatus";
 import styles from "../../styles/LaunchGame.module.css";
 
 export default function LaunchGame() {
+  const { token, setToken, modal, setModal } = useStatus();
   return (
     <div className={styles.main}>
       <div className={styles.games__container}>
