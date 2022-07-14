@@ -1,10 +1,20 @@
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import Modal from "../../components/Modal/Modal";
 import { useStatus } from "../../context/ContextStatus";
+import request from "../../lib/request";
 import styles from "../../styles/LaunchGame.module.css";
 
 export default function LaunchGame() {
-  const { token, setToken, modal, setModal } = useStatus();
+  const { token, setToken, modal, setModal, userId, setUserId } = useStatus();
+  const [launchedGame, setLaunchedGame] = useState([])
+
+  useEffect(() => {
+    (async () => {
+      const res = await request(`player/game-launch-list?player_id=${userId}`, token)
+      setLaunchedGame(res?.data)
+    })()
+  }, [])
   return (
     <div className={styles.main}>
       <div className={styles.games__container}>
@@ -29,7 +39,7 @@ export default function LaunchGame() {
             </div>
             <div style={{margin: 'auto 20px'}}>
               <h5>Launch your game and get ready </h5>
-              <a onClick={() => setModal('launch')}>Launch Now</a>
+              <a onClick={() => setModal('launch')}>Launch Game</a>
             </div>
           </div>
         </div>
