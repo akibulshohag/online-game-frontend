@@ -59,3 +59,13 @@
     rgba(0, 0, 0, 0.908000700280112) 100%
   );
 }
+.image__text{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-gap: 20px;
+}
+.text__image{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-gap: 20px;
+}

@@ -22,20 +22,22 @@ export default function LaunchGame() {
           </div>
         </div>
         <div className={styles.container}>
-          <div>
+          <div className={styles.image__text}>
             <div>
               <Image src="/assets/images/1.png" height={300} width={300} />
             </div>
             <div>
               <h5>Launch your game and get ready </h5>
+              <a>Launch Now</a>
             </div>
           </div>
         </div>
         <div>
           <div className={styles.container}>
-            <div>
+            <div className={styles.text__image}>
               <div>
                 <h5>kfdjh</h5>
+                <a>Launch Now</a>
               </div>
               <div>
                 <Image src="/assets/images/2.png" height={300} width={300} />
