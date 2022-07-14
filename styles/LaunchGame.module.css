@@ -14,6 +14,16 @@
   /* -webkit-box-shadow: 0px 2px 15px 8px rgba(0, 0, 0, 0.24); */
   /* box-shadow: 0px 2px 15px 8px rgba(0, 0, 0, 0.24); */
 }
+.container a {
+  background-color: #f35237;
+  color: white !important;
+  padding: 10px 20px;
+}
+.container h5{
+  margin-bottom: 30px;
+  font-size: 30px;
+  font-weight: 700;
+}
 .games__container video {
   width: 100%;
   height: 550px;
@@ -59,13 +69,13 @@
     rgba(0, 0, 0, 0.908000700280112) 100%
   );
 }
-.image__text{
+.image__text {
   display: grid;
-  grid-template-columns: auto 1fr;
-  grid-gap: 20px;
+  grid-template-columns: 450px auto;
+  grid-gap: 50px;
 }
-.text__image{
+.text__image {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: auto 550px;
   grid-gap: 20px;
 }

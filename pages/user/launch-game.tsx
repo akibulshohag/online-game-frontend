@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Modal from "../../components/Modal/Modal";
 import { useStatus } from "../../context/ContextStatus";
 import styles from "../../styles/LaunchGame.module.css";
 
@@ -26,29 +27,32 @@ export default function LaunchGame() {
             <div>
               <Image src="/assets/images/1.png" height={300} width={300} />
             </div>
-            <div>
+            <div style={{margin: 'auto 20px'}}>
               <h5>Launch your game and get ready </h5>
-              <a>Launch Now</a>
+              <a onClick={() => setModal('launch')}>Launch Now</a>
             </div>
           </div>
         </div>
-        <div>
+        {/* <div>
           <div className={styles.container}>
             <div className={styles.text__image}>
-              <div>
-                <h5>kfdjh</h5>
-                <a>Launch Now</a>
+              <div style={{margin: 'auto 20px'}}>
+                <h5>Launch your game and get ready </h5>
+                <a onClick={() => setModal('launch')}>Launch Now</a>
               </div>
               <div>
-                <Image src="/assets/images/2.png" height={300} width={300} />
+                <Image src="/assets/images/2.png" height={300} width={450} />
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
         <div style={{textAlign: 'center', marginBottom:'-7px'}}>
           <Image src="/assets/images/3.png" height={200} width={200} />
         </div>
       </div>
+      {modal == 'launch' ? <Modal title="Launch Game" handleClose={() => setModal("")} >
+
+      </Modal> : null}
     </div>
   );
 }
