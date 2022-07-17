@@ -5,3 +5,64 @@
   max-width: 1420px;
   margin: 0px auto;
 }
+.profile__container{
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  grid-gap: 20px;
+}
+.profile__dashboard{
+  display: grid;
+  grid-template-columns: 1fr;
+  background-color: #dcdddd;
+  margin: 20px 0px;
+  border-radius: 15px;
+}
+.profile__dashboard a{
+  font-weight: 600;
+  padding: 8px 18px;
+  margin: auto 0px;
+}
+.profile__dashboard a:hover{
+  background-color: #F15336;
+  color: white !important;
+}
+.launched__container{
+  background-color: #dcdddd;
+  margin: 20px 0px;
+  border-radius: 15px;
+  padding-bottom: 20px;
+}
+.launched__container h5{
+  text-align: center;
+  padding: 10px 0px;
+}
+.launched__game__list{
+  margin: 0px 30px 0px 30px;
+  background-color: white;
+  border-radius: 15px;
+}
+.launched__game__list h6{
+  padding: 8px 8px;
+}
+.launched__game__header{
+  display: grid;
+  grid-template-columns: 300px 180px 180px 180px 120px;
+  grid-gap: 20px;
+}
+.launched__game__header h6{
+  margin: 0px;
+}
+.launched__game__header p{
+  padding: 5px 8px;
+}
+.edit__delete__button{
+  background-color: #F15336;
+  color: white;
+  padding: 3px 10px;
+  margin-bottom: 0px;
+  border-radius: 15px;
+}
+.edit__delete__button:hover{
+  background-color: white;
+  color: #F15336;
+}

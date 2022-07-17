@@ -136,13 +136,17 @@ export default function Navbar() {
     data
   ) => {
     console.log(data);
-    const registrationResponse = await postRequest(`player-registration`, null, {
-      username: data?.username,
-      email: data?.email,
-      date_of_birth: data?.dateOfBirth,
-      country: data?.country,
-      password: data?.password,
-    });
+    const registrationResponse = await postRequest(
+      `player-registration`,
+      null,
+      {
+        username: data?.username,
+        email: data?.email,
+        date_of_birth: data?.dateOfBirth,
+        country: data?.country,
+        password: data?.password,
+      }
+    );
     console.log("response from registration.........", registrationResponse);
     if (registrationResponse?.status == "success") {
       openNotificationWithIcon(registrationResponse?.message, "success");
@@ -183,18 +187,6 @@ export default function Navbar() {
     }
   };
 
-  const handleLogout = () => {
-    setToken(null);
-    setUsername(null);
-    setUserEmail(null);
-    setUserId(null);
-    destroyCookie(null, "token");
-    destroyCookie(null, "username");
-    destroyCookie(null, "userEmail");
-    destroyCookie(null, "userId");
-    router.push("/");
-  };
-
   return (
     <div className={styles.main}>
       <div className={styles.container}>
@@ -220,19 +212,22 @@ export default function Navbar() {
         )}
         {token ? (
           <div className={styles.dropdown}>
-            <a className={styles.user__button} onClick={handleLogout}>
-              <CgProfile size={35} />
-            </a>
-            <div className={styles.dropdown__content}>
+            <Link href={`/user/profile`}>
+              <a className={styles.user__button}>
+                <Image src="/assets/images/profile.png" height={35} width={35} />
+                <span className={styles.profile__tooltip}>Profile</span>
+                {/* <CgProfile size={35} /> */}
+              </a>
+            </Link>
+            {/* <div className={styles.dropdown__content}>
               <Link href="/user/profile">
                 <a>Profile</a>
               </Link>
-              <Link href="/user/launch-game"><a>Launch Game</a></Link>
               <Link href="/user/available-games">
                 <a>Available Games</a>
               </Link>
               <a onClick={handleLogout}>Logout</a>
-            </div>
+            </div> */}
           </div>
         ) : null}
       </div>

@@ -21,7 +21,7 @@ interface IGames {
   classificationId: number;
   classificationImage: string;
   classificationName: string;
-  games: ISingleGame[];
+  games: ISingleGame[] | 0;
 }
 
 export default function AvailableGames() {
@@ -119,7 +119,7 @@ export default function AvailableGames() {
                   padding: "0px 10px",
                 }}
               >
-                {item?.games?.length}
+                {item?.games == 0 ? 0 : item?.games?.length}
               </span>
             </h5>
           </div>
@@ -144,7 +144,7 @@ export default function AvailableGames() {
           </p>
         </div>
         <div className={styles.active__game__container}>
-          {activeGame?.games?.map((item, index) => (
+          {activeGame?.games == 0 ? null : activeGame?.games?.map((item, index) => (
             <div key={index} className={styles.active__single__game__container}>
               <Image
                 src={`/assets/images/logoIcon.png`}

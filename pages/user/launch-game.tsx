@@ -12,6 +12,7 @@ export default function LaunchGame() {
   useEffect(() => {
     (async () => {
       const res = await request(`player/game-launch-list?player_id=${userId}`, token)
+      console.log('response from launch game................', res?.data)
       setLaunchedGame(res?.data)
     })()
   }, [])
@@ -29,7 +30,6 @@ export default function LaunchGame() {
             <p style={{ marginBottom: "0px" }}>
               Launch your gaming arena and see who are interested.
             </p>
-            {/* <p>few clicks without any additional downloads</p> */}
           </div>
         </div>
         <div className={styles.container}>
@@ -56,6 +56,12 @@ export default function LaunchGame() {
             </div>
           </div>
         </div> */}
+        <div>
+          <h4 style={{textAlign:'center'}}>Your Launched Game List</h4>
+          <div>
+            
+          </div>
+        </div>
         <div style={{textAlign: 'center', marginBottom:'-7px'}}>
           <Image src="/assets/images/3.png" height={200} width={200} />
         </div>
