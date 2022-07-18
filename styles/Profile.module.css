@@ -98,3 +98,17 @@
   text-transform: uppercase;
   margin: 10px 0;
 }
+.launch__game__container {
+  background-color: #dcdddd;
+  margin-top: 20px;
+  border-radius: 15px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.launch__game__container form{
+  max-width: 350px;
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 15px;
+  margin: 0px auto;
+}

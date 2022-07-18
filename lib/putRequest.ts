@@ -2,10 +2,10 @@ import axios from "axios";
 import { parseCookies } from "nookies";
 import hostname from "./config";
 
-export default async function putRequest(url: string, data: object) {
+export default async function putRequest(url: string, token: string | null, data: object) {
   const cookies = parseCookies();
   const config = {
-    headers: { Authorization: cookies?.token },
+    headers: { Authorization: `Bearer ${token ? token : cookies?.token}` },
   };
 
   try {
