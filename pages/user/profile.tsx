@@ -60,6 +60,7 @@ interface IGameLaunch {
 }
 
 interface IRequestList {
+  gameClassificationName: string;
   gameId: number;
   gameNo: string;
   playerId: number;
@@ -267,9 +268,9 @@ export default function Profile() {
               <Link href={"/user/available-games"}>
                 <a>Available Games</a>
               </Link>
-              <a onClick={() => getLaunchedGame()}>Launched List</a>
-              <a onClick={() => setTab("launch")}>Launch Game</a>
-              <a onClick={() => getRequestList()}>Request List</a>
+              <a className={`${tab === 'launched' ? styles.border__bottom : null}`} onClick={() => getLaunchedGame()}>Launched List</a>
+              <a className={`${tab === 'launch' ? styles.border__bottom : null}`} onClick={() => setTab("launch")}>Launch Game</a>
+              <a className={`${tab === 'request' ? styles.border__bottom : null}`} onClick={() => getRequestList()}>Request List</a>
               <a onClick={handleLogout}>Log out</a>
             </div>
           </div>
@@ -449,7 +450,7 @@ export default function Profile() {
                   {requestList?.map((item, index) => (
                     <div key={index}>
                       <div className={styles.request__list__header}>
-                        <p>{item?.classificationName}</p>
+                        <p>{item?.gameClassificationName}</p>
                         <p>{item?.playerUserName}</p>
                         <p>{item?.playerCountry}</p>
                         <p>{item?.gameAmount}</p>
