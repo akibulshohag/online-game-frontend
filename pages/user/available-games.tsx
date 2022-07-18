@@ -63,6 +63,7 @@ export default function AvailableGames() {
     console.log("response.........", res);
     if (res?.status == "success") {
       openNotificationWithIcon(res?.message, "success");
+      window.location.reload();
     } else {
       openNotificationWithIcon(res?.message, "error");
     }
@@ -144,33 +145,38 @@ export default function AvailableGames() {
           </p>
         </div>
         <div className={styles.active__game__container}>
-          {activeGame?.games == 0 ? null : activeGame?.games?.map((item, index) => (
-            <div key={index} className={styles.active__single__game__container}>
-              <Image
-                src={`/assets/images/logoIcon.png`}
-                height={40}
-                width={40}
-              />
-              <h4 style={{ fontSize: "18px", margin: "auto 0px" }}>
-                {activeGame?.classificationName} - Starts{" "}
-                {item?.date?.toString()} {item?.time} |{" "}
-                {item?.game_type == "1" ? "Single" : "Team"}
-              </h4>
-              <h5 style={{ margin: "auto 0px", fontSize: "16px" }}>
-                Launch Player - {item?.launchGamePlayerUserName}
-              </h5>
-              <h5 style={{ margin: "auto 0px", fontSize: "16px" }}>
-                <span style={{ fontWeight: "700" }}>$ {item?.amount}</span> -
-                Entry Fee
-              </h5>
-              <button
-                className={styles.request__button}
-                onClick={() => handleRequest(item)}
-              >
-                Request for Entry
-              </button>
-            </div>
-          ))}
+          {activeGame?.games == 0
+            ? null
+            : activeGame?.games?.map((item, index) => (
+                <div
+                  key={index}
+                  className={styles.active__single__game__container}
+                >
+                  <Image
+                    src={`/assets/images/logoIcon.png`}
+                    height={40}
+                    width={40}
+                  />
+                  <h4 style={{ fontSize: "18px", margin: "auto 0px" }}>
+                    {activeGame?.classificationName} - Starts{" "}
+                    {item?.date?.toString()} {item?.time} |{" "}
+                    {item?.game_type == "1" ? "Single" : "Team"}
+                  </h4>
+                  <h5 style={{ margin: "auto 0px", fontSize: "16px" }}>
+                    Launch Player - {item?.launchGamePlayerUserName}
+                  </h5>
+                  <h5 style={{ margin: "auto 0px", fontSize: "16px" }}>
+                    <span style={{ fontWeight: "700" }}>$ {item?.amount}</span>{" "}
+                    - Entry Fee
+                  </h5>
+                  <button
+                    className={styles.request__button}
+                    onClick={() => handleRequest(item)}
+                  >
+                    Request for Entry
+                  </button>
+                </div>
+              ))}
         </div>
       </div>
     </div>

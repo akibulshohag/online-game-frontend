@@ -11,3 +11,6 @@
   text-align: center;
   font-weight: 700;
 }
+.main a{
+  text-decoration: none !important;
+}

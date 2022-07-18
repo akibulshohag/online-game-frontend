@@ -208,7 +208,7 @@ export default function Profile() {
     console.log("response............", res);
     if (res?.status == "success") {
       openNotificationWithIcon(res?.message, "success");
-      // window.location.reload();
+      window.location.reload();
     } else {
       openNotificationWithIcon(res?.message, "error");
     }
@@ -268,9 +268,28 @@ export default function Profile() {
               <Link href={"/user/available-games"}>
                 <a>Available Games</a>
               </Link>
-              <a className={`${tab === 'launched' ? styles.border__bottom : null}`} onClick={() => getLaunchedGame()}>Launched List</a>
-              <a className={`${tab === 'launch' ? styles.border__bottom : null}`} onClick={() => setTab("launch")}>Launch Game</a>
-              <a className={`${tab === 'request' ? styles.border__bottom : null}`} onClick={() => getRequestList()}>Request List</a>
+              <a
+                className={`${
+                  tab === "launched" ? styles.border__bottom : null
+                }`}
+                onClick={() => getLaunchedGame()}
+              >
+                Launched List
+              </a>
+              <a
+                className={`${tab === "launch" ? styles.border__bottom : null}`}
+                onClick={() => setTab("launch")}
+              >
+                Launch Game
+              </a>
+              <a
+                className={`${
+                  tab === "request" ? styles.border__bottom : null
+                }`}
+                onClick={() => getRequestList()}
+              >
+                Request List
+              </a>
               <a onClick={handleLogout}>Log out</a>
             </div>
           </div>
@@ -567,7 +586,7 @@ export default function Profile() {
                 </div>
                 <div>
                   <label className={styles.label}>Game Type</label>
-                  <select className={styles.input}>
+                  <select className={styles.input} {...register("game_type")}>
                     <option
                       value="1"
                       selected={

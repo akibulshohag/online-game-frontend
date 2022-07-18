@@ -322,12 +322,16 @@ export default function Navbar() {
                           className={styles.input}
                           placeholder="Password"
                           type="password"
-                          {...register("password", { required: true })}
+                          {...register("password", { required: true, minLength: 8 })}
                         />
                         {/* errors will return when field validation fails  */}
                         {errors.password &&
                           errors.password.type === "required" && (
                             <span>Password is required</span>
+                          )}
+                        {errors.password &&
+                          errors.password.type === "minLength" && (
+                            <span>Minimum 8 characters required!</span>
                           )}
                         {/* {errors.password && errors.password.type === 'minLength' && <span>Minimum 6 character is required</span>} */}
                       </div>
@@ -457,12 +461,16 @@ export default function Navbar() {
                           className={styles.input}
                           placeholder="Password"
                           type="password"
-                          {...register2("password", { required: true })}
+                          {...register2("password", { required: true, minLength: 8 })}
                         />
                         {/* errors will return when field validation fails  */}
                         {errors2.password &&
                           errors2.password.type === "required" && (
                             <span>Password is required</span>
+                          )}
+                        {errors2.password &&
+                          errors2.password.type === "minLength" && (
+                            <span>Minimum 8 characters required!</span>
                           )}
                         {/* {errors.password && errors.password.type === 'minLength' && <span>Minimum 6 character is required</span>} */}
                       </div>
@@ -472,12 +480,16 @@ export default function Navbar() {
                           className={styles.input}
                           placeholder="Confirm Password"
                           type="password"
-                          {...register2("confirmPassword", { required: true })}
+                          {...register2("confirmPassword", { required: true, minLength: 8 })}
                         />
                         {/* errors will return when field validation fails  */}
                         {errors2.confirmPassword &&
                           errors2.confirmPassword.type === "required" && (
                             <span>Confirm Password is required</span>
+                          )}
+                        {errors2.confirmPassword &&
+                          errors2.confirmPassword.type === "minLength" && (
+                            <span>Minimum 8 characters required!</span>
                           )}
                         {/* {errors.password && errors.password.type === 'minLength' && <span>Minimum 6 character is required</span>} */}
                       </div>

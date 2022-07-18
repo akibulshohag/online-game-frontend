@@ -1,6 +1,9 @@
 .main {
   padding-top: 80px;
 }
+.main a{
+  text-decoration: none !important;
+}
 .container {
   max-width: 1420px;
   margin: 0px auto;
