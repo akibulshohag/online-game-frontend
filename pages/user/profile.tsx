@@ -159,6 +159,7 @@ export default function Profile() {
       });
       if (res?.status === "success") {
         openNotificationWithIcon(res?.message, "success");
+        window.location.reload();
       } else {
         openNotificationWithIcon(res?.message, "error");
       }
