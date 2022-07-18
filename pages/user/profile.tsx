@@ -162,7 +162,7 @@ export default function Profile() {
   }
 
   async function handleEdit(value: ILaunchedGames) {
-    value?.status == "1"
+    value?.status == "2"
       ? setModal("edit launch")
       : openNotificationWithIcon("Could not Edit!", "error");
     handleClassification();
