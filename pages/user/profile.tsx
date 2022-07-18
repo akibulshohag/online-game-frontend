@@ -59,6 +59,15 @@ interface IGameLaunch {
   game_type: number;
 }
 
+interface IRequestList {
+  gameId: number;
+  gameNo: string;
+  playerId: number;
+  playerUserName: string;
+  playerCountry: string;
+  gameAmount: number;
+}
+
 export default function Profile() {
   const {
     token,
@@ -80,6 +89,7 @@ export default function Profile() {
     useState<ILaunchedGames>();
   const [gameClassifications, setGameClassifications] =
     useState<IGameClassifications[]>();
+  const [requestList, setRequestList] = useState<IRequestList[]>();
 
   const {
     register,
@@ -127,6 +137,16 @@ export default function Profile() {
     );
     console.log("response.............", res?.data);
     setLaunchedGame(res?.data);
+  }
+
+  async function getRequestList() {
+    setTab("request");
+    const res = await request(
+      `player/game-request-list?player_id=${userId}`,
+      token
+    );
+    console.log("response.............", res?.data);
+    setRequestList(res?.data);
   }
 
   useEffect(() => {
@@ -212,6 +232,25 @@ export default function Profile() {
     }
   };
 
+  async function handleAccept(value: IRequestList) {
+    console.log("value...........", value);
+    const res = await putRequest(`player/game-request-accept`, token, {
+      game_id: value?.gameId,
+      player_id: value?.playerId,
+    });
+    console.log("response..............", res);
+    if (res?.status == "success") {
+      openNotificationWithIcon(res?.message, "success");
+      window.location.reload();
+    } else {
+      openNotificationWithIcon(res?.message, "error");
+    }
+  }
+
+  async function handleReject(value: IRequestList) {
+    console.log("value.......................", value);
+  }
+
   return (
     <div className={styles.main}>
       <div className={styles.container}>
@@ -228,8 +267,9 @@ export default function Profile() {
               <Link href={"/user/available-games"}>
                 <a>Available Games</a>
               </Link>
-              <a onClick={() => getLaunchedGame()}>Your Launched Game</a>
+              <a onClick={() => getLaunchedGame()}>Launched List</a>
               <a onClick={() => setTab("launch")}>Launch Game</a>
+              <a onClick={() => getRequestList()}>Request List</a>
               <a onClick={handleLogout}>Log out</a>
             </div>
           </div>
@@ -392,6 +432,45 @@ export default function Profile() {
                       />
                     </div>
                   </form>
+                </div>
+              </div>
+            ) : tab === "request" ? (
+              <div className={styles.launched__container}>
+                <h5>Game Request List</h5>
+                <div className={styles.launched__game__list}>
+                  <div className={styles.request__list__header}>
+                    <h6>Game Classification Name</h6>
+                    <h6>Player Name</h6>
+                    <h6>Player Country</h6>
+                    <h6>Amount</h6>
+                    <h6>Action</h6>
+                  </div>
+                  <hr />
+                  {requestList?.map((item, index) => (
+                    <div key={index}>
+                      <div className={styles.request__list__header}>
+                        <p>{item?.classificationName}</p>
+                        <p>{item?.playerUserName}</p>
+                        <p>{item?.playerCountry}</p>
+                        <p>{item?.gameAmount}</p>
+                        <div style={{ margin: "auto 0px" }}>
+                          <a
+                            className={styles.accept__button}
+                            onClick={() => handleAccept(item)}
+                          >
+                            Accept
+                          </a>{" "}
+                          {/* <a
+                            className={styles.reject__button}
+                            onClick={() => handleReject(item)}
+                          >
+                            Reject
+                          </a> */}
+                        </div>
+                      </div>
+                      {requestList?.length - 1 == index ? null : <hr />}
+                    </div>
+                  ))}
                 </div>
               </div>
             ) : null}

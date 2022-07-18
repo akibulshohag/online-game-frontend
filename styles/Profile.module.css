@@ -55,6 +55,17 @@
 .launched__game__header p {
   padding: 5px 8px;
 }
+.request__list__header {
+  display: grid;
+  grid-template-columns: 250px 180px 180px 180px 180px;
+  grid-gap: 20px;
+}
+.request__list__header h6 {
+  margin: 0px;
+}
+.request__list__header p {
+  padding: 5px 8px;
+}
 .edit__delete__button {
   background-color: #f15336;
   color: white;
@@ -65,6 +76,28 @@
 .edit__delete__button:hover {
   background-color: white;
   color: #f15336;
+}
+.accept__button {
+  background-color: #74a378;
+  color: white;
+  padding: 3px 10px;
+  margin-bottom: 0px;
+  border-radius: 15px;
+}
+.accept__button:hover {
+  background-color: white;
+  color: #74a378;
+}
+.reject__button {
+  background-color: #F47174;
+  color: white;
+  padding: 3px 10px;
+  margin-bottom: 0px;
+  border-radius: 15px;
+}
+.reject__button:hover {
+  background-color: white;
+  color: #F47174;
 }
 .edit__form{
   padding: 8px 15px;
