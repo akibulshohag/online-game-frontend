@@ -1,4 +1,3 @@
-import { CgProfile } from "react-icons/cg";
 import { FaAngleLeft, FaAngleRight, FaPaperPlane } from "react-icons/fa";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
@@ -10,7 +9,7 @@ import { notification } from "antd";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { destroyCookie, setCookie } from "nookies";
+import { setCookie } from "nookies";
 import { SubmitHandler, useForm } from "react-hook-form";
 import postRequest from "../../../lib/postRequest";
 import styles from "./Navbar.module.css";
@@ -214,7 +213,11 @@ export default function Navbar() {
           <div className={styles.dropdown}>
             <Link href={`/user/profile`}>
               <a className={styles.user__button}>
-                <Image src="/assets/images/profile.png" height={35} width={35} />
+                <Image
+                  src="/assets/images/profile.png"
+                  height={35}
+                  width={35}
+                />
                 <span className={styles.profile__tooltip}>Profile</span>
                 {/* <CgProfile size={35} /> */}
               </a>
@@ -322,7 +325,10 @@ export default function Navbar() {
                           className={styles.input}
                           placeholder="Password"
                           type="password"
-                          {...register("password", { required: true, minLength: 8 })}
+                          {...register("password", {
+                            required: true,
+                            minLength: 8,
+                          })}
                         />
                         {/* errors will return when field validation fails  */}
                         {errors.password &&
@@ -461,7 +467,10 @@ export default function Navbar() {
                           className={styles.input}
                           placeholder="Password"
                           type="password"
-                          {...register2("password", { required: true, minLength: 8 })}
+                          {...register2("password", {
+                            required: true,
+                            minLength: 8,
+                          })}
                         />
                         {/* errors will return when field validation fails  */}
                         {errors2.password &&
@@ -480,7 +489,10 @@ export default function Navbar() {
                           className={styles.input}
                           placeholder="Confirm Password"
                           type="password"
-                          {...register2("confirmPassword", { required: true, minLength: 8 })}
+                          {...register2("confirmPassword", {
+                            required: true,
+                            minLength: 8,
+                          })}
                         />
                         {/* errors will return when field validation fails  */}
                         {errors2.confirmPassword &&
