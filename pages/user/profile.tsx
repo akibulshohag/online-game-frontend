@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { destroyCookie } from "nookies";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { AiOutlineFundView } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
 import { MdDeleteSweep } from "react-icons/md";
 import Modal from "../../components/Modal/Modal";
@@ -69,6 +70,58 @@ interface IRequestList {
   gameAmount: number;
 }
 
+interface IPlayer {
+  playerCountry: string;
+  playerId: number;
+  playerUserName: string;
+}
+
+interface IGameList {
+  amount: number;
+  date: string;
+  gameClassification: string;
+  gameId: number;
+  gameNo: string;
+  gameType: string;
+  link: string;
+  participatedMember: number;
+  player: IPlayer[];
+  time: string;
+}
+
+interface IResultOpinion {
+  comment: string;
+  id: number;
+  created_at: string;
+  player_id: number;
+  result: string;
+  result_id: number;
+  updated_at: string;
+}
+
+interface IResultList {
+  amount: number;
+  classification: string;
+  gameNo: string;
+  gameType: string;
+  participatedMember: number;
+  resultId: number;
+  resultOpinion: IResultOpinion[];
+  resultStatus: string;
+  screenShort: string;
+  winPlayerCountry: string;
+  winPlayerUserName: string;
+}
+
+interface IResultSendList {
+  amount: number;
+  gameClassification: string;
+  gameNo: string;
+  screenShort: string;
+  winnerPlayerCountry: string;
+  winnerPlayerUserName: string;
+}
+
 export default function Profile() {
   const {
     token,
@@ -84,13 +137,16 @@ export default function Profile() {
   } = useStatus();
 
   const [tab, setTab] = useState("launched");
-  const [gameType, setGameType] = useState<Number>(1);
+  const [gameType, setGameType] = useState(1);
   const [launchedGame, setLaunchedGame] = useState<ILaunchedGames[] | []>();
   const [activeLaunchedGame, setActiveLaunchedGame] =
     useState<ILaunchedGames>();
   const [gameClassifications, setGameClassifications] =
     useState<IGameClassifications[]>();
   const [requestList, setRequestList] = useState<IRequestList[]>();
+  const [gameList, setGameList] = useState<IGameList[] | []>();
+  const [resultList, setResultList] = useState<IResultList[] | []>();
+  const [resultSendList, setResultSendList] = useState<IResultSendList[] | []>()
 
   const {
     register,
@@ -130,6 +186,13 @@ export default function Profile() {
     router.push("/");
   };
 
+  async function getGameList() {
+    setTab("list");
+    const res = await request(`player/game-list?player_id=${userId}`, token);
+    setGameList(res?.data);
+    console.log("response........", gameList);
+  }
+
   async function getLaunchedGame() {
     setTab("launched");
     const res = await request(
@@ -148,6 +211,23 @@ export default function Profile() {
     );
     console.log("response.............", res?.data);
     setRequestList(res?.data);
+  }
+
+  async function getResultList() {
+    setTab("resultList");
+    const res = await request(`player/result-list?player_id=${userId}`, token);
+    setResultList(res?.data);
+    console.log("response.............", resultList);
+  }
+
+  async function getResultSendList() {
+    setTab("resultSendList");
+    const res = await request(
+      `player/result-send-list?player_id=${userId}`,
+      token
+    );
+    console.log("result send list.........", res?.data);
+    setResultSendList(res?.data)
   }
 
   useEffect(() => {
@@ -269,6 +349,12 @@ export default function Profile() {
                 <a>Available Games</a>
               </Link>
               <a
+                className={`${tab === "list" ? styles.border__bottom : null}`}
+                onClick={() => getGameList()}
+              >
+                Game List
+              </a>
+              <a
                 className={`${
                   tab === "launched" ? styles.border__bottom : null
                 }`}
@@ -289,6 +375,22 @@ export default function Profile() {
                 onClick={() => getRequestList()}
               >
                 Request List
+              </a>
+              <a
+                className={`${
+                  tab === "resultList" ? styles.border__bottom : null
+                }`}
+                onClick={() => getResultList()}
+              >
+                Result List
+              </a>
+              <a
+                className={`${
+                  tab === "resultSendList" ? styles.border__bottom : null
+                }`}
+                onClick={() => getResultSendList()}
+              >
+                Result Send List
               </a>
               <a onClick={handleLogout}>Log out</a>
             </div>
@@ -489,6 +591,90 @@ export default function Profile() {
                         </div>
                       </div>
                       {requestList?.length - 1 == index ? null : <hr />}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : tab === "list" ? (
+              <div className={styles.launched__container}>
+                <h5>Game List</h5>
+                <div className={styles.launched__game__list}>
+                  <div className={styles.launched__game__header}>
+                    <h6>Game Classification Name</h6>
+                    <h6>Date</h6>
+                    <h6>Time</h6>
+                    <h6>Game Type</h6>
+                    <h6>Amount</h6>
+                  </div>
+                  <hr />
+                  {gameList?.map((item, index) => (
+                    <div key={index}>
+                      <div className={styles.launched__game__header}>
+                        <p>{item?.gameClassification}</p>
+                        <p>{item?.date}</p>
+                        <p>{item?.time}</p>
+                        <p>{item?.gameType == "1" ? "Single" : "Team"}</p>
+                        <p>{item?.amount}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : tab === "resultList" ? (
+              <div className={styles.launched__container}>
+                <h5>Result List</h5>
+                <div className={styles.launched__game__list}>
+                  <div className={styles.launched__game__header}>
+                    <h6>Game Classification Name</h6>
+                    <h6>Game Type</h6>
+                    <h6>Amount</h6>
+                    <h6>Status</h6>
+                    <h6></h6>
+                  </div>
+                  <hr />
+                  {resultList?.map((item, index) => (
+                    <div key={index}>
+                      <div className={styles.launched__game__header}>
+                        <p>{item?.classification}</p>
+                        <p>{item?.gameType}</p>
+                        <p>{item?.amount}</p>
+                        <p>{item?.resultStatus}</p>
+                        <div style={{margin: 'auto 0px'}}>
+                          <a className={styles.edit__delete__button}>
+                            <AiOutlineFundView />
+                          </a>
+                        </div>
+                      </div>
+                      {resultList?.length - 1 == index ? null : <hr />}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : tab === "resultSendList" ? (
+              <div className={styles.launched__container}>
+                <h5>Result Send List</h5>
+                <div className={styles.launched__game__list}>
+                  <div className={styles.result__send__header}>
+                    <h6>Game Classification Name</h6>
+                    <h6>Amount</h6>
+                    <h6>Winner Player Country</h6>
+                    <h6>Winner Player Username</h6>
+                  </div>
+                  <hr />
+                  {resultSendList?.map((item, index) => (
+                    <div key={index}>
+                      <div className={styles.result__send__header}>
+                        <p>{item?.gameClassification}</p>
+                        <p>{item?.amount}</p>
+                        <p>{item?.winnerPlayerCountry}</p>
+                        <p>{item?.winnerPlayerUserName}</p>
+                        {/* <div style={{margin: 'auto 0px'}}>
+                          <a className={styles.edit__delete__button}>
+                            <AiOutlineFundView />
+                          </a>
+                        </div> */}
+                      </div>
+                      {resultSendList?.length - 1 == index ? null : <hr />}
                     </div>
                   ))}
                 </div>

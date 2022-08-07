@@ -58,6 +58,17 @@
 .launched__game__header p {
   padding: 5px 8px;
 }
+.result__send__header {
+  display: grid;
+  grid-template-columns: 300px 200px 200px 200px;
+  grid-gap: 20px;
+}
+.result__send__header h6 {
+  margin: 0px;
+}
+.result__send__header p {
+  padding: 5px 8px;
+}
 .request__list__header {
   display: grid;
   grid-template-columns: 250px 180px 180px 180px 180px;
