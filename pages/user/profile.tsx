@@ -417,6 +417,17 @@ export default function Profile() {
     setModal("send result");
   }
 
+  async function handleUpdate(value: IResultList) {
+    console.log("value...", value);
+    setModal("update opinion");
+    setResultOpinion(value);
+    // const res = await patchRequest(`player/result-opinion-update`, token, {
+    //   result_opinion_id: 1,
+    //   result: 2,
+    //   comment: ""
+    // })
+  }
+
   async function handleSendOpinion(value: IResultList) {
     setModal("send opinion");
     console.log(value);
@@ -427,6 +438,17 @@ export default function Profile() {
     console.log("value.......", value);
     setViewResult(value);
     setModal("view result");
+  }
+
+  async function handleOpinionDelete(value: IResultList) {
+    console.log("vlaue.....", value);
+    const res = await deleteRequest(`player/result-opinion-delete`, token, {
+      result_opinion_id: value?.resultOpinion?.id,
+    });
+    res?.status === "success"
+      ? openNotificationWithIcon(res?.message, "success")
+      : openNotificationWithIcon(res?.message, "error");
+    window.location.reload();
   }
 
   return (
@@ -754,7 +776,22 @@ export default function Profile() {
                           >
                             <AiFillEye />
                           </a>
-                          {item?.resultOpinion ? null : (
+                          {item?.resultOpinion ? (
+                            <>
+                              <a
+                                className={styles.edit__delete__button}
+                                onClick={() => handleUpdate(item)}
+                              >
+                                <FaEdit />
+                              </a>
+                              <a
+                                className={styles.edit__delete__button}
+                                onClick={() => handleOpinionDelete(item)}
+                              >
+                                <MdDeleteSweep />
+                              </a>
+                            </>
+                          ) : (
                             <a
                               className={styles.edit__delete__button}
                               onClick={() => handleSendOpinion(item)}
@@ -1026,31 +1063,31 @@ export default function Profile() {
             <p>
               <span>
                 <b>Game No:</b>
-              </span>
+              </span>{" "}
               {viewResult?.gameNo}
             </p>
             <p>
               <span>
                 <b>Game Type:</b>
-              </span>
+              </span>{" "}
               {viewResult?.gameType}
             </p>
             <p>
               <span>
                 <b>Participated Member:</b>
-              </span>
+              </span>{" "}
               {viewResult?.participatedMember}
             </p>
             <p>
               <span>
                 <b>Result Status:</b>
-              </span>
+              </span>{" "}
               {viewResult?.resultStatus}
             </p>
             <p>
               <span>
                 <b>Winner:</b>
-              </span>
+              </span>{" "}
               {viewResult?.winPlayerUserName}
             </p>
             <a
@@ -1064,6 +1101,39 @@ export default function Profile() {
                 width={50}
               />
             </a>
+          </div>
+        </Modal>
+      ) : modal === "update opinion" ? (
+        <Modal handleClose={() => setModal("")} title="Send Opinion">
+          <div className={styles.edit__form}>
+            <form onSubmit={handleSubmit4(onSendOpinion)}>
+              <div>
+                <label className={styles.label}>Opinion:</label>
+                <select
+                  // defaultValue={resultOpinion?.resultOpinion?.result}
+                  className={styles.input}
+                  {...register4("result")}
+                >
+                  <option value="">Select your opinion</option>
+                  <option value="1">Agree</option>
+                  <option value="2">Disagree</option>
+                </select>
+              </div>
+              <div>
+                <label className={styles.label}>Details:</label>
+                <textarea
+                  className={styles.text_area}
+                  {...register4("comment")}
+                />
+              </div>
+              <div>
+                <input
+                  type="submit"
+                  value="Confirm"
+                  className={styles.button}
+                />
+              </div>
+            </form>
           </div>
         </Modal>
       ) : null}
