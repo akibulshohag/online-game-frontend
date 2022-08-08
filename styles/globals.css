@@ -8,8 +8,8 @@
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+  color: inherit !important;
+  text-decoration: none !important;
 }
 p {
   margin-bottom: 0px !important;
