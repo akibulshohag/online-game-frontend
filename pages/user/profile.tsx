@@ -440,7 +440,7 @@ export default function Profile() {
     setModal("view result");
   }
 
-  async function handleOpinionDelete(value: IResultList) {
+  async function handleOpinionDelete(value: any) {
     console.log("vlaue.....", value);
     const res = await deleteRequest(`player/result-opinion-delete`, token, {
       result_opinion_id: value?.resultOpinion?.id,
@@ -786,7 +786,9 @@ export default function Profile() {
                               </a>
                               <a
                                 className={styles.edit__delete__button}
-                                onClick={() => handleOpinionDelete(item)}
+                                onClick={() =>
+                                  handleOpinionDelete(item?.resultOpinion)
+                                }
                               >
                                 <MdDeleteSweep />
                               </a>
