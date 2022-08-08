@@ -161,6 +161,7 @@ export default function Profile() {
   >();
   const [resultSendGameList, setResultSendGameList] = useState<IGameList>();
   const [resultOpinion, setResultOpinion] = useState<IResultList>();
+  const [viewResult, setViewResult] = useState<IResultList>();
 
   const {
     register,
@@ -356,7 +357,7 @@ export default function Profile() {
     res?.status == "success"
       ? openNotificationWithIcon(res?.message, "success")
       : openNotificationWithIcon(res?.message, "error");
-    setModal(null)
+    setModal(null);
   };
   const onSendOpinion: SubmitHandler<ISendOpinion> = async (data) => {
     console.log("image......", data);
@@ -370,7 +371,7 @@ export default function Profile() {
     res?.status == "success"
       ? openNotificationWithIcon(res?.message, "success")
       : openNotificationWithIcon(res?.message, "error");
-    setModal(null)
+    setModal(null);
   };
 
   const onLaunchSubmit: SubmitHandler<IGameLaunch> = async (data) => {
@@ -420,6 +421,12 @@ export default function Profile() {
     setModal("send opinion");
     console.log(value);
     setResultOpinion(value);
+  }
+
+  async function handleViewResult(value: IResultList) {
+    console.log("value.......", value);
+    setViewResult(value);
+    setModal("view result");
   }
 
   return (
@@ -741,7 +748,10 @@ export default function Profile() {
                         <p>{item?.amount}</p>
                         <p>{item?.resultStatus}</p>
                         <div style={{ margin: "auto 0px" }}>
-                          <a className={styles.edit__delete__button}>
+                          <a
+                            className={styles.edit__delete__button}
+                            onClick={() => handleViewResult(item)}
+                          >
                             <AiFillEye />
                           </a>
                           {item?.resultOpinion ? null : (
@@ -1002,6 +1012,58 @@ export default function Profile() {
                 />
               </div>
             </form>
+          </div>
+        </Modal>
+      ) : modal == "view result" ? (
+        <Modal handleClose={() => setModal("")} title="Result">
+          <div style={{ padding: "10px 15px" }}>
+            <p>
+              <span>
+                <b>Game Classification:</b>
+              </span>{" "}
+              {viewResult?.classification}
+            </p>
+            <p>
+              <span>
+                <b>Game No:</b>
+              </span>
+              {viewResult?.gameNo}
+            </p>
+            <p>
+              <span>
+                <b>Game Type:</b>
+              </span>
+              {viewResult?.gameType}
+            </p>
+            <p>
+              <span>
+                <b>Participated Member:</b>
+              </span>
+              {viewResult?.participatedMember}
+            </p>
+            <p>
+              <span>
+                <b>Result Status:</b>
+              </span>
+              {viewResult?.resultStatus}
+            </p>
+            <p>
+              <span>
+                <b>Winner:</b>
+              </span>
+              {viewResult?.winPlayerUserName}
+            </p>
+            <a
+              href={`${viewResult?.screenShort}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Image
+                src={`${viewResult?.screenShort}`}
+                height={50}
+                width={50}
+              />
+            </a>
           </div>
         </Modal>
       ) : null}
