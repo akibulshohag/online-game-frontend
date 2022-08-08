@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { destroyCookie } from "nookies";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { AiOutlineFundView } from "react-icons/ai";
+import { AiFillEye } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
 import { MdDeleteSweep } from "react-icons/md";
 import Modal from "../../components/Modal/Modal";
@@ -47,6 +47,11 @@ interface IEditGameLaunch {
   time: string;
   participated_member: number;
   game_type: number;
+}
+
+interface ISendResult {
+  screen_short: string;
+  winner_player_id: number;
 }
 
 interface IGameLaunch {
@@ -122,6 +127,11 @@ interface IResultSendList {
   winnerPlayerUserName: string;
 }
 
+interface ISendOpinion {
+  result: number;
+  comment: string;
+}
+
 export default function Profile() {
   const {
     token,
@@ -146,7 +156,11 @@ export default function Profile() {
   const [requestList, setRequestList] = useState<IRequestList[]>();
   const [gameList, setGameList] = useState<IGameList[] | []>();
   const [resultList, setResultList] = useState<IResultList[] | []>();
-  const [resultSendList, setResultSendList] = useState<IResultSendList[] | []>()
+  const [resultSendList, setResultSendList] = useState<
+    IResultSendList[] | []
+  >();
+  const [resultSendGameList, setResultSendGameList] = useState<IGameList>();
+  const [resultOpinion, setResultOpinion] = useState<IResultList>();
 
   const {
     register,
@@ -161,6 +175,20 @@ export default function Profile() {
     watch: watch2,
     formState: { errors: errors2 },
   } = useForm<IGameLaunch>();
+
+  const {
+    register: register3,
+    handleSubmit: handleSubmit3,
+    watch: watch3,
+    formState: { errors: errors3 },
+  } = useForm<ISendResult>();
+
+  const {
+    register: register4,
+    handleSubmit: handleSubmit4,
+    watch: watch4,
+    formState: { errors: errors4 },
+  } = useForm<ISendOpinion>();
 
   const router = useRouter();
 
@@ -184,6 +212,26 @@ export default function Profile() {
     destroyCookie(null, "userEmail");
     destroyCookie(null, "userId");
     router.push("/");
+  };
+
+  const getBase64 = (file: any) => {
+    return new Promise((resolve) => {
+      let baseURL: any = "";
+      // Make new FileReader
+      let reader = new FileReader();
+
+      // Convert the file to base64 text
+      reader.readAsDataURL(file);
+
+      // on reader load somthing...
+      reader.onload = () => {
+        // Make a fileInfo Object
+        baseURL = reader.result;
+        resolve(baseURL);
+        // setFile(baseURL);
+        return baseURL;
+      };
+    });
   };
 
   async function getGameList() {
@@ -227,7 +275,7 @@ export default function Profile() {
       token
     );
     console.log("result send list.........", res?.data);
-    setResultSendList(res?.data)
+    setResultSendList(res?.data);
   }
 
   useEffect(() => {
@@ -294,6 +342,37 @@ export default function Profile() {
     }
   };
 
+  const onSendResult: SubmitHandler<ISendResult> = async (data) => {
+    let image = await getBase64(data?.screen_short[0]);
+    console.log("image......", data);
+    const res = await postRequest(`player/result-send`, token, {
+      game_id: resultSendGameList?.gameId,
+      screen_short: [image],
+      published_player_id: userId,
+      winner_player_id: data?.winner_player_id,
+      amount: resultSendGameList?.amount,
+    });
+    console.log("response........", res);
+    res?.status == "success"
+      ? openNotificationWithIcon(res?.message, "success")
+      : openNotificationWithIcon(res?.message, "error");
+    setModal(null)
+  };
+  const onSendOpinion: SubmitHandler<ISendOpinion> = async (data) => {
+    console.log("image......", data);
+    const res = await postRequest(`player/result-opinion`, token, {
+      result_id: resultOpinion?.resultId,
+      player_id: userId,
+      result: data?.result,
+      comment: data?.comment,
+    });
+    console.log("response.......", res);
+    res?.status == "success"
+      ? openNotificationWithIcon(res?.message, "success")
+      : openNotificationWithIcon(res?.message, "error");
+    setModal(null)
+  };
+
   const onLaunchSubmit: SubmitHandler<IGameLaunch> = async (data) => {
     const res = await postRequest(`player/game-launched`, token, {
       game_classification_id: data?.game_classification_id,
@@ -330,6 +409,17 @@ export default function Profile() {
 
   async function handleReject(value: IRequestList) {
     console.log("value.......................", value);
+  }
+
+  async function handleSendResult(value: IGameList) {
+    setResultSendGameList(value);
+    setModal("send result");
+  }
+
+  async function handleSendOpinion(value: IResultList) {
+    setModal("send opinion");
+    console.log(value);
+    setResultOpinion(value);
   }
 
   return (
@@ -599,23 +689,34 @@ export default function Profile() {
               <div className={styles.launched__container}>
                 <h5>Game List</h5>
                 <div className={styles.launched__game__list}>
-                  <div className={styles.launched__game__header}>
+                  <div className={styles.game__list__header}>
                     <h6>Game Classification Name</h6>
                     <h6>Date</h6>
                     <h6>Time</h6>
                     <h6>Game Type</h6>
                     <h6>Amount</h6>
+                    <h6></h6>
                   </div>
                   <hr />
                   {gameList?.map((item, index) => (
                     <div key={index}>
-                      <div className={styles.launched__game__header}>
-                        <p>{item?.gameClassification}</p>
-                        <p>{item?.date}</p>
-                        <p>{item?.time}</p>
-                        <p>{item?.gameType == "1" ? "Single" : "Team"}</p>
-                        <p>{item?.amount}</p>
-                      </div>
+                      {item ? (
+                        <div className={styles.game__list__header}>
+                          <p>{item?.gameClassification}</p>
+                          <p>{item?.date}</p>
+                          <p>{item?.time}</p>
+                          <p>{item?.gameType}</p>
+                          <p>{item?.amount}</p>
+                          <div style={{ margin: "auto 0px" }}>
+                            <a
+                              className={styles.edit__delete__button}
+                              onClick={() => handleSendResult(item)}
+                            >
+                              Send Result
+                            </a>
+                          </div>
+                        </div>
+                      ) : null}
                     </div>
                   ))}
                 </div>
@@ -624,7 +725,7 @@ export default function Profile() {
               <div className={styles.launched__container}>
                 <h5>Result List</h5>
                 <div className={styles.launched__game__list}>
-                  <div className={styles.launched__game__header}>
+                  <div className={styles.result__list__header}>
                     <h6>Game Classification Name</h6>
                     <h6>Game Type</h6>
                     <h6>Amount</h6>
@@ -634,15 +735,23 @@ export default function Profile() {
                   <hr />
                   {resultList?.map((item, index) => (
                     <div key={index}>
-                      <div className={styles.launched__game__header}>
+                      <div className={styles.result__list__header}>
                         <p>{item?.classification}</p>
                         <p>{item?.gameType}</p>
                         <p>{item?.amount}</p>
                         <p>{item?.resultStatus}</p>
-                        <div style={{margin: 'auto 0px'}}>
+                        <div style={{ margin: "auto 0px" }}>
                           <a className={styles.edit__delete__button}>
-                            <AiOutlineFundView />
+                            <AiFillEye />
                           </a>
+                          {item?.resultOpinion ? null : (
+                            <a
+                              className={styles.edit__delete__button}
+                              onClick={() => handleSendOpinion(item)}
+                            >
+                              Send Opinion
+                            </a>
+                          )}
                         </div>
                       </div>
                       {resultList?.length - 1 == index ? null : <hr />}
@@ -668,11 +777,6 @@ export default function Profile() {
                         <p>{item?.amount}</p>
                         <p>{item?.winnerPlayerCountry}</p>
                         <p>{item?.winnerPlayerUserName}</p>
-                        {/* <div style={{margin: 'auto 0px'}}>
-                          <a className={styles.edit__delete__button}>
-                            <AiOutlineFundView />
-                          </a>
-                        </div> */}
                       </div>
                       {resultSendList?.length - 1 == index ? null : <hr />}
                     </div>
@@ -805,6 +909,91 @@ export default function Profile() {
                     <span>This field is required</span>
                   )}
               </div>
+              <div>
+                <input
+                  type="submit"
+                  value="Confirm"
+                  className={styles.button}
+                />
+              </div>
+            </form>
+          </div>
+        </Modal>
+      ) : modal == "send result" ? (
+        <Modal handleClose={() => setModal("")} title="Send Result">
+          <div className={styles.edit__form}>
+            <form onSubmit={handleSubmit3(onSendResult)}>
+              <div>
+                <label className={styles.label}>Screen Shot</label>
+                <input
+                  type="file"
+                  accept="image/png, image/gif, image/jpeg"
+                  {...register3("screen_short")}
+                />
+              </div>
+              <div>
+                <label className={styles.label}>Winner</label>
+                <select
+                  className={styles.input}
+                  {...register3("winner_player_id")}
+                >
+                  {resultSendGameList?.player?.map((item) => (
+                    <option value={item?.playerId} key={item?.playerId}>
+                      {item?.playerUserName}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <input
+                  type="submit"
+                  value="Confirm"
+                  className={styles.button}
+                />
+              </div>
+            </form>
+          </div>
+        </Modal>
+      ) : modal == "send opinion" ? (
+        <Modal handleClose={() => setModal("")} title="Send Opinion">
+          <div className={styles.edit__form}>
+            <form onSubmit={handleSubmit4(onSendOpinion)}>
+              <div>
+                <label className={styles.label}>Opinion:</label>
+                <select className={styles.input} {...register4("result")}>
+                  <option value="">Select your opinion</option>
+                  <option value={1}>Agree</option>
+                  <option value={2}>Disagree</option>
+                </select>
+              </div>
+              <div>
+                <label className={styles.label}>Details:</label>
+                <textarea
+                  className={styles.text_area}
+                  {...register4("comment")}
+                />
+              </div>
+              {/* <div>
+                <label className={styles.label}>Screen Shot</label>
+                <input
+                  type="file"
+                  accept="image/png, image/gif, image/jpeg"
+                  {...register3("screen_short")}
+                />
+              </div> */}
+              {/* <div>
+                <label className={styles.label}>Winner</label>
+                <select
+                  className={styles.input}
+                  {...register3("winner_player_id")}
+                >
+                  {resultSendGameList?.player?.map((item) => (
+                    <option value={item?.playerId} key={item?.playerId}>
+                      {item?.playerUserName}
+                    </option>
+                  ))}
+                </select>
+              </div> */}
               <div>
                 <input
                   type="submit"

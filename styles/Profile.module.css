@@ -1,7 +1,7 @@
 .main {
   padding-top: 80px;
 }
-.main a{
+.main a {
   text-decoration: none !important;
 }
 .container {
@@ -58,6 +58,28 @@
 .launched__game__header p {
   padding: 5px 8px;
 }
+.result__list__header {
+  display: grid;
+  grid-template-columns: 250px 180px 180px 180px 170px;
+  grid-gap: 20px;
+}
+.result__list__header h6 {
+  margin: 0px;
+}
+.result__list__header p {
+  padding: 5px 8px;
+}
+.game__list__header {
+  display: grid;
+  grid-template-columns: 230px 160px 160px 160px 100px 120px;
+  grid-gap: 20px;
+}
+.game__list__header h6 {
+  margin: 0px;
+}
+.game__list__header p {
+  padding: 5px 8px;
+}
 .result__send__header {
   display: grid;
   grid-template-columns: 300px 200px 200px 200px;
@@ -103,7 +125,7 @@
   color: #74a378;
 }
 .reject__button {
-  background-color: #F47174;
+  background-color: #f47174;
   color: white;
   padding: 3px 10px;
   margin-bottom: 0px;
@@ -111,9 +133,9 @@
 }
 .reject__button:hover {
   background-color: white;
-  color: #F47174;
+  color: #f47174;
 }
-.edit__form{
+.edit__form {
   padding: 8px 15px;
 }
 .edit__form form div span {
@@ -125,6 +147,14 @@
   border: 1px solid #000;
   border-radius: 2px;
   height: 30px;
+  width: 100%;
+  padding: 0px 10px;
+  outline: none;
+}
+.text_area {
+  border: 1px solid #000;
+  border-radius: 2px;
+  height: 50px;
   width: 100%;
   padding: 0px 10px;
   outline: none;
@@ -152,14 +182,14 @@
   padding: 10px;
   margin-bottom: 10px;
 }
-.launch__game__container form{
+.launch__game__container form {
   max-width: 350px;
   background-color: white;
   padding: 10px 20px;
   border-radius: 15px;
   margin: 0px auto;
 }
-.border__bottom{
+.border__bottom {
   background-color: #f15336;
   color: white !important;
 }
