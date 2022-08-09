@@ -118,11 +118,18 @@ interface IResultList {
   winPlayerUserName: string;
 }
 
-interface IResultSendList {
+interface IPublishedResult {
   amount: number;
   gameClassification: string;
   gameNo: string;
+  winPlayerCountry: string;
+  winPlayerUserName: string;
+}
+interface IResultSendList {
   screenShort: string;
+  amount: number;
+  gameClassification: string;
+  gameNo: string;
   winnerPlayerCountry: string;
   winnerPlayerUserName: string;
 }
@@ -162,6 +169,7 @@ export default function Profile() {
   const [resultSendGameList, setResultSendGameList] = useState<IGameList>();
   const [resultOpinion, setResultOpinion] = useState<IResultList>();
   const [viewResult, setViewResult] = useState<IResultList>();
+  const [publishedResult, setPublishedResult] = useState<IPublishedResult[]>();
 
   const {
     register,
@@ -260,6 +268,16 @@ export default function Profile() {
     );
     console.log("response.............", res?.data);
     setRequestList(res?.data);
+  }
+
+  async function getPublishedResult() {
+    setTab("published");
+    const res = await request(
+      `player/result-published?player_id=${userId}`,
+      token
+    );
+    console.log("response.....", res?.data);
+    setPublishedResult(res?.data);
   }
 
   async function getResultList() {
@@ -388,6 +406,7 @@ export default function Profile() {
     console.log("response..........", res);
     if (res?.status == "success") {
       openNotificationWithIcon(res?.message, "success");
+      window.location.reload();
     } else {
       openNotificationWithIcon(res?.message, "error");
     }
@@ -494,6 +513,14 @@ export default function Profile() {
                 onClick={() => getRequestList()}
               >
                 Request List
+              </a>
+              <a
+                className={`${
+                  tab === "published" ? styles.border__bottom : null
+                }`}
+                onClick={() => getPublishedResult()}
+              >
+                Published Result
               </a>
               <a
                 className={`${
@@ -813,6 +840,7 @@ export default function Profile() {
                 <h5>Result Send List</h5>
                 <div className={styles.launched__game__list}>
                   <div className={styles.result__send__header}>
+                    <h6>Game No.</h6>
                     <h6>Game Classification Name</h6>
                     <h6>Amount</h6>
                     <h6>Winner Player Country</h6>
@@ -822,12 +850,39 @@ export default function Profile() {
                   {resultSendList?.map((item, index) => (
                     <div key={index}>
                       <div className={styles.result__send__header}>
+                        <p>{item?.gameNo}</p>
                         <p>{item?.gameClassification}</p>
                         <p>{item?.amount}</p>
                         <p>{item?.winnerPlayerCountry}</p>
                         <p>{item?.winnerPlayerUserName}</p>
                       </div>
                       {resultSendList?.length - 1 == index ? null : <hr />}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : tab === "published" ? (
+              <div className={styles.launched__container}>
+                <h5>Published Result</h5>
+                <div className={styles.launched__game__list}>
+                  <div className={styles.result__send__header}>
+                    <h6>Game No.</h6>
+                    <h6>Game Classification Name</h6>
+                    <h6>Amount</h6>
+                    <h6>Winner Player Country</h6>
+                    <h6>Winner Player Username</h6>
+                  </div>
+                  <hr />
+                  {publishedResult?.map((item, index) => (
+                    <div key={index}>
+                      <div className={styles.result__send__header}>
+                        <p>{item?.gameNo}</p>
+                        <p>{item?.gameClassification}</p>
+                        <p>{item?.amount}</p>
+                        <p>{item?.winPlayerCountry}</p>
+                        <p>{item?.winPlayerUserName}</p>
+                      </div>
+                      {publishedResult?.length - 1 == index ? null : <hr />}
                     </div>
                   ))}
                 </div>

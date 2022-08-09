@@ -82,7 +82,7 @@
 }
 .result__send__header {
   display: grid;
-  grid-template-columns: 300px 200px 200px 200px;
+  grid-template-columns: 100px 230px 200px 200px 200px;
   grid-gap: 20px;
 }
 .result__send__header h6 {
@@ -104,14 +104,14 @@
 }
 .edit__delete__button {
   background-color: #f15336;
-  color: white;
+  color: white !important;
   padding: 3px 10px;
   margin-bottom: 0px;
   border-radius: 15px;
 }
 .edit__delete__button:hover {
-  background-color: white;
-  color: #f15336;
+  background-color: white !important;
+  color: #f15336 !important;
 }
 .accept__button {
   background-color: #74a378;
