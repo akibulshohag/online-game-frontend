@@ -63,6 +63,8 @@ interface IGameLaunch {
   time: string;
   participated_member: number;
   game_type: number;
+  console: string;
+  rules: string;
 }
 
 interface IRequestList {
@@ -675,6 +677,24 @@ export default function Profile() {
                           <option value={2}>Team</option>
                         </select>
                       </div>
+                      <div>
+                        <label className={styles.label}>Gaming Console</label>
+                        <select className={styles.input} {...register2("console")}>
+                          <option value="">Select Gaming Console</option>
+                          <option value="ps4">PS4</option>
+                          <option value="xbox">Xbox</option>
+                          <option value="pc">PC</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className={styles.label}>Rules</label>
+                        <select className={styles.input} {...register2("rules")}>
+                          <option value="">Select Rules</option>
+                          <option value="no rules">No Rules</option>
+                          <option value="no special tricks">No Special Tricks</option>
+                          <option value="pc">PC</option>
+                        </select>
+                      </div>
                     </div>
                     {gameType !== 1 ? (
                       <div>
@@ -921,6 +941,24 @@ export default function Profile() {
                     <span>This field is required</span>
                   )}
               </div>
+              <div>
+                        <label className={styles.label}>Gaming Console</label>
+                        <select className={styles.input} {...register2("console")}>
+                          <option value="">Select Gaming Console</option>
+                          <option value="ps4">PS4</option>
+                          <option value="xbox">Xbox</option>
+                          <option value="pc">PC</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className={styles.label}>Rules</label>
+                        <select className={styles.input} {...register2("rules")}>
+                          <option value="">Select Rules</option>
+                          <option value="no rules">No Rules</option>
+                          <option value="no special tricks">No Special Tricks</option>
+                          <option value="pc">PC</option>
+                        </select>
+                      </div>
               <div>
                 <label className={styles.label}>Game Link</label>
                 <input
