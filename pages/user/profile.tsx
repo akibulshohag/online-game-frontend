@@ -956,7 +956,7 @@ export default function Profile() {
                           <option value="">Select Rules</option>
                           <option value="no rules">No Rules</option>
                           <option value="no special tricks">No Special Tricks</option>
-                          <option value="pc">PC</option>
+                          <option value="no skills">No Skills</option>
                         </select>
                       </div>
               <div>
