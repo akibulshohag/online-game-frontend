@@ -54,6 +54,7 @@ interface IEditGameLaunch {
 interface ISendResult {
   screen_short: string;
   winner_player_id: number;
+  result_type: number;
 }
 
 interface IGameLaunch {
@@ -402,14 +403,18 @@ export default function Profile() {
   };
 
   const onSendResult: SubmitHandler<ISendResult> = async (data) => {
-    let image = await getBase64(data?.screen_short[0]);
-    console.log("image......", data);
+    console.log('screen shot', data?.screen_short?.length)
+    let image = null;
+    if(data?.screen_short?.length){
+      image = await getBase64(data?.screen_short[0]);
+    }
     const res = await postRequest(`player/result-send`, token, {
       game_id: resultSendGameList?.gameId,
-      screen_short: [image],
+      screen_short: image ? [image] : null,
       published_player_id: userId,
-      winner_player_id: data?.winner_player_id,
+      winner_player_id: data?.winner_player_id ? data?.winner_player_id : userId,
       amount: resultSendGameList?.amount,
+      result_type: data?.result_type
     });
     console.log("response........", res);
     res?.status == "success"
@@ -511,6 +516,8 @@ export default function Profile() {
       : openNotificationWithIcon(res?.message, "error");
     window.location.reload();
   }
+
+  const [winner, setWinner] = useState(0)
 
   return (
     <div className={styles.main}>
@@ -1248,14 +1255,23 @@ export default function Profile() {
           <div className={styles.edit__form}>
             <form onSubmit={handleSubmit3(onSendResult)}>
               <div>
+                <label className={styles.label}>Result Type</label>
+                <select className={styles.input} {...register3("result_type")} onChange={(e) => setWinner(Number(e.target.value))}>
+                  <option value={0}>Select Winner</option>
+                  <option value={1}>Winner</option>
+                  <option value={2}>Draw</option>
+                  <option value={4}>No Play</option>
+                </select>
+              </div>
+              {winner == 4 ? null : <div>
                 <label className={styles.label}>Screen Shot</label>
                 <input
                   type="file"
                   accept="image/png, image/gif, image/jpeg"
                   {...register3("screen_short")}
                 />
-              </div>
-              <div>
+              </div>}
+              {winner == 1 ? <div>
                 <label className={styles.label}>Winner</label>
                 <select
                   className={styles.input}
@@ -1267,7 +1283,7 @@ export default function Profile() {
                     </option>
                   ))}
                 </select>
-              </div>
+              </div> : null}
               <div>
                 <input
                   type="submit"
