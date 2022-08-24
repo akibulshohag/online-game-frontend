@@ -975,7 +975,7 @@ export default function Profile() {
                             style={{
                               textAlign: "center",
                               backgroundColor: "red",
-                              color: "#F15336",
+                              color: "white",
                             }}
                           >
                             {item?.resultPublishedStatus}
