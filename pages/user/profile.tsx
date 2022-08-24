@@ -31,6 +31,8 @@ interface ILaunchedGames {
   status: string;
   game_type: string;
   participatedMember: number;
+  console: string;
+  rules: string;
 }
 
 interface IGameClassifications {
@@ -63,7 +65,7 @@ interface IGameLaunch {
   time: string;
   participated_member: number;
   game_type: number;
-  console: string;
+  console_id: string;
   rules: string;
 }
 
@@ -124,8 +126,13 @@ interface IPublishedResult {
   amount: number;
   gameClassification: string;
   gameNo: string;
-  winPlayerCountry: string;
-  winPlayerUserName: string;
+  resultPublishedStatus: string;
+}
+interface IResultDispute {
+  gameNo: number;
+  amount: number;
+  points: number;
+  comments: string;
 }
 interface IResultSendList {
   screenShort: string;
@@ -139,6 +146,11 @@ interface IResultSendList {
 interface ISendOpinion {
   result: number;
   comment: string;
+}
+
+interface IGamingConsole {
+  id: string;
+  name: string;
 }
 
 export default function Profile() {
@@ -172,6 +184,8 @@ export default function Profile() {
   const [resultOpinion, setResultOpinion] = useState<IResultList>();
   const [viewResult, setViewResult] = useState<IResultList>();
   const [publishedResult, setPublishedResult] = useState<IPublishedResult[]>();
+  const [gamingConsole, setGamingConsole] = useState<IGamingConsole[]>();
+  const [resultDispute, setResultDispute] = useState<IResultDispute[]>();
 
   const {
     register,
@@ -282,6 +296,16 @@ export default function Profile() {
     setPublishedResult(res?.data);
   }
 
+  async function getResultDispute() {
+    setTab("dispute");
+    const res = await request(
+      `player/result-dispute?player_id=${userId}`,
+      token
+    );
+    console.log("response from result dispute.....", res?.data);
+    // setPublishedResult(res?.data);
+  }
+
   async function getResultList() {
     setTab("resultList");
     const res = await request(`player/result-list?player_id=${userId}`, token);
@@ -302,6 +326,7 @@ export default function Profile() {
   useEffect(() => {
     getLaunchedGame();
     handleClassification();
+    handleConsole();
   }, []);
 
   async function handleClassification() {
@@ -310,11 +335,24 @@ export default function Profile() {
     setGameClassifications(res?.data);
   }
 
+  async function handleConsole() {
+    const res = await optionsRequest(`player/console`, token);
+    console.log("response from console ...", res?.data);
+    setGamingConsole(res?.data);
+  }
+
   async function handleEdit(value: ILaunchedGames) {
+    console.log("value...", value);
     value?.status == "2"
       ? setModal("edit launch")
       : openNotificationWithIcon("Could not Edit!", "error");
     handleClassification();
+    setActiveLaunchedGame(value);
+  }
+
+  async function handleView(value: ILaunchedGames) {
+    console.log("value...", value);
+    setModal("view launch");
     setActiveLaunchedGame(value);
   }
 
@@ -403,7 +441,9 @@ export default function Profile() {
       date: data?.date,
       time: data?.time,
       participated_member: gameType == 2 ? data?.participated_member : 1,
+      rules: data?.rules,
       game_type: gameType,
+      console_id: data?.console_id,
     });
     console.log("response..........", res);
     if (res?.status == "success") {
@@ -526,6 +566,14 @@ export default function Profile() {
               </a>
               <a
                 className={`${
+                  tab === "dispute" ? styles.border__bottom : null
+                }`}
+                onClick={() => getResultDispute()}
+              >
+                Result Dispute
+              </a>
+              <a
+                className={`${
                   tab === "resultList" ? styles.border__bottom : null
                 }`}
                 onClick={() => getResultList()}
@@ -564,6 +612,12 @@ export default function Profile() {
                         <p>{item?.time}</p>
                         <p>{item?.game_type == "1" ? "Single" : "Team"}</p>
                         <div style={{ margin: "auto 0px" }}>
+                          <a
+                            className={styles.edit__delete__button}
+                            onClick={() => handleView(item)}
+                          >
+                            <AiFillEye />
+                          </a>{" "}
                           <a
                             className={styles.edit__delete__button}
                             onClick={() => handleEdit(item)}
@@ -679,19 +733,29 @@ export default function Profile() {
                       </div>
                       <div>
                         <label className={styles.label}>Gaming Console</label>
-                        <select className={styles.input} {...register2("console")}>
+                        <select
+                          className={styles.input}
+                          {...register2("console_id")}
+                        >
                           <option value="">Select Gaming Console</option>
-                          <option value="ps4">PS4</option>
-                          <option value="xbox">Xbox</option>
-                          <option value="pc">PC</option>
+                          {gamingConsole?.map((item, index) => (
+                            <option value={item?.id} key={item?.id}>
+                              {item?.name}
+                            </option>
+                          ))}
                         </select>
                       </div>
                       <div>
                         <label className={styles.label}>Rules</label>
-                        <select className={styles.input} {...register2("rules")}>
+                        <select
+                          className={styles.input}
+                          {...register2("rules")}
+                        >
                           <option value="">Select Rules</option>
                           <option value="no rules">No Rules</option>
-                          <option value="no special tricks">No Special Tricks</option>
+                          <option value="no special tricks">
+                            No Special Tricks
+                          </option>
                           <option value="pc">PC</option>
                         </select>
                       </div>
@@ -885,24 +949,68 @@ export default function Profile() {
               <div className={styles.launched__container}>
                 <h5>Published Result</h5>
                 <div className={styles.launched__game__list}>
-                  <div className={styles.result__send__header}>
+                  <div className={styles.result__publish__header}>
                     <h6>Game No.</h6>
                     <h6>Game Classification Name</h6>
                     <h6>Amount</h6>
-                    <h6>Winner Player Country</h6>
-                    <h6>Winner Player Username</h6>
+                    <h6>Result</h6>
+                    {/* <h6>Winner Player Username</h6> */}
                   </div>
                   <hr />
                   {publishedResult?.map((item, index) => (
                     <div key={index}>
-                      <div className={styles.result__send__header}>
+                      <div className={styles.result__publish__header}>
                         <p>{item?.gameNo}</p>
                         <p>{item?.gameClassification}</p>
                         <p>{item?.amount}</p>
-                        <p>{item?.winPlayerCountry}</p>
-                        <p>{item?.winPlayerUserName}</p>
+                        {item?.resultPublishedStatus == "Loss" ? (
+                          <p
+                            style={{
+                              textAlign: "center",
+                              backgroundColor: "red",
+                              color: "#F15336",
+                            }}
+                          >
+                            {item?.resultPublishedStatus}
+                          </p>
+                        ) : (
+                          <p
+                            style={{
+                              textAlign: "center",
+                              backgroundColor: "#00FF7F",
+                              color: "white",
+                            }}
+                          >
+                            {item?.resultPublishedStatus}
+                          </p>
+                        )}
                       </div>
                       {publishedResult?.length - 1 == index ? null : <hr />}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : tab === "dispute" ? (
+              <div className={styles.launched__container}>
+                <h5>Result Dispute</h5>
+                <div className={styles.launched__game__list}>
+                  <div className={styles.result__publish__header}>
+                    <h6>Game No.</h6>
+                    <h6>Amount</h6>
+                    <h6>Points</h6>
+                    <h6>Comments</h6>
+                    {/* <h6>Winner Player Username</h6> */}
+                  </div>
+                  <hr />
+                  {resultDispute?.map((item, index) => (
+                    <div key={index}>
+                      <div className={styles.result__publish__header}>
+                        <p>{item?.gameNo}</p>
+                        <p>{item?.amount}</p>
+                        <p>{item?.points}</p>
+                        <p>{item?.comments}</p>
+                      </div>
+                      {resultDispute?.length - 1 == index ? null : <hr />}
                     </div>
                   ))}
                 </div>
@@ -942,23 +1050,56 @@ export default function Profile() {
                   )}
               </div>
               <div>
-                        <label className={styles.label}>Gaming Console</label>
-                        <select className={styles.input} {...register2("console")}>
-                          <option value="">Select Gaming Console</option>
-                          <option value="ps4">PS4</option>
-                          <option value="xbox">Xbox</option>
-                          <option value="pc">PC</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className={styles.label}>Rules</label>
-                        <select className={styles.input} {...register2("rules")}>
-                          <option value="">Select Rules</option>
-                          <option value="no rules">No Rules</option>
-                          <option value="no special tricks">No Special Tricks</option>
-                          <option value="no skills">No Skills</option>
-                        </select>
-                      </div>
+                <label className={styles.label}>Gaming Console</label>
+                <select className={styles.input} {...register2("console_id")}>
+                  <option value="">Select Gaming Console</option>
+                  {gamingConsole?.map((item, index) => (
+                    <option
+                      value={item?.id}
+                      key={item?.id}
+                      selected={
+                        item?.name === activeLaunchedGame?.console
+                          ? true
+                          : false
+                      }
+                    >
+                      {item?.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className={styles.label}>Rules</label>
+                <select className={styles.input} {...register2("rules")}>
+                  <option value="">Select Rules</option>
+                  <option
+                    value="no rules"
+                    selected={
+                      "no rules" === activeLaunchedGame?.rules ? true : false
+                    }
+                  >
+                    No Rules
+                  </option>
+                  <option
+                    value="no special tricks"
+                    selected={
+                      "no special tricks" === activeLaunchedGame?.rules
+                        ? true
+                        : false
+                    }
+                  >
+                    No Special Tricks
+                  </option>
+                  <option
+                    value="no skills"
+                    selected={
+                      "no skills" === activeLaunchedGame?.rules ? true : false
+                    }
+                  >
+                    No Skills
+                  </option>
+                </select>
+              </div>
               <div>
                 <label className={styles.label}>Game Link</label>
                 <input
@@ -1059,6 +1200,47 @@ export default function Profile() {
                 />
               </div>
             </form>
+          </div>
+        </Modal>
+      ) : modal == "view launch" ? (
+        <Modal handleClose={() => setModal("")} title="View Game">
+          <div style={{ padding: "10px 10px" }}>
+            <p>
+              <span style={{ fontWeight: "600" }}>Game Classification: </span>
+              {activeLaunchedGame?.classificationName}
+            </p>
+            <p>
+              <span style={{ fontWeight: "600" }}>Type of Game: </span>
+              {activeLaunchedGame?.game_type == "1" ? "Single" : "Team"}
+            </p>
+            <p>
+              <span style={{ fontWeight: "600" }}>Game Link: </span>
+              {activeLaunchedGame?.link}
+            </p>
+            <p>
+              <span style={{ fontWeight: "600" }}>Date: </span>
+              {activeLaunchedGame?.date}
+            </p>
+            <p>
+              <span style={{ fontWeight: "600" }}>Time: </span>
+              {activeLaunchedGame?.time}
+            </p>
+            <p>
+              <span style={{ fontWeight: "600" }}>Console: </span>
+              {activeLaunchedGame?.console}
+            </p>
+            <p>
+              <span style={{ fontWeight: "600" }}>Rules: </span>
+              {activeLaunchedGame?.rules}
+            </p>
+            <p>
+              <span style={{ fontWeight: "600" }}>Participated Member: </span>
+              {activeLaunchedGame?.participatedMember}
+            </p>
+            <p>
+              <span style={{ fontWeight: "600" }}>Status: </span>
+              {activeLaunchedGame?.status}
+            </p>
           </div>
         </Modal>
       ) : modal == "send result" ? (
