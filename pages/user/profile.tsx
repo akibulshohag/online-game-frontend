@@ -302,8 +302,8 @@ export default function Profile() {
       `player/result-dispute?player_id=${userId}`,
       token
     );
-    console.log("response from result dispute.....", res?.data);
-    // setPublishedResult(res?.data);
+    console.log("response from result dispute.....", res?.data[0]?.data);
+    setResultDispute(res?.data[0]?.data);
   }
 
   async function getResultList() {
