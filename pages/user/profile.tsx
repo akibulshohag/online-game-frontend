@@ -119,8 +119,9 @@ interface IResultList {
   resultOpinion: IResultOpinion[];
   resultStatus: string;
   screenShort: string;
-  winPlayerCountry: string;
-  winPlayerUserName: string;
+  winnerPlayerCountry: string;
+  winnerPlayerUserName: string;
+  resultType?: string;
 }
 
 interface IPublishedResult {
@@ -1379,9 +1380,15 @@ export default function Profile() {
             </p>
             <p>
               <span>
+                <b>Result:</b>
+              </span>{" "}
+              {viewResult?.resultType}
+            </p>
+            <p>
+              <span>
                 <b>Winner:</b>
               </span>{" "}
-              {viewResult?.winPlayerUserName}
+              {viewResult?.winnerPlayerUserName}
             </p>
             <a
               href={`${viewResult?.screenShort}`}
