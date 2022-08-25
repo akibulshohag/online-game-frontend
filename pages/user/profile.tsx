@@ -404,18 +404,20 @@ export default function Profile() {
   };
 
   const onSendResult: SubmitHandler<ISendResult> = async (data) => {
-    console.log('screen shot', data?.screen_short?.length)
+    console.log("screen shot", data?.screen_short?.length);
     let image = null;
-    if(data?.screen_short?.length){
+    if (data?.screen_short?.length) {
       image = await getBase64(data?.screen_short[0]);
     }
     const res = await postRequest(`player/result-send`, token, {
       game_id: resultSendGameList?.gameId,
       screen_short: image ? [image] : null,
       published_player_id: userId,
-      winner_player_id: data?.winner_player_id ? data?.winner_player_id : userId,
+      winner_player_id: data?.winner_player_id
+        ? data?.winner_player_id
+        : userId,
       amount: resultSendGameList?.amount,
-      result_type: data?.result_type
+      result_type: data?.result_type,
     });
     console.log("response........", res);
     res?.status == "success"
@@ -518,7 +520,7 @@ export default function Profile() {
     window.location.reload();
   }
 
-  const [winner, setWinner] = useState(0)
+  const [winner, setWinner] = useState(0);
 
   return (
     <div className={styles.main}>
@@ -662,7 +664,9 @@ export default function Profile() {
                           required: true,
                         })}
                       >
-                        <option>Select game classification name</option>
+                        <option value="">
+                          Select game classification name
+                        </option>
                         {gameClassifications?.map((item, index) => (
                           <option key={index} value={item?.id}>
                             {item?.classification}
@@ -732,18 +736,23 @@ export default function Profile() {
                         <label className={styles.label}>Game Type</label>
                         <select
                           className={styles.input}
+                          {...register2("game_type", { required: true })}
                           onChange={(e) => setGameType(Number(e.target.value))}
                         >
-                          <option value={0}>Select Game Type</option>
+                          <option value="">Select Game Type</option>
                           <option value={1}>Single</option>
                           <option value={2}>Team</option>
                         </select>
+                        {errors2.game_type &&
+                          errors2.game_type.type === "required" && (
+                            <span>This field is required</span>
+                          )}
                       </div>
                       <div>
                         <label className={styles.label}>Gaming Console</label>
                         <select
                           className={styles.input}
-                          {...register2("console_id")}
+                          {...register2("console_id", { required: true })}
                         >
                           <option value="">Select Gaming Console</option>
                           {gamingConsole?.map((item, index) => (
@@ -752,14 +761,18 @@ export default function Profile() {
                             </option>
                           ))}
                         </select>
+                        {errors2.console_id &&
+                          errors2.console_id.type === "required" && (
+                            <span>This field is required</span>
+                          )}
                       </div>
                       <div>
-                      <label className={styles.label}>Rules</label>
-                      <input
-                        className={styles.input}
-                        type="text"
-                        {...register2("rules")}
-                      />
+                        <label className={styles.label}>Rules</label>
+                        <input
+                          className={styles.input}
+                          type="text"
+                          {...register2("rules")}
+                        />
                       </div>
                     </div>
                     {gameType !== 1 ? (
@@ -1251,34 +1264,42 @@ export default function Profile() {
             <form onSubmit={handleSubmit3(onSendResult)}>
               <div>
                 <label className={styles.label}>Result Type</label>
-                <select className={styles.input} {...register3("result_type")} onChange={(e) => setWinner(Number(e.target.value))}>
+                <select
+                  className={styles.input}
+                  {...register3("result_type")}
+                  onChange={(e) => setWinner(Number(e.target.value))}
+                >
                   <option value={0}>Select Winner</option>
                   <option value={1}>Winner</option>
                   <option value={2}>Draw</option>
                   <option value={4}>No Play</option>
                 </select>
               </div>
-              {winner == 4 ? null : <div>
-                <label className={styles.label}>Screen Shot</label>
-                <input
-                  type="file"
-                  accept="image/png, image/gif, image/jpeg"
-                  {...register3("screen_short")}
-                />
-              </div>}
-              {winner == 1 ? <div>
-                <label className={styles.label}>Winner</label>
-                <select
-                  className={styles.input}
-                  {...register3("winner_player_id")}
-                >
-                  {resultSendGameList?.player?.map((item) => (
-                    <option value={item?.playerId} key={item?.playerId}>
-                      {item?.playerUserName}
-                    </option>
-                  ))}
-                </select>
-              </div> : null}
+              {winner == 4 ? null : (
+                <div>
+                  <label className={styles.label}>Screen Shot</label>
+                  <input
+                    type="file"
+                    accept="image/png, image/gif, image/jpeg"
+                    {...register3("screen_short")}
+                  />
+                </div>
+              )}
+              {winner == 1 ? (
+                <div>
+                  <label className={styles.label}>Winner</label>
+                  <select
+                    className={styles.input}
+                    {...register3("winner_player_id")}
+                  >
+                    {resultSendGameList?.player?.map((item) => (
+                      <option value={item?.playerId} key={item?.playerId}>
+                        {item?.playerUserName}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              ) : null}
               <div>
                 <input
                   type="submit"
