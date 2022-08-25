@@ -679,11 +679,11 @@ export default function Profile() {
                       <input
                         className={styles.input}
                         type="text"
-                        {...register2("link", { required: true })}
+                        {...register2("link")}
                       />
-                      {errors2.link && errors2.link.type === "required" && (
+                      {/* {errors2.link && errors2.link.type === "required" && (
                         <span>This field is required</span>
-                      )}
+                      )} */}
                     </div>
                     <div
                       style={{
@@ -754,18 +754,12 @@ export default function Profile() {
                         </select>
                       </div>
                       <div>
-                        <label className={styles.label}>Rules</label>
-                        <select
-                          className={styles.input}
-                          {...register2("rules")}
-                        >
-                          <option value="">Select Rules</option>
-                          <option value="no rules">No Rules</option>
-                          <option value="no special tricks">
-                            No Special Tricks
-                          </option>
-                          <option value="pc">PC</option>
-                        </select>
+                      <label className={styles.label}>Rules</label>
+                      <input
+                        className={styles.input}
+                        type="text"
+                        {...register2("rules")}
+                      />
                       </div>
                     </div>
                     {gameType !== 1 ? (
