@@ -11,6 +11,8 @@ function StatusProvider({ children }) {
   const [username, setUsername] = useState(cookie?.username ? cookie?.username : null);
   const [userEmail, setUserEmail] = useState(cookie?.userEmail ? cookie?.userEmail : null);
   const [userId, setUserId] = useState(cookie?.userId ? cookie?.userId : null);
+  const [points, setPoints] = useState(cookie?.points ? cookie?.points : 0)
+  const [credit, setCredit] = useState(cookie?.credit ? cookie?.credit : 0)
 
   return (
     <ContextStatusProvider
@@ -25,6 +27,10 @@ function StatusProvider({ children }) {
         setUserEmail,
         userId,
         setUserId,
+        points,
+        setPoints,
+        credit,
+        setCredit,
       }}
     >
       {children}
@@ -38,3 +44,4 @@ function useStatus() {
 }
 
 export { StatusProvider, useStatus };
+

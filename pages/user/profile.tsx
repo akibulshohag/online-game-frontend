@@ -2,7 +2,7 @@ import { notification } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { destroyCookie } from "nookies";
+import { destroyCookie, setCookie } from "nookies";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AiFillEye } from "react-icons/ai";
@@ -167,6 +167,10 @@ export default function Profile() {
     setUserId,
     modal,
     setModal,
+    points,
+    setPoints,
+    credit,
+    setCredit,
   } = useStatus();
 
   const [tab, setTab] = useState("launched");
@@ -466,7 +470,9 @@ export default function Profile() {
     console.log("value...........", value);
     const res = await putRequest(`player/game-request-accept`, token, {
       game_id: value?.gameId,
-      player_id: value?.playerId,
+      player_id: userId,
+      accept_player_id: value?.playerId,
+      amount: value?.gameAmount,
     });
     console.log("response..............", res);
     if (res?.status == "success") {
@@ -522,6 +528,22 @@ export default function Profile() {
 
   const [winner, setWinner] = useState(0);
 
+  useEffect(() => {
+    (async () => {
+      const res = await request(`player/profile?player_id=${userId}`, token);
+      setPoints(res?.points);
+      setCredit(res?.credit);
+      setCookie(null, "credit", res?.credit, {
+        maxAge: res?.data?.expires_in,
+        path: "/",
+      });
+      setCookie(null, "points", res?.points, {
+        maxAge: res?.data?.expires_in,
+        path: "/",
+      });
+    })();
+  }, []);
+
   return (
     <div className={styles.main}>
       <div className={styles.container}>
@@ -534,6 +556,42 @@ export default function Profile() {
                   height={200}
                   width={200}
                 />
+                <br />
+                <div>
+                  {points != 0 ? (
+                    <button
+                      style={{
+                        marginTop: "10px",
+                        marginRight: "5px",
+                        fontSize: "14px",
+                        border: "none",
+                        padding: "5px 10px",
+                        color: "white",
+                        backgroundColor: "#F15336",
+                        borderRadius: "5px",
+                        fontWeight: "600",
+                      }}
+                    >
+                      Points: {points}
+                    </button>
+                  ) : null}
+                  {credit != 0 ? (
+                    <button
+                      style={{
+                        marginTop: "10px",
+                        fontSize: "14px",
+                        border: "none",
+                        padding: "5px 10px",
+                        backgroundColor: "#0A1861",
+                        color: "white",
+                        borderRadius: "5px",
+                        fontWeight: "600",
+                      }}
+                    >
+                      Credit: {credit}
+                    </button>
+                  ) : null}
+                </div>
               </div>
               <Link href={"/user/available-games"}>
                 <a>Available Games</a>

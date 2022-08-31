@@ -56,6 +56,10 @@ export default function Navbar() {
     setUserEmail,
     userId,
     setUserId,
+    points,
+    setPoints,
+    credit,
+    setCredit,
   } = useStatus();
   const router = useRouter();
   const {
@@ -108,6 +112,16 @@ export default function Navbar() {
       setUsername(res?.data?.user?.username);
       setUserEmail(res?.data?.user?.email);
       setUserId(res?.data?.user?.id);
+      setPoints(res?.data?.user?.points);
+      setCredit(res?.data?.user?.credit);
+      setCookie(null, "credit", res?.data?.user?.credit, {
+        maxAge: res?.data?.expires_in,
+        path: "/",
+      });
+      setCookie(null, "points", res?.data?.user?.points, {
+        maxAge: res?.data?.expires_in,
+        path: "/",
+      });
       setCookie(null, "token", res?.data?.access_token, {
         maxAge: res?.data?.expires_in,
         path: "/",
