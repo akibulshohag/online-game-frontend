@@ -142,6 +142,7 @@ interface IPublishedResult {
   gameClassification: string;
   gameNo: string;
   resultPublishedStatus: string;
+  round: number;
 }
 interface IResultDispute {
   gameNo: number;
