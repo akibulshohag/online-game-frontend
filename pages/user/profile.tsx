@@ -33,6 +33,8 @@ interface ILaunchedGames {
   participatedMember: number;
   console: string;
   rules: string;
+  start: number;
+  cancel: number;
 }
 
 interface IGameClassifications {
@@ -88,6 +90,16 @@ interface IPlayer {
 
 interface IGameList {
   amount: number;
+  gameClassification: string;
+  gameId: number;
+  gameNo: string;
+  gameRound: number;
+  gameType: string;
+  player: IPlayer[];
+}
+
+interface IResultSendGameList {
+  amount: number;
   date: string;
   gameClassification: string;
   gameId: number;
@@ -118,7 +130,7 @@ interface IResultList {
   resultId: number;
   resultOpinion: IResultOpinion[];
   resultStatus: string;
-  screenShort: string;
+  screenShort: string | number;
   winnerPlayerCountry: string;
   winnerPlayerUserName: string;
   resultType?: string;
@@ -181,17 +193,22 @@ export default function Profile() {
   const [gameClassifications, setGameClassifications] =
     useState<IGameClassifications[]>();
   const [requestList, setRequestList] = useState<IRequestList[]>();
-  const [gameList, setGameList] = useState<IGameList[] | []>();
-  const [resultList, setResultList] = useState<IResultList[] | []>();
+  const [gameSingleList, setGameSingleList] = useState<IGameList[] | []>();
+  const [gameTournamentList, setGameTournamentList] = useState<IGameList[] | []>();
+  const [singleResultList, setSingleResultList] = useState<IResultList[] | []>();
+  const [tournamentResultList, setTournamentResultList] = useState<IResultList[] | []>();
   const [resultSendList, setResultSendList] = useState<
     IResultSendList[] | []
   >();
-  const [resultSendGameList, setResultSendGameList] = useState<IGameList>();
+  const [resultSendGameList, setResultSendGameList] = useState<IResultSendGameList>();
   const [resultOpinion, setResultOpinion] = useState<IResultList>();
   const [viewResult, setViewResult] = useState<IResultList>();
   const [publishedResult, setPublishedResult] = useState<IPublishedResult[]>();
   const [gamingConsole, setGamingConsole] = useState<IGamingConsole[]>();
   const [resultDispute, setResultDispute] = useState<IResultDispute[]>();
+  const [isValid, setIsValid] = useState(true);
+  const [round, setRound] = useState(1);
+  const [editRound, setEditRound] = useState(1);
 
   const {
     register,
@@ -265,11 +282,18 @@ export default function Profile() {
     });
   };
 
-  async function getGameList() {
-    setTab("list");
-    const res = await request(`player/game-list?player_id=${userId}`, token);
-    setGameList(res?.data);
-    console.log("response........", gameList);
+  async function getGameSingleList() {
+    setTab("single-list");
+    const res = await request(`player/game-one-to-one-list?player_id=${userId}`, token);
+    setGameSingleList(res?.data);
+    console.log("response........", gameSingleList);
+  }
+  
+  async function getGameTournamentList() {
+    setTab("tournament-list");
+    const res = await request(`player/game-tournament-list?player_id=${userId}`, token);
+    setGameTournamentList(res?.data);
+    console.log("response........", gameTournamentList);
   }
 
   async function getLaunchedGame() {
@@ -312,11 +336,18 @@ export default function Profile() {
     setResultDispute(res?.data[0]?.data);
   }
 
-  async function getResultList() {
-    setTab("resultList");
-    const res = await request(`player/result-list?player_id=${userId}`, token);
-    setResultList(res?.data);
-    console.log("response.............", resultList);
+  async function getSingleResultList() {
+    setTab("single-resultList");
+    const res = await request(`player/game-one-to-one-result-list?player_id=${userId}`, token);
+    setSingleResultList(res?.data);
+    console.log("response.............", singleResultList);
+  }
+
+  async function getTournamentResultList() {
+    setTab("tournament-resultList");
+    const res = await request(`player/game-tournament-result-list?player_id=${userId}`, token);
+    setTournamentResultList(res?.data);
+    console.log("response.............", tournamentResultList);
   }
 
   async function getResultSendList() {
@@ -397,6 +428,7 @@ export default function Profile() {
       game_type: data?.game_type
         ? data?.game_type
         : activeLaunchedGame?.game_type,
+      round: editRound,
     });
     console.log("response............", res);
     if (res?.status == "success") {
@@ -453,6 +485,7 @@ export default function Profile() {
       date: data?.date,
       time: data?.time,
       participated_member: gameType == 2 ? data?.participated_member : 1,
+      round: round,
       rules: data?.rules,
       game_type: gameType,
       console_id: data?.console_id,
@@ -487,7 +520,7 @@ export default function Profile() {
     console.log("value.......................", value);
   }
 
-  async function handleSendResult(value: IGameList) {
+  async function handleSendResult(value: IResultSendGameList) {
     setResultSendGameList(value);
     setModal("send result");
   }
@@ -544,6 +577,58 @@ export default function Profile() {
     })();
   }, []);
 
+  function findPower(n: number): number {
+    if (n < 2) {
+      setIsValid(false);
+      return 0;
+    }
+    if (n == 2) {
+      setIsValid(true);
+      return 1;
+    } else {
+      return 1 + findPower(n / 2);
+    }
+  }
+
+  const handleParticipatedMember = (value: number) => {
+    setRound(findPower(value));
+  };
+  const handleEditParticipatedMember = (value: number) => {
+    setEditRound(findPower(value));
+  };
+
+  const handleGameStart = async (value: number) => {
+    try{
+      const res = await putRequest(`player/game-start`, token, {
+        game_id: value
+      })
+      if(res?.status == 'success'){
+        openNotificationWithIcon(res?.message, 'success');
+        getLaunchedGame()
+      }else{
+        openNotificationWithIcon(res?.message, 'error')
+      }
+    }catch(err: any){
+      openNotificationWithIcon(err?.response?.message, "error")
+    }
+  }
+
+  const handleGameCancel = async (value: number) => {
+    try{
+      const res = await putRequest(`player/game-cancel`, token, {
+        game_id: value
+      })
+      if(res?.status == 'success'){
+        openNotificationWithIcon(res?.message, 'success');
+        getLaunchedGame()
+      }else{
+        openNotificationWithIcon(res?.message, 'error')
+      }
+    }catch(err: any){
+      openNotificationWithIcon(err?.response?.message, "error")
+    }
+  }
+
   return (
     <div className={styles.main}>
       <div className={styles.container}>
@@ -597,10 +682,16 @@ export default function Profile() {
                 <a>Available Games</a>
               </Link>
               <a
-                className={`${tab === "list" ? styles.border__bottom : null}`}
-                onClick={() => getGameList()}
+                className={`${tab === "single-list" ? styles.border__bottom : null}`}
+                onClick={() => getGameSingleList()}
               >
-                Game List
+                Single Game List
+              </a>
+              <a
+                className={`${tab === "tournament-list" ? styles.border__bottom : null}`}
+                onClick={() => getGameTournamentList()}
+              >
+                Game Tournament List
               </a>
               <a
                 className={`${
@@ -642,11 +733,19 @@ export default function Profile() {
               </a>
               <a
                 className={`${
-                  tab === "resultList" ? styles.border__bottom : null
+                  tab === "single-resultList" ? styles.border__bottom : null
                 }`}
-                onClick={() => getResultList()}
+                onClick={() => getSingleResultList()}
               >
-                Result List
+                Single Result List
+              </a>
+              <a
+                className={`${
+                  tab === "tournament-resultList" ? styles.border__bottom : null
+                }`}
+                onClick={() => getTournamentResultList()}
+              >
+                Tournament Result List
               </a>
               <a
                 className={`${
@@ -670,6 +769,7 @@ export default function Profile() {
                     <h6>Time</h6>
                     <h6>Game Type</h6>
                     <h6>Action</h6>
+                    <h6></h6>
                   </div>
                   <hr />
                   {launchedGame?.map((item, index) => (
@@ -698,6 +798,10 @@ export default function Profile() {
                           >
                             <MdDeleteSweep />
                           </a>
+                        </div>
+                        <div style={{margin: 'auto 0px'}}>
+                          {!item?.start && !item?.cancel && <><a className={styles.edit__delete__button} style={{marginRight:'5px'}} onClick={() => handleGameStart(item?.gameId)}>Start</a>
+                          <a className={styles.edit__delete__button} onClick={() => handleGameCancel(item?.gameId)}>Cancel</a></>}
                         </div>
                       </div>
                       {launchedGame?.length - 1 == index ? null : <hr />}
@@ -842,7 +946,13 @@ export default function Profile() {
                           className={styles.input}
                           type="number"
                           {...register2("participated_member")}
+                          onChange={(e) =>
+                            handleParticipatedMember(Number(e.target.value))
+                          }
                         />
+                        {!isValid && (
+                          <span>Participated Member is not valid</span>
+                        )}
                         {errors2.participated_member &&
                           errors2.participated_member.type === "required" && (
                             <span>This field is required</span>
@@ -898,26 +1008,28 @@ export default function Profile() {
                   ))}
                 </div>
               </div>
-            ) : tab === "list" ? (
+            ) : tab === "single-list" ? (
               <div className={styles.launched__container}>
-                <h5>Game List</h5>
+                <h5>Single Game List</h5>
                 <div className={styles.launched__game__list}>
                   <div className={styles.game__list__header}>
+                    <h6>ID</h6>
                     <h6>Game Classification Name</h6>
-                    <h6>Date</h6>
-                    <h6>Time</h6>
+                    <h6>Game No.</h6>
+                    <h6>Game Round</h6>
                     <h6>Game Type</h6>
                     <h6>Amount</h6>
                     <h6></h6>
                   </div>
                   <hr />
-                  {gameList?.map((item, index) => (
+                  {gameSingleList?.map((item, index) => (
                     <div key={index}>
                       {item ? (
                         <div className={styles.game__list__header}>
+                          <p>{item?.gameId}</p>
                           <p>{item?.gameClassification}</p>
-                          <p>{item?.date}</p>
-                          <p>{item?.time}</p>
+                          <p>{item?.gameNo}</p>
+                          <p>{item?.gameRound}</p>
                           <p>{item?.gameType}</p>
                           <p>{item?.amount}</p>
                           <div style={{ margin: "auto 0px" }}>
@@ -934,25 +1046,61 @@ export default function Profile() {
                   ))}
                 </div>
               </div>
-            ) : tab === "resultList" ? (
+            ) : tab === "tournament-list" ? (
               <div className={styles.launched__container}>
-                <h5>Result List</h5>
+                <h5>Tournament Game List</h5>
+                <div className={styles.launched__game__list}>
+                  <div className={styles.game__list__header}>
+                    <h6>ID</h6>
+                    <h6>Game Classification Name</h6>
+                    <h6>Game No.</h6>
+                    <h6>Game Round</h6>
+                    <h6>Game Type</h6>
+                    <h6>Amount</h6>
+                    <h6></h6>
+                  </div>
+                  <hr />
+                  {gameTournamentList?.map((item, index) => (
+                    <div key={index}>
+                      {item ? (
+                        <div className={styles.game__list__header}>
+                          <p>{item?.gameId}</p>
+                          <p>{item?.gameClassification}</p>
+                          <p>{item?.gameNo}</p>
+                          <p>{item?.gameRound}</p>
+                          <p>{item?.gameType}</p>
+                          <p>{item?.amount}</p>
+                          <div style={{ margin: "auto 0px" }}>
+                            <a
+                              className={styles.edit__delete__button}
+                              onClick={() => handleSendResult(item)}
+                            >
+                              Send Result
+                            </a>
+                          </div>
+                        </div>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : tab === "single-resultList" ? (
+              <div className={styles.launched__container}>
+                <h5>Single Result List</h5>
                 <div className={styles.launched__game__list}>
                   <div className={styles.result__list__header}>
                     <h6>Game Classification Name</h6>
                     <h6>Game Type</h6>
                     <h6>Amount</h6>
                     <h6>Status</h6>
-                    <h6></h6>
                   </div>
                   <hr />
-                  {resultList?.map((item, index) => (
+                  {singleResultList?.map((item, index) => (
                     <div key={index}>
                       <div className={styles.result__list__header}>
                         <p>{item?.classification}</p>
                         <p>{item?.gameType}</p>
                         <p>{item?.amount}</p>
-                        <p>{item?.resultStatus}</p>
                         <div style={{ margin: "auto 0px" }}>
                           <a
                             className={styles.edit__delete__button}
@@ -987,7 +1135,63 @@ export default function Profile() {
                           )}
                         </div>
                       </div>
-                      {resultList?.length - 1 == index ? null : <hr />}
+                      {singleResultList?.length - 1 == index ? null : <hr />}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : tab === "tournament-resultList" ? (
+              <div className={styles.launched__container}>
+                <h5>Tournament Result List</h5>
+                <div className={styles.launched__game__list}>
+                  <div className={styles.result__list__header}>
+                    <h6>Game Classification Name</h6>
+                    <h6>Game Type</h6>
+                    <h6>Amount</h6>
+                    <h6>Status</h6>
+                  </div>
+                  <hr />
+                  {tournamentResultList?.map((item, index) => (
+                    <div key={index}>
+                      <div className={styles.result__list__header}>
+                        <p>{item?.classification}</p>
+                        <p>{item?.gameType}</p>
+                        <p>{item?.amount}</p>
+                        <div style={{ margin: "auto 0px" }}>
+                          <a
+                            className={styles.edit__delete__button}
+                            onClick={() => handleViewResult(item)}
+                          >
+                            <AiFillEye />
+                          </a>
+                          {item?.resultOpinion ? (
+                            <>
+                              <a
+                                className={styles.edit__delete__button}
+                                onClick={() => handleUpdate(item)}
+                              >
+                                <FaEdit />
+                              </a>
+                              <a
+                                className={styles.edit__delete__button}
+                                onClick={() =>
+                                  handleOpinionDelete(item?.resultOpinion)
+                                }
+                              >
+                                <MdDeleteSweep />
+                              </a>
+                            </>
+                          ) : (
+                            <a
+                              className={styles.edit__delete__button}
+                              onClick={() => handleSendOpinion(item)}
+                            >
+                              Send Opinion
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                      {singleResultList?.length - 1 == index ? null : <hr />}
                     </div>
                   ))}
                 </div>
@@ -1259,7 +1463,11 @@ export default function Profile() {
                   type="number"
                   defaultValue={activeLaunchedGame?.participatedMember}
                   {...register("participated_member")}
+                  onChange={(e) =>
+                    handleEditParticipatedMember(Number(e.target.value))
+                  }
                 />
+                {!isValid && <span>Participated Member is not valid</span>}
                 {errors.participated_member &&
                   errors.participated_member.type === "required" && (
                     <span>This field is required</span>
@@ -1463,7 +1671,7 @@ export default function Profile() {
               </span>{" "}
               {viewResult?.winnerPlayerUserName}
             </p>
-            <a
+            {viewResult?.screenShort != 0 && <a
               href={`${viewResult?.screenShort}`}
               target="_blank"
               rel="noreferrer"
@@ -1473,7 +1681,7 @@ export default function Profile() {
                 height={50}
                 width={50}
               />
-            </a>
+            </a>}
           </div>
         </Modal>
       ) : modal === "update opinion" ? (

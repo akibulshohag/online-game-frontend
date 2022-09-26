@@ -93,7 +93,7 @@
 .active__single__game__container {
   padding: 15px 20px;
   display: grid;
-  grid-template-columns: 40px 2fr 1fr 1fr auto;
+  grid-template-columns: 40px 2fr 1fr 1fr 1fr auto;
   grid-gap: 25px;
 }
 .active__single__game__container:hover {

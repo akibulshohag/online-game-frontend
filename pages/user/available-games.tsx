@@ -16,6 +16,7 @@ interface ISingleGame {
   date: string;
   time: string;
   game_type: string;
+  round: number;
 }
 interface IGames {
   classificationId: number;
@@ -165,6 +166,7 @@ export default function AvailableGames() {
                   <h5 style={{ margin: "auto 0px", fontSize: "16px" }}>
                     Launch Player - {item?.launchGamePlayerUserName}
                   </h5>
+                  <h5 style={{ margin: "auto 0px", fontSize: "16px" }}>Round - {item?.round}</h5>
                   <h5 style={{ margin: "auto 0px", fontSize: "16px" }}>
                     <span style={{ fontWeight: "700" }}>$ {item?.amount}</span>{" "}
                     - Entry Fee
