@@ -93,7 +93,7 @@
 }
 .result__publish__header {
   display: grid;
-  grid-template-columns: .5fr .5fr .5fr 1fr;
+  grid-template-columns: .5fr .5fr .5fr .5fr 1fr;
   grid-gap: 20px;
 }
 .result__publish__header h6 {

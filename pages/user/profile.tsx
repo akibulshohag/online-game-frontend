@@ -104,6 +104,7 @@ interface IResultSendGameList {
   gameClassification: string;
   gameId: number;
   gameNo: string;
+  gameRound: number;
   gameType: string;
   link: string;
   participatedMember: number;
@@ -453,6 +454,8 @@ export default function Profile() {
         ? data?.winner_player_id
         : userId,
       amount: resultSendGameList?.amount,
+      round: resultSendGameList?.gameRound,
+      game_type: resultSendGameList?.gameType,
       result_type: data?.result_type,
     });
     console.log("response........", res);
@@ -484,7 +487,7 @@ export default function Profile() {
       amount: data?.amount,
       date: data?.date,
       time: data?.time,
-      participated_member: gameType == 2 ? data?.participated_member : 1,
+      participated_member: gameType == 2 ? data?.participated_member : 2,
       round: round,
       rules: data?.rules,
       game_type: gameType,
@@ -682,16 +685,10 @@ export default function Profile() {
                 <a>Available Games</a>
               </Link>
               <a
-                className={`${tab === "single-list" ? styles.border__bottom : null}`}
-                onClick={() => getGameSingleList()}
+                className={`${tab === "launch" ? styles.border__bottom : null}`}
+                onClick={() => setTab("launch")}
               >
-                Single Game List
-              </a>
-              <a
-                className={`${tab === "tournament-list" ? styles.border__bottom : null}`}
-                onClick={() => getGameTournamentList()}
-              >
-                Game Tournament List
+                Launch Game
               </a>
               <a
                 className={`${
@@ -702,12 +699,6 @@ export default function Profile() {
                 Launched List
               </a>
               <a
-                className={`${tab === "launch" ? styles.border__bottom : null}`}
-                onClick={() => setTab("launch")}
-              >
-                Launch Game
-              </a>
-              <a
                 className={`${
                   tab === "request" ? styles.border__bottom : null
                 }`}
@@ -716,21 +707,28 @@ export default function Profile() {
                 Request List
               </a>
               <a
-                className={`${
-                  tab === "published" ? styles.border__bottom : null
-                }`}
-                onClick={() => getPublishedResult()}
+                className={`${tab === "single-list" ? styles.border__bottom : null}`}
+                onClick={() => getGameSingleList()}
               >
-                Published Result
+                Single Game List
+              </a>
+              <a
+                className={`${tab === "tournament-list" ? styles.border__bottom : null}`}
+                onClick={() => getGameTournamentList()}
+              >
+                Tournament Game List
               </a>
               <a
                 className={`${
-                  tab === "dispute" ? styles.border__bottom : null
+                  tab === "resultSendList" ? styles.border__bottom : null
                 }`}
-                onClick={() => getResultDispute()}
+                onClick={() => getResultSendList()}
               >
-                Result Dispute
+                Result Send List
               </a>
+              
+              
+              
               <a
                 className={`${
                   tab === "single-resultList" ? styles.border__bottom : null
@@ -749,11 +747,19 @@ export default function Profile() {
               </a>
               <a
                 className={`${
-                  tab === "resultSendList" ? styles.border__bottom : null
+                  tab === "dispute" ? styles.border__bottom : null
                 }`}
-                onClick={() => getResultSendList()}
+                onClick={() => getResultDispute()}
               >
-                Result Send List
+                Result Dispute
+              </a>
+              <a
+                className={`${
+                  tab === "published" ? styles.border__bottom : null
+                }`}
+                onClick={() => getPublishedResult()}
+              >
+                Published Result
               </a>
               <a onClick={handleLogout}>Log out</a>
             </div>
@@ -800,8 +806,8 @@ export default function Profile() {
                           </a>
                         </div>
                         <div style={{margin: 'auto 0px'}}>
-                          {!item?.start && !item?.cancel && <><a className={styles.edit__delete__button} style={{marginRight:'5px'}} onClick={() => handleGameStart(item?.gameId)}>Start</a>
-                          <a className={styles.edit__delete__button} onClick={() => handleGameCancel(item?.gameId)}>Cancel</a></>}
+                          {item?.start ? <a className={styles.edit__delete__button} style={{marginRight:'5px'}} onClick={() => handleGameStart(item?.gameId)}>Start</a> : null}
+                          {item?.cancel ? <a className={styles.edit__delete__button} onClick={() => handleGameCancel(item?.gameId)}>Cancel</a> : null}
                         </div>
                       </div>
                       {launchedGame?.length - 1 == index ? null : <hr />}
@@ -1229,6 +1235,7 @@ export default function Profile() {
                   <div className={styles.result__publish__header}>
                     <h6>Game No.</h6>
                     <h6>Game Classification Name</h6>
+                    <h6>Round</h6>
                     <h6>Amount</h6>
                     <h6>Result</h6>
                     {/* <h6>Winner Player Username</h6> */}
@@ -1239,6 +1246,7 @@ export default function Profile() {
                       <div className={styles.result__publish__header}>
                         <p>{item?.gameNo}</p>
                         <p>{item?.gameClassification}</p>
+                        <p>{item?.round}</p>
                         <p>{item?.amount}</p>
                         {item?.resultPublishedStatus == "Loss" ? (
                           <p
@@ -1528,6 +1536,7 @@ export default function Profile() {
         <Modal handleClose={() => setModal("")} title="Send Result">
           <div className={styles.edit__form}>
             <form onSubmit={handleSubmit3(onSendResult)}>
+              {/* <p>Round: {resultSendGameList?.gameRound}</p> */}
               <div>
                 <label className={styles.label}>Result Type</label>
                 <select
