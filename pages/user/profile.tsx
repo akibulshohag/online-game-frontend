@@ -195,7 +195,7 @@ export default function Profile() {
   const [requestList, setRequestList] = useState<IRequestList[]>();
   const [gameSingleList, setGameSingleList] = useState<IGameList[] | []>();
   const [gameTournamentList, setGameTournamentList] = useState<IGameList[] | []>();
-  const [singleResultList, setSingleResultList] = useState<IResultList[] | []>();
+  const [singleResultList, setSingleResultList] = useState<IResultList[] | []>([]);
   const [tournamentResultList, setTournamentResultList] = useState<IResultList[] | []>();
   const [resultSendList, setResultSendList] = useState<
     IResultSendList[] | []
@@ -520,7 +520,7 @@ export default function Profile() {
     console.log("value.......................", value);
   }
 
-  async function handleSendResult(value: IResultSendGameList) {
+  async function handleSendResult(value: any) {
     setResultSendGameList(value);
     setModal("send result");
   }
