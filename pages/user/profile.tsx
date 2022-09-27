@@ -1,4 +1,4 @@
-import { notification } from "antd";
+import { notification, Pagination } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -211,6 +211,8 @@ export default function Profile() {
   const [isValid, setIsValid] = useState(true);
   const [round, setRound] = useState(1);
   const [editRound, setEditRound] = useState(1);
+  const [page, setPage] = useState(1)
+  const [totalItems, setTotalItems] = useState(1)
 
   const {
     register,
@@ -286,9 +288,9 @@ export default function Profile() {
 
   async function getGameSingleList() {
     setTab("single-list");
-    const res = await request(`player/game-one-to-one-list?player_id=${userId}`, token);
+    const res = await request(`player/game-one-to-one-list?player_id=${userId}&&page=${page}`, token);
     setGameSingleList(res?.data);
-    console.log("response........", gameSingleList);
+    console.log("response........", res);
   }
   
   async function getGameTournamentList() {
@@ -301,12 +303,14 @@ export default function Profile() {
   async function getLaunchedGame() {
     setTab("launched");
     const res = await request(
-      `player/game-launch-list?player_id=${userId}`,
+      `player/game-launch-list?player_id=${userId}&&page=${page}`,
       token
     );
-    console.log("response.............", res?.data);
+    console.log("response.............", res?.last_page, res?.data?.length);
+    setTotalItems(res?.last_page*res?.data?.length)
     setLaunchedGame(res?.data);
   }
+
 
   async function getRequestList() {
     setTab("request");
@@ -361,6 +365,10 @@ export default function Profile() {
     console.log("result send list.........", res?.data);
     setResultSendList(res?.data);
   }
+
+  useEffect(() => {
+    getLaunchedGame()
+  }, [page])
 
   useEffect(() => {
     getLaunchedGame();
@@ -814,6 +822,9 @@ export default function Profile() {
                       {launchedGame?.length - 1 == index ? null : <hr />}
                     </div>
                   ))}
+                </div>
+                <div style={{textAlign: 'center', marginTop:'10px'}}>
+                  <Pagination defaultCurrent={1} total={launchedGame?.length} onChange={(page, pageSize) => setPage(page)} pageSize={totalItems} />
                 </div>
               </div>
             ) : tab === "launch" ? (
