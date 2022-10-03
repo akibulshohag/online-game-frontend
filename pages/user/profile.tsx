@@ -583,11 +583,11 @@ export default function Profile() {
       setPoints(res?.data?.points);
       setCredit(res?.data?.credit);
       sethonesty(res?.data?.honesty);
-      setCookie(null, "credit", res?.credit, {
+      setCookie(null, "credit", res?.data?.credit, {
         maxAge: res?.data?.expires_in,
         path: "/",
       });
-      setCookie(null, "points", res?.points, {
+      setCookie(null, "points", res?.data?.points, {
         maxAge: res?.data?.expires_in,
         path: "/",
       });
