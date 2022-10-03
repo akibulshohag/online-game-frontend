@@ -185,6 +185,8 @@ export default function Profile() {
     setPoints,
     credit,
     setCredit,
+    honesty,
+    sethonesty
   } = useStatus();
 
   const [tab, setTab] = useState("launched");
@@ -576,8 +578,11 @@ export default function Profile() {
   useEffect(() => {
     (async () => {
       const res = await request(`player/profile?player_id=${userId}`, token);
-      setPoints(res?.points);
-      setCredit(res?.credit);
+      console.log('...........honesty',res);
+      
+      setPoints(res?.data?.points);
+      setCredit(res?.data?.credit);
+      sethonesty(res?.data?.honesty);
       setCookie(null, "credit", res?.credit, {
         maxAge: res?.data?.expires_in,
         path: "/",
@@ -641,6 +646,9 @@ export default function Profile() {
     }
   }
 
+  console.log('........................................',honesty);
+  
+
   return (
     <div className={styles.main}>
       <div className={styles.container}>
@@ -683,9 +691,26 @@ export default function Profile() {
                         color: "white",
                         borderRadius: "5px",
                         fontWeight: "600",
+                        marginRight: "5px",
                       }}
                     >
                       Credit: {credit}
+                    </button>
+                  ) : null}
+                  {honesty != '' ? (
+                    <button
+                      style={{
+                        marginTop: "10px",
+                        fontSize: "14px",
+                        border: "none",
+                        padding: "5px 10px",
+                        backgroundColor: "#f803fc",
+                        color: "white",
+                        borderRadius: "5px",
+                        fontWeight: "600",
+                      }}
+                    >
+                      Honesty: {honesty}
                     </button>
                   ) : null}
                 </div>
