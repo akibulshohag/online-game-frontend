@@ -292,14 +292,12 @@ export default function Profile() {
     setTab("single-list");
     const res = await request(`player/game-one-to-one-list?player_id=${userId}&&page=${page}`, token);
     setGameSingleList(res?.data);
-    console.log("response........", res);
   }
   
   async function getGameTournamentList() {
     setTab("tournament-list");
     const res = await request(`player/game-tournament-list?player_id=${userId}`, token);
     setGameTournamentList(res?.data);
-    console.log("response........", gameTournamentList);
   }
 
   async function getLaunchedGame() {
@@ -308,7 +306,6 @@ export default function Profile() {
       `player/game-launch-list?player_id=${userId}&&page=${page}`,
       token
     );
-    console.log("response.............", res?.last_page, res?.data?.length);
     setTotalItems(res?.last_page*res?.data?.length)
     setLaunchedGame(res?.data);
   }
@@ -320,7 +317,6 @@ export default function Profile() {
       `player/game-request-list?player_id=${userId}`,
       token
     );
-    console.log("response.............", res?.data);
     setRequestList(res?.data);
   }
 
@@ -330,7 +326,6 @@ export default function Profile() {
       `player/result-published?player_id=${userId}`,
       token
     );
-    console.log("response.....", res?.data);
     setPublishedResult(res?.data);
   }
 
@@ -340,7 +335,6 @@ export default function Profile() {
       `player/result-dispute?player_id=${userId}`,
       token
     );
-    console.log("response from result dispute.....", res?.data[0]?.data);
     setResultDispute(res?.data[0]?.data);
   }
 
@@ -348,14 +342,12 @@ export default function Profile() {
     setTab("single-resultList");
     const res = await request(`player/game-one-to-one-result-list?player_id=${userId}`, token);
     setSingleResultList(res?.data);
-    console.log("response.............", singleResultList);
   }
 
   async function getTournamentResultList() {
     setTab("tournament-resultList");
     const res = await request(`player/game-tournament-result-list?player_id=${userId}`, token);
     setTournamentResultList(res?.data);
-    console.log("response.............", tournamentResultList);
   }
 
   async function getResultSendList() {
@@ -364,7 +356,6 @@ export default function Profile() {
       `player/result-send-list?player_id=${userId}`,
       token
     );
-    console.log("result send list.........", res?.data);
     setResultSendList(res?.data);
   }
 
@@ -380,7 +371,6 @@ export default function Profile() {
 
   async function handleClassification() {
     const res = await optionsRequest(`player/game-classification`, token);
-    console.log("response ...........", res?.data);
     setGameClassifications(res?.data);
   }
 
@@ -391,7 +381,6 @@ export default function Profile() {
   }
 
   async function handleEdit(value: ILaunchedGames) {
-    console.log("value...", value);
     value?.status == "2"
       ? setModal("edit launch")
       : openNotificationWithIcon("Could not Edit!", "error");
@@ -400,13 +389,11 @@ export default function Profile() {
   }
 
   async function handleView(value: ILaunchedGames) {
-    console.log("value...", value);
     setModal("view launch");
     setActiveLaunchedGame(value);
   }
 
   async function handleDelete(value: ILaunchedGames) {
-    console.log("value......................", value);
     setActiveLaunchedGame(value);
     if (value?.status === "1") {
       openNotificationWithIcon("You can't delete this game", "error");
@@ -424,7 +411,6 @@ export default function Profile() {
   }
 
   const onEditSubmit: SubmitHandler<IEditGameLaunch> = async (data) => {
-    console.log("data...........", data);
     const res = await putRequest(`player/game-launch-edit`, token, {
       game_id: activeLaunchedGame?.gameId,
       game_classification_id: data?.game_classification_id
@@ -442,7 +428,6 @@ export default function Profile() {
         : activeLaunchedGame?.game_type,
       round: editRound,
     });
-    console.log("response............", res);
     if (res?.status == "success") {
       openNotificationWithIcon(res?.message, "success");
       window.location.reload();
@@ -469,7 +454,6 @@ export default function Profile() {
       game_type: resultSendGameList?.gameType,
       result_type: data?.result_type,
     });
-    console.log("response........", res);
     res?.status == "success"
       ? openNotificationWithIcon(res?.message, "success")
       : openNotificationWithIcon(res?.message, "error");
@@ -483,7 +467,6 @@ export default function Profile() {
       result: data?.result,
       comment: data?.comment,
     });
-    console.log("response.......", res);
     res?.status == "success"
       ? openNotificationWithIcon(res?.message, "success")
       : openNotificationWithIcon(res?.message, "error");
@@ -504,7 +487,6 @@ export default function Profile() {
       game_type: gameType,
       console_id: data?.console_id,
     });
-    console.log("response..........", res);
     if (res?.status == "success") {
       openNotificationWithIcon(res?.message, "success");
       window.location.reload();
@@ -514,14 +496,12 @@ export default function Profile() {
   };
 
   async function handleAccept(value: IRequestList) {
-    console.log("value...........", value);
     const res = await putRequest(`player/game-request-accept`, token, {
       game_id: value?.gameId,
       player_id: userId,
       accept_player_id: value?.playerId,
       amount: value?.gameAmount,
     });
-    console.log("response..............", res);
     if (res?.status == "success") {
       openNotificationWithIcon(res?.message, "success");
       window.location.reload();
@@ -531,7 +511,6 @@ export default function Profile() {
   }
 
   async function handleReject(value: IRequestList) {
-    console.log("value.......................", value);
   }
 
   async function handleSendResult(value: any) {
@@ -557,7 +536,6 @@ export default function Profile() {
   }
 
   async function handleViewResult(value: IResultList) {
-    console.log("value.......", value);
     setViewResult(value);
     setModal("view result");
   }
@@ -578,7 +556,6 @@ export default function Profile() {
   useEffect(() => {
     (async () => {
       const res = await request(`player/profile?player_id=${userId}`, token);
-      console.log('...........honesty',res);
       
       setPoints(res?.data?.points);
       setCredit(res?.data?.credit);
@@ -646,7 +623,6 @@ export default function Profile() {
     }
   }
 
-  console.log('........................................',honesty);
   
 
   return (
@@ -704,7 +680,7 @@ export default function Profile() {
                         fontSize: "14px",
                         border: "none",
                         padding: "5px 10px",
-                        backgroundColor: "#f803fc",
+                        backgroundColor: "brown",
                         color: "white",
                         borderRadius: "5px",
                         fontWeight: "600",
