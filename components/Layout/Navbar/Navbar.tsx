@@ -96,7 +96,7 @@ export default function Navbar() {
     })();
   }, []);
 
-  console.log("all country.........", allCountry);
+  // console.log("all country.........", allCountry);
 
   const onLoginSubmit: SubmitHandler<LoginInputs> = async (data) => {
     console.log(data);

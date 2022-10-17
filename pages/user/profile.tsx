@@ -771,6 +771,14 @@ export default function Profile() {
               >
                 Published Result
               </a>
+              <a
+                className={`${
+                  tab === "deposit" ? styles.border__bottom : null
+                }`}
+                onClick={() => getPublishedResult()}
+              >
+                Deposit
+              </a>
               <a onClick={handleLogout}>Log out</a>
             </div>
           </div>
