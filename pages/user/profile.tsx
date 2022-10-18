@@ -1,3 +1,4 @@
+// import { PayPalButtons } from "@paypal/react-paypal-js";
 import { notification, Pagination } from "antd";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,6 +9,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { AiFillEye } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
 import { MdDeleteSweep } from "react-icons/md";
+import { PayPalButton } from "react-paypal-button-v2";
 import Modal from "../../components/Modal/Modal";
 import { useStatus } from "../../context/ContextStatus";
 import deleteRequest from "../../lib/deleteRequest";
@@ -168,6 +170,16 @@ interface IGamingConsole {
   id: string;
   name: string;
 }
+interface Paypalpayemt {
+  player_id  : number,
+  payment_id  : string,
+  payer_id   : string,
+  payer_email : string,
+  amount      : number,
+  currency: string,
+  status      : string,
+ 
+}
 
 export default function Profile() {
   const {
@@ -215,6 +227,7 @@ export default function Profile() {
   const [editRound, setEditRound] = useState(1);
   const [page, setPage] = useState(1)
   const [totalItems, setTotalItems] = useState(1)
+  const [price, setprice] = useState('')
 
   const {
     register,
@@ -623,6 +636,81 @@ export default function Profile() {
     }
   }
 
+
+  // paypal payment integration 
+
+  function handleMessages(e) {
+    setprice(e.target.value)
+}
+
+const handleApprove = (orderId:any)=>{
+    console.log('........',orderId);
+    
+}
+
+async function handleRequestPaypal(orderDetails:any) {
+  console.log("request sending button working...........", orderDetails);
+  const res = await postRequest(`player/deposit-store`, token, {
+    player_id   : userId,
+    payment_id  : orderDetails?.id,
+    payer_id    :orderDetails?.payer?.payer_id,
+    payer_email : orderDetails?.payer?.email_address,
+    amount      : orderDetails?.purchase_units[0]?.amount?.value,
+    currency    : orderDetails?.purchase_units[0]?.amount?.currency_code,
+    status      : orderDetails?.status
+ 
+  });
+  console.log("response.........", res);
+  if (res?.status == "success") {
+    openNotificationWithIcon(res?.message, "success");
+    // window.location.reload();
+  } else {
+    openNotificationWithIcon(res?.message, "error");
+  }
+}
+
+
+{/* <PayPalButtons 
+                  createOrder={(data, actions) => {
+                    return actions.order.create({
+                        purchase_units: [
+                            {
+                                amount: {
+                                    value: price,
+                                },
+                            },
+                        ],
+                    });
+                }}
+
+                onApprove={ async (data, actions) => {
+                  const order = await actions.order?.capture();
+                  console.log('...........order',order);
+                  setprice('')
+                  // handleApprove(data,orerID)
+                  
+                  // return actions.order.capture().then((details) => {
+                  //     const name = details.payer.name.given_name;
+                  //     alert(`Transaction completed by ${name}`);
+                  // });
+                  handleRequestPaypal(order)
+
+                  
+              }}
+
+              onError={(err)=>{
+                console.log('paypal error',err);
+                
+              }}
+
+              onCancel={()=>{
+                console.log('.......cancel');
+                
+              }}
+                   
+                  /> */}
+
+  console.log('..........price',price);
   
 
   return (
@@ -775,7 +863,7 @@ export default function Profile() {
                 className={`${
                   tab === "deposit" ? styles.border__bottom : null
                 }`}
-                onClick={() => getPublishedResult()}
+                onClick={() => setTab('deposit')}
               >
                 Deposit
               </a>
@@ -1321,7 +1409,46 @@ export default function Profile() {
                   ))}
                 </div>
               </div>
-            ) : null}
+            ) : tab === "deposit" ? (
+              <div className={styles.launched__container}>
+                <h5>Deposit</h5>
+                <div className={styles.launched__game__list}>
+                  <h5>Akib</h5>
+                  <div>
+                        <label className={styles.label}>Amount</label>
+                        <textarea value={price}
+                        //  onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
+                          onChange={(e) => handleMessages(e)} 
+                          placeholder="USD"
+                          style={{height: '40px', width: '100%', outline: 'none', maxWidth: "500px"}}
+                          //  onKeyDown={(e) => handleKeyDown(e)}
+                            />
+                      </div>
+                  
+
+              <PayPalButton
+                amount={price}
+                // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
+                onSuccess={(details:any, data:any) => {
+                    alert("Transaction completed by " + details.payer.name.given_name);
+                    console.log('..............details',details);
+                    setprice('')
+
+                    // OPTIONAL: Call your server to save the transaction
+                    return handleRequestPaypal(details)
+                }}
+                
+                options={{
+                    clientId: "AVEnGvCBTj0x0mrp1Cy42mJRTy1sLGrPj1wIySCUL_tnqmmNuVAztUp5W0-3wXGMetk2G9tUb2-E7i1C"
+                }}
+            />
+
+                 
+                </div>
+              </div>
+             ) :
+            
+            null}
           </div>
         </div>
       </div>
