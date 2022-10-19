@@ -27,7 +27,7 @@ import {
   usePayPalScriptReducer
 } from "@paypal/react-paypal-js";
 import { PayPalScriptOptions } from "@paypal/paypal-js/types/script-options";
-import { PayPalButtonsComponentProps } from "@paypal/paypal-js/types/components/buttons";
+// import { PayPalButtonsComponentProps } from "@paypal/paypal-js/types/components/buttons";
 
 interface ILaunchedGames {
   gameId: number;
@@ -704,48 +704,97 @@ export default function Profile() {
      * isRejected: failed to load
      */
     const [{ isPending }] = usePayPalScriptReducer();
-    const paypalbuttonTransactionProps: PayPalButtonsComponentProps = {
-      style: { layout: "vertical", innerHeight: 48, shape: 'rect' },
+    // const paypalbuttonTransactionProps: PayPalButtonsComponentProps = {
+    //   style: { layout: "vertical", innerHeight: 48, shape: 'rect' },
 
-      createOrder(data: any, actions: any) {
-        return actions.order.create({
-          purchase_units: [
-            {
-              amount: {
-                value: price
-              }
-            }
-          ]
-        });
-      },
-      onApprove(data: any, actions: any) {
-        /**
-         * data: {
-         *   orderID: string;
-         *   payerID: string;
-         *   paymentID: string | null;
-         *   billingToken: string | null;
-         *   facilitatorAccesstoken: string;
-         * }
-         */
-        return actions.order.capture({}).then((details: any) => {
-          alert(
-            "Transaction completed by" +
-            (details?.payer.name.given_name ?? "No details")
-          );
+    //   createOrder(data: any, actions: any) {
+    //     return actions.order.create({
+    //       purchase_units: [
+    //         {
+    //           amount: {
+    //             value: price
+    //           }
+    //         }
+    //       ]
+    //     });
+    //   },
+    //   onApprove(data: any, actions: any) {
+    //     /**
+    //      * data: {
+    //      *   orderID: string;
+    //      *   payerID: string;
+    //      *   paymentID: string | null;
+    //      *   billingToken: string | null;
+    //      *   facilitatorAccesstoken: string;
+    //      * }
+    //      */
+    //     return actions.order.capture({}).then((details: any) => {
+    //       alert(
+    //         "Transaction completed by" +
+    //         (details?.payer.name.given_name ?? "No details")
+    //       );
 
-          console.log('..........details', details);
-          setprice('')
-          handleRequestPaypal(details)
+    //       console.log('..........details', details);
+    //       setprice('')
+    //       handleRequestPaypal(details)
 
-        });
-      }
+    //     });
+    //   }
 
-    };
+    // };
     return (
       <>
         {isPending ? <h2>Load Smart Payment Button...</h2> : null}
-        <PayPalButtons disabled={price ? false : true} {...paypalbuttonTransactionProps} />
+        {/* <PayPalButtons disabled={price ? false : true} {...paypalbuttonTransactionProps} /> */}
+        <PayPalButtons
+          disabled={price ? false : true}
+          // style: { layout: "vertical", innerHeight: 48, shape: 'rect' }
+
+          createOrder={async (data, actions) => {
+
+            return await actions.order.create({
+              purchase_units: [
+                {
+                  amount: {
+                    value: price,
+                  },
+                },
+              ],
+            });
+
+          }}
+
+          onApprove={async (data, actions) => {
+            const order = await actions.order?.capture();
+            console.log('...........order', order);
+            setprice('')
+            alert(
+              `Transaction completed by ${order?.payer.name?.given_name}`
+            );
+            // handleApprove(data,orerID)
+
+            // return actions.order.capture().then((details) => {
+            //     const name = details.payer.name.given_name;
+            //     alert(`Transaction completed by ${name}`);
+            // });
+            handleRequestPaypal(order)
+
+
+          }}
+
+          onError={(err: any) => {
+            console.log('paypal error', err);
+
+          }}
+
+          onCancel={() => {
+            alert(
+              `Your Transaction Cancel`
+            );
+
+          }}
+
+        />
       </>
     );
   }
@@ -1449,14 +1498,14 @@ export default function Profile() {
                   <div style={{ marginLeft: 20, alignItems: 'center', justifyContent: 'center' }}>
                     {/* <label className={styles.label}>Amount</label> */}
                     <p>Amount</p>
-                    
+
                     <input
                       value={price}
                       className={styles.input}
                       placeholder="USD"
                       type="number"
                       onChange={(e) => handleMessages(e)}
-                      style={{ width: '100%', borderRadius: 10, maxWidth: '200px', height: 35, padding: 5,marginBottom:10 }}
+                      style={{ width: '100%', borderRadius: 10, maxWidth: '200px', height: 35, padding: 5, marginBottom: 10 }}
                     />
                   </div>
 
