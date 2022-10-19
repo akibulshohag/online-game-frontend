@@ -102,6 +102,17 @@
 .result__publish__header p {
   padding: 5px 8px;
 }
+.deposit_list_header {
+  display: grid;
+  grid-template-columns: .3fr 2fr 1fr 1fr 1fr;
+  grid-gap: 20px;
+}
+.deposit_list_header h6 {
+  margin: 0px;
+}
+.deposit_list_header p {
+  padding: 5px 8px;
+}
 .request__list__header {
   display: grid;
   grid-template-columns: 250px 180px 180px 180px 180px;

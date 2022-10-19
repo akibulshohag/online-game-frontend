@@ -180,14 +180,10 @@ interface IGamingConsole {
   id: string;
   name: string;
 }
-interface Paypalpayemt {
+interface withDrawCredit {
+  amount: number;
   player_id: number,
-  payment_id: string,
-  payer_id: string,
-  payer_email: string,
-  amount: number,
-  currency: string,
-  status: string,
+  credit:number,
 
 }
 
@@ -223,9 +219,7 @@ export default function Profile() {
   const [gameTournamentList, setGameTournamentList] = useState<IGameList[] | []>();
   const [singleResultList, setSingleResultList] = useState<IResultList[] | []>([]);
   const [tournamentResultList, setTournamentResultList] = useState<IResultList[] | []>();
-  const [resultSendList, setResultSendList] = useState<
-    IResultSendList[] | []
-  >();
+  const [resultSendList, setResultSendList] = useState<IResultSendList[] | []>();
   const [resultSendGameList, setResultSendGameList] = useState<IResultSendGameList>();
   const [resultOpinion, setResultOpinion] = useState<IResultList>();
   const [viewResult, setViewResult] = useState<IResultList>();
@@ -238,6 +232,7 @@ export default function Profile() {
   const [page, setPage] = useState(1)
   const [totalItems, setTotalItems] = useState(1)
   const [price, setprice] = useState('')
+  const [depositList, setdepositList] = useState([])
 
   const {
     register,
@@ -252,6 +247,12 @@ export default function Profile() {
     watch: watch2,
     formState: { errors: errors2 },
   } = useForm<IGameLaunch>();
+  const {
+    register: register5,
+    handleSubmit: handleSubmit5,
+    watch: watch5,
+    formState: { errors: errors5 },
+  } = useForm<withDrawCredit>();
 
   const {
     register: register3,
@@ -655,11 +656,6 @@ export default function Profile() {
     setprice(e.target.value)
   }
 
-  const handleApprove = (err: any) => {
-    console.log('........',);
-
-  }
-  console.log('..........price', price);
 
 
   const initialOptions = {
@@ -799,6 +795,41 @@ export default function Profile() {
     );
   }
 
+  // depositList 
+
+  async function getDepositList() {
+    setTab("depositList");
+    const res = await request(
+      `player/deposit-list?player_id=${userId}`,
+      token
+    );
+    setdepositList(res?.data.slice(0,9));
+  }
+
+  const [withcredit, setwithcredit] = useState<any>()
+
+  const onwithdrawSubmit: SubmitHandler<withDrawCredit> = async (data) => {
+    console.log('...........data',data?.amount);
+    
+    if(credit > data?.amount){
+      const res = await postRequest(`player/withdraw-store`, token, {
+        player_id : userId,
+        credit    : data?.amount
+      });
+      if (res?.status == "success") {
+        openNotificationWithIcon(res?.message, "success");
+        window.location.reload();
+      } else {
+        openNotificationWithIcon(res?.message, "error");
+      }
+    } else{
+      openNotificationWithIcon('Insufficient Credit balance', "error");
+    }
+    
+  };
+
+
+  
 
 
 
@@ -947,6 +978,20 @@ export default function Profile() {
                 onClick={() => setTab('deposit')}
               >
                 Deposit
+              </a>
+              <a
+                className={`${tab === "depositList" ? styles.border__bottom : null
+                  }`}
+                onClick={() => getDepositList()}
+              >
+                Deposit List
+              </a>
+              <a
+                className={`${tab === "withdraw" ? styles.border__bottom : null
+                  }`}
+                onClick={() => setTab('withdraw')}
+              >
+                Withdraw Credit
               </a>
               <a onClick={handleLogout}>Log out</a>
             </div>
@@ -1504,6 +1549,7 @@ export default function Profile() {
                       className={styles.input}
                       placeholder="USD"
                       type="number"
+                      
                       onChange={(e) => handleMessages(e)}
                       style={{ width: '100%', borderRadius: 10, maxWidth: '200px', height: 35, padding: 5, marginBottom: 10 }}
                     />
@@ -1520,8 +1566,65 @@ export default function Profile() {
 
                 </div>
               </div>
+            ) : tab === "depositList" ? (
+              <div className={styles.launched__container}>
+                <h5>Diposit List</h5>
+                <div className={styles.launched__game__list}>
+                  <div className={styles.deposit_list_header}>
+                    <h6>Sl</h6>
+                    <h6>Payer Email</h6>
+                    <h6>Amount</h6>
+                    <h6>Created At</h6>
+                    <h6>Status</h6>
+                    {/* <h6>Winner Player Username</h6> */}
+                  </div>
+                  <hr />
+                  {depositList?.map((item:any, index) => (
+                    <div key={index}>
+                      <div className={styles.deposit_list_header}>
+                        <p>{index+1}</p>
+                        <p>{item?.payerEmail}</p>
+                        <p>{item?.amount}</p>
+                        <p>{item?.createdAt}</p>
+                        <p>{item?.status}</p>
+                      </div>
+                      {depositList?.length - 1 == index ? null : <hr />}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : tab === "withdraw" ? (
+              <div className={styles.launch__game__container}>
+                <h5 style={{ textAlign: "center", margin: "10px 0px" }}>
+                  Withdraw Your Credit
+                </h5>
+                <div className={styles.edit__form}>
+                  <form onSubmit={handleSubmit5(onwithdrawSubmit)}>
+                      <div>
+                        <label className={styles.label}>Credir</label>
+                        <input
+                          className={styles.input}
+                          type="number"
+                          // onChange={(e) => handleMessages(e)}
+                          {...register5("amount", { required: true })}
+                        />
+                        {errors5.amount &&
+                          errors5.amount.type === "required" && (
+                            <span>This field is required</span>
+                          )}
+                      </div>
+                    <div>
+                      <input
+                      // disabled={credit < withcredit ? true : false }
+                        type="submit"
+                        value="Confirm"
+                        className={styles.button}
+                      />
+                    </div>
+                  </form>
+                </div>
+              </div>
             ) :
-
               null}
           </div>
         </div>
