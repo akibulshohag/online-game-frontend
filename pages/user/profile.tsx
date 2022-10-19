@@ -1,4 +1,4 @@
-// import { PayPalButtons } from "@paypal/react-paypal-js";
+// import { PayPalButtons,PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { notification, Pagination } from "antd";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,6 +18,16 @@ import postRequest from "../../lib/postRequest";
 import putRequest from "../../lib/putRequest";
 import request from "../../lib/request";
 import styles from "../../styles/Profile.module.css";
+
+// paypal
+
+import {
+  PayPalScriptProvider,
+  PayPalButtons,
+  usePayPalScriptReducer
+} from "@paypal/react-paypal-js";
+import { PayPalScriptOptions } from "@paypal/paypal-js/types/script-options";
+import { PayPalButtonsComponentProps } from "@paypal/paypal-js/types/components/buttons";
 
 interface ILaunchedGames {
   gameId: number;
@@ -171,14 +181,14 @@ interface IGamingConsole {
   name: string;
 }
 interface Paypalpayemt {
-  player_id  : number,
-  payment_id  : string,
-  payer_id   : string,
-  payer_email : string,
-  amount      : number,
+  player_id: number,
+  payment_id: string,
+  payer_id: string,
+  payer_email: string,
+  amount: number,
   currency: string,
-  status      : string,
- 
+  status: string,
+
 }
 
 export default function Profile() {
@@ -306,7 +316,7 @@ export default function Profile() {
     const res = await request(`player/game-one-to-one-list?player_id=${userId}&&page=${page}`, token);
     setGameSingleList(res?.data);
   }
-  
+
   async function getGameTournamentList() {
     setTab("tournament-list");
     const res = await request(`player/game-tournament-list?player_id=${userId}`, token);
@@ -319,7 +329,7 @@ export default function Profile() {
       `player/game-launch-list?player_id=${userId}&&page=${page}`,
       token
     );
-    setTotalItems(res?.last_page*res?.data?.length)
+    setTotalItems(res?.last_page * res?.data?.length)
     setLaunchedGame(res?.data);
   }
 
@@ -569,7 +579,7 @@ export default function Profile() {
   useEffect(() => {
     (async () => {
       const res = await request(`player/profile?player_id=${userId}`, token);
-      
+
       setPoints(res?.data?.points);
       setCredit(res?.data?.credit);
       sethonesty(res?.data?.honesty);
@@ -605,33 +615,33 @@ export default function Profile() {
   };
 
   const handleGameStart = async (value: number) => {
-    try{
+    try {
       const res = await putRequest(`player/game-start`, token, {
         game_id: value
       })
-      if(res?.status == 'success'){
+      if (res?.status == 'success') {
         openNotificationWithIcon(res?.message, 'success');
         getLaunchedGame()
-      }else{
+      } else {
         openNotificationWithIcon(res?.message, 'error')
       }
-    }catch(err: any){
+    } catch (err: any) {
       openNotificationWithIcon(err?.response?.message, "error")
     }
   }
 
   const handleGameCancel = async (value: number) => {
-    try{
+    try {
       const res = await putRequest(`player/game-cancel`, token, {
         game_id: value
       })
-      if(res?.status == 'success'){
+      if (res?.status == 'success') {
         openNotificationWithIcon(res?.message, 'success');
         getLaunchedGame()
-      }else{
+      } else {
         openNotificationWithIcon(res?.message, 'error')
       }
-    }catch(err: any){
+    } catch (err: any) {
       openNotificationWithIcon(err?.response?.message, "error")
     }
   }
@@ -639,79 +649,109 @@ export default function Profile() {
 
   // paypal payment integration 
 
-  function handleMessages(e) {
+
+
+  function handleMessages(e: any) {
     setprice(e.target.value)
-}
-
-const handleApprove = (orderId:any)=>{
-    console.log('........',orderId);
-    
-}
-
-async function handleRequestPaypal(orderDetails:any) {
-  console.log("request sending button working...........", orderDetails);
-  const res = await postRequest(`player/deposit-store`, token, {
-    player_id   : userId,
-    payment_id  : orderDetails?.id,
-    payer_id    :orderDetails?.payer?.payer_id,
-    payer_email : orderDetails?.payer?.email_address,
-    amount      : orderDetails?.purchase_units[0]?.amount?.value,
-    currency    : orderDetails?.purchase_units[0]?.amount?.currency_code,
-    status      : orderDetails?.status
- 
-  });
-  console.log("response.........", res);
-  if (res?.status == "success") {
-    openNotificationWithIcon(res?.message, "success");
-    // window.location.reload();
-  } else {
-    openNotificationWithIcon(res?.message, "error");
   }
-}
+
+  const handleApprove = (err: any) => {
+    console.log('........',);
+
+  }
+  console.log('..........price', price);
 
 
-{/* <PayPalButtons 
-                  createOrder={(data, actions) => {
-                    return actions.order.create({
-                        purchase_units: [
-                            {
-                                amount: {
-                                    value: price,
-                                },
-                            },
-                        ],
-                    });
-                }}
+  const initialOptions = {
+    "client-id": "AVEnGvCBTj0x0mrp1Cy42mJRTy1sLGrPj1wIySCUL_tnqmmNuVAztUp5W0-3wXGMetk2G9tUb2-E7i1C",
+    currency: "USD",
+    intent: "capture",
+    // "data-client-token": token,
+  };
 
-                onApprove={ async (data, actions) => {
-                  const order = await actions.order?.capture();
-                  console.log('...........order',order);
-                  setprice('')
-                  // handleApprove(data,orerID)
-                  
-                  // return actions.order.capture().then((details) => {
-                  //     const name = details.payer.name.given_name;
-                  //     alert(`Transaction completed by ${name}`);
-                  // });
-                  handleRequestPaypal(order)
+  async function handleRequestPaypal(orderDetails: any) {
+    console.log("request sending button working...........", orderDetails);
+    const res = await postRequest(`player/deposit-store`, token, {
+      player_id: userId,
+      payment_id: orderDetails?.id,
+      payer_id: orderDetails?.payer?.payer_id,
+      payer_email: orderDetails?.payer?.email_address,
+      amount: orderDetails?.purchase_units[0]?.amount?.value,
+      currency: orderDetails?.purchase_units[0]?.amount?.currency_code,
+      status: orderDetails?.status
 
-                  
-              }}
+    });
+    console.log("response.........", res);
+    if (res?.status == "success") {
+      openNotificationWithIcon(res?.message, "success");
+      // window.location.reload();
+    } else {
+      openNotificationWithIcon(res?.message, "error");
+    }
+  }
 
-              onError={(err)=>{
-                console.log('paypal error',err);
-                
-              }}
 
-              onCancel={()=>{
-                console.log('.......cancel');
-                
-              }}
-                   
-                  /> */}
+  const paypalScriptOptions: PayPalScriptOptions = {
+    "client-id":
+      "AVEnGvCBTj0x0mrp1Cy42mJRTy1sLGrPj1wIySCUL_tnqmmNuVAztUp5W0-3wXGMetk2G9tUb2-E7i1C",
+    currency: "USD"
+  };
+  function Button() {
+    /**
+     * usePayPalScriptReducer use within PayPalScriptProvider
+     * isPending: not finished loading(default state)
+     * isResolved: successfully loaded
+     * isRejected: failed to load
+     */
+    const [{ isPending }] = usePayPalScriptReducer();
+    const paypalbuttonTransactionProps: PayPalButtonsComponentProps = {
+      style: { layout: "vertical", innerHeight: 48, shape: 'rect' },
 
-  console.log('..........price',price);
-  
+      createOrder(data: any, actions: any) {
+        return actions.order.create({
+          purchase_units: [
+            {
+              amount: {
+                value: price
+              }
+            }
+          ]
+        });
+      },
+      onApprove(data: any, actions: any) {
+        /**
+         * data: {
+         *   orderID: string;
+         *   payerID: string;
+         *   paymentID: string | null;
+         *   billingToken: string | null;
+         *   facilitatorAccesstoken: string;
+         * }
+         */
+        return actions.order.capture({}).then((details: any) => {
+          alert(
+            "Transaction completed by" +
+            (details?.payer.name.given_name ?? "No details")
+          );
+
+          console.log('..........details', details);
+          setprice('')
+          handleRequestPaypal(details)
+
+        });
+      }
+
+    };
+    return (
+      <>
+        {isPending ? <h2>Load Smart Payment Button...</h2> : null}
+        <PayPalButtons disabled={price ? false : true} {...paypalbuttonTransactionProps} />
+      </>
+    );
+  }
+
+
+
 
   return (
     <div className={styles.main}>
@@ -789,17 +829,15 @@ async function handleRequestPaypal(orderDetails:any) {
                 Launch Game
               </a>
               <a
-                className={`${
-                  tab === "launched" ? styles.border__bottom : null
-                }`}
+                className={`${tab === "launched" ? styles.border__bottom : null
+                  }`}
                 onClick={() => getLaunchedGame()}
               >
                 Launched List
               </a>
               <a
-                className={`${
-                  tab === "request" ? styles.border__bottom : null
-                }`}
+                className={`${tab === "request" ? styles.border__bottom : null
+                  }`}
                 onClick={() => getRequestList()}
               >
                 Request List
@@ -817,52 +855,46 @@ async function handleRequestPaypal(orderDetails:any) {
                 Tournament Game List
               </a>
               <a
-                className={`${
-                  tab === "resultSendList" ? styles.border__bottom : null
-                }`}
+                className={`${tab === "resultSendList" ? styles.border__bottom : null
+                  }`}
                 onClick={() => getResultSendList()}
               >
                 Result Send List
               </a>
-              
-              
-              
+
+
+
               <a
-                className={`${
-                  tab === "single-resultList" ? styles.border__bottom : null
-                }`}
+                className={`${tab === "single-resultList" ? styles.border__bottom : null
+                  }`}
                 onClick={() => getSingleResultList()}
               >
                 Single Result List
               </a>
               <a
-                className={`${
-                  tab === "tournament-resultList" ? styles.border__bottom : null
-                }`}
+                className={`${tab === "tournament-resultList" ? styles.border__bottom : null
+                  }`}
                 onClick={() => getTournamentResultList()}
               >
                 Tournament Result List
               </a>
               <a
-                className={`${
-                  tab === "dispute" ? styles.border__bottom : null
-                }`}
+                className={`${tab === "dispute" ? styles.border__bottom : null
+                  }`}
                 onClick={() => getResultDispute()}
               >
                 Result Dispute
               </a>
               <a
-                className={`${
-                  tab === "published" ? styles.border__bottom : null
-                }`}
+                className={`${tab === "published" ? styles.border__bottom : null
+                  }`}
                 onClick={() => getPublishedResult()}
               >
                 Published Result
               </a>
               <a
-                className={`${
-                  tab === "deposit" ? styles.border__bottom : null
-                }`}
+                className={`${tab === "deposit" ? styles.border__bottom : null
+                  }`}
                 onClick={() => setTab('deposit')}
               >
                 Deposit
@@ -911,8 +943,8 @@ async function handleRequestPaypal(orderDetails:any) {
                             <MdDeleteSweep />
                           </a>
                         </div>
-                        <div style={{margin: 'auto 0px'}}>
-                          {item?.start ? <a className={styles.edit__delete__button} style={{marginRight:'5px'}} onClick={() => handleGameStart(item?.gameId)}>Start</a> : null}
+                        <div style={{ margin: 'auto 0px' }}>
+                          {item?.start ? <a className={styles.edit__delete__button} style={{ marginRight: '5px' }} onClick={() => handleGameStart(item?.gameId)}>Start</a> : null}
                           {item?.cancel ? <a className={styles.edit__delete__button} onClick={() => handleGameCancel(item?.gameId)}>Cancel</a> : null}
                         </div>
                       </div>
@@ -920,7 +952,7 @@ async function handleRequestPaypal(orderDetails:any) {
                     </div>
                   ))}
                 </div>
-                <div style={{textAlign: 'center', marginTop:'10px'}}>
+                <div style={{ textAlign: 'center', marginTop: '10px' }}>
                   <Pagination defaultCurrent={1} total={launchedGame?.length} onChange={(page, pageSize) => setPage(page)} pageSize={totalItems} />
                 </div>
               </div>
@@ -1413,42 +1445,35 @@ async function handleRequestPaypal(orderDetails:any) {
               <div className={styles.launched__container}>
                 <h5>Deposit</h5>
                 <div className={styles.launched__game__list}>
-                  <h5>Akib</h5>
-                  <div>
-                        <label className={styles.label}>Amount</label>
-                        <textarea value={price}
-                        //  onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
-                          onChange={(e) => handleMessages(e)} 
-                          placeholder="USD"
-                          style={{height: '40px', width: '100%', outline: 'none', maxWidth: "500px"}}
-                          //  onKeyDown={(e) => handleKeyDown(e)}
-                            />
-                      </div>
-                  
 
-              <PayPalButton
-                amount={price}
-                // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
-                onSuccess={(details:any, data:any) => {
-                    alert("Transaction completed by " + details.payer.name.given_name);
-                    console.log('..............details',details);
-                    setprice('')
+                  <div style={{ marginLeft: 20, alignItems: 'center', justifyContent: 'center' }}>
+                    {/* <label className={styles.label}>Amount</label> */}
+                    <p>Amount</p>
+                    
+                    <input
+                      value={price}
+                      className={styles.input}
+                      placeholder="USD"
+                      type="number"
+                      onChange={(e) => handleMessages(e)}
+                      style={{ width: '100%', borderRadius: 10, maxWidth: '200px', height: 35, padding: 5,marginBottom:10 }}
+                    />
+                  </div>
 
-                    // OPTIONAL: Call your server to save the transaction
-                    return handleRequestPaypal(details)
-                }}
-                
-                options={{
-                    clientId: "AVEnGvCBTj0x0mrp1Cy42mJRTy1sLGrPj1wIySCUL_tnqmmNuVAztUp5W0-3wXGMetk2G9tUb2-E7i1C"
-                }}
-            />
 
-                 
+                  <div style={{ alignItems: 'center', justifyContent: 'center', marginLeft: 20, width: 100 }}>
+                    <PayPalScriptProvider options={paypalScriptOptions}>
+                      <Button />
+                    </PayPalScriptProvider>
+                  </div>
+
+
+
                 </div>
               </div>
-             ) :
-            
-            null}
+            ) :
+
+              null}
           </div>
         </div>
       </div>
