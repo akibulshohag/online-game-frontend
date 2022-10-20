@@ -233,6 +233,7 @@ export default function Profile() {
   const [totalItems, setTotalItems] = useState(1)
   const [price, setprice] = useState('')
   const [depositList, setdepositList] = useState([])
+  const [withdrawList, setwithdrawList] = useState([])
 
   const {
     register,
@@ -806,7 +807,10 @@ export default function Profile() {
     setdepositList(res?.data.slice(0,9));
   }
 
-  const [withcredit, setwithcredit] = useState<any>()
+ 
+
+
+  //withdraw
 
   const onwithdrawSubmit: SubmitHandler<withDrawCredit> = async (data) => {
     console.log('...........data',data?.amount);
@@ -828,9 +832,87 @@ export default function Profile() {
     
   };
 
+  async function getWithdrawList() {
+    setTab("withdrawList");
+    const res = await request(
+      `player/withdraw-list?player_id=${userId}`,
+      token
+    );
+    
+    setwithdrawList(res?.data);
+  }
 
+  const [withcreditId, setwithcreditId] = useState<any>()
+  const [editcredit, seteditcredit] = useState<any>()
+  const [errorCredit, seterrorCredit] = useState('')
+
+  async function handlewithdrawEdit(value: any) {
+    value?.status == "2"
+      ? setModal("edit withdraw")
+      : openNotificationWithIcon("Could not Edit!", "error");
+    
+      setwithcreditId(value?.id);
+      seteditcredit(value?.credit)
+  }
+
+  const onWithdrawEditSubmit= async ()=>{
+    if(editcredit){
+      const res = await putRequest(`player/withdraw-update`, token, {
+        id: withcreditId,
+        credit:editcredit
   
+      });
+      if (res?.status == "success") {
+        openNotificationWithIcon(res?.message, "success");
+        // window.location.reload();
+        setModal('')
+        seterrorCredit('')
+      } else {
+        openNotificationWithIcon(res?.message, "error");
+      }
+    } else{
+      seterrorCredit('This Field Is Required!')
+    }
+    
+  }
 
+  const handlewithDrawDelete= async (value:any)=>{
+    console.log('..........value',value?.id);
+    
+    if(value?.status == "2"){
+      const res = await deleteRequest(`player/withdraw-delete`, token, {
+        id: value?.id,
+      });
+      console.log("response.........", res);
+      if (res?.status == "success") {
+        openNotificationWithIcon(res?.message, "success");
+        // window.location.reload();
+        
+      } else {
+        openNotificationWithIcon(res?.message, "error");
+      }
+
+    } else{
+      openNotificationWithIcon('Could not delete', "error");
+    }
+    
+      
+    } 
+
+    // payment list 
+    const [paymentList, setpaymentList] = useState([])
+    async function getPaymentList() {
+      setTab("paymentList");
+      const res = await request(
+        `player/payment-list?player_id=${userId}`,
+        token
+      );
+      console.log('.................paymentList',res?.data);
+      
+      setpaymentList(res?.data);
+    }
+  
+  
 
 
   return (
@@ -992,6 +1074,20 @@ export default function Profile() {
                 onClick={() => setTab('withdraw')}
               >
                 Withdraw Credit
+              </a>
+              <a
+                className={`${tab === "withdrawList" ? styles.border__bottom : null
+                  }`}
+                onClick={() => getWithdrawList()}
+              >
+                Withdraw List
+              </a>
+              <a
+                className={`${tab === "paymentList" ? styles.border__bottom : null
+                  }`}
+                onClick={() => getPaymentList()}
+              >
+                payment List
               </a>
               <a onClick={handleLogout}>Log out</a>
             </div>
@@ -1601,7 +1697,7 @@ export default function Profile() {
                 <div className={styles.edit__form}>
                   <form onSubmit={handleSubmit5(onwithdrawSubmit)}>
                       <div>
-                        <label className={styles.label}>Credir</label>
+                        <label className={styles.label}>Credit</label>
                         <input
                           className={styles.input}
                           type="number"
@@ -1624,7 +1720,94 @@ export default function Profile() {
                   </form>
                 </div>
               </div>
+            ) : tab === "withdrawList" ? (
+              <div className={styles.launched__container}>
+                <h5>Your Withdraw List</h5>
+                <div className={styles.launched__game__list}>
+                  <div className={styles.launched__game__header}>
+                    <h6>Sl</h6>
+                    <h6>Credit</h6>
+                    <h6>Status</h6>
+                    <h6>Action</h6>
+                   
+                  </div>
+                  <hr />
+                  {withdrawList?.map((item:any, index) => (
+                    <div key={index}>
+                      <div className={styles.launched__game__header}>
+                        <p>{index+1}</p>
+                        <p>{item?.credit}</p>
+                        <p>{item?.status == "1" ? "Approved" : "Pending"}</p>
+                        <div style={{ margin: "auto 0px" }}>
+                          
+                          <a
+                            className={styles.edit__delete__button}
+                            onClick={() => handlewithdrawEdit(item)}
+                          >
+                            <FaEdit />
+                          </a>{" "}
+                          <a
+                            className={styles.edit__delete__button}
+                            onClick={() => handlewithDrawDelete(item)}
+                          >
+                            <MdDeleteSweep />
+                          </a>
+                        </div>
+                        
+                      </div>
+                      {withdrawList?.length - 1 == index ? null : <hr />}
+                    </div>
+                  ))}
+                </div>
+                {/* <div style={{ textAlign: 'center', marginTop: '10px' }}>
+                  <Pagination defaultCurrent={1} total={launchedGame?.length} onChange={(page, pageSize) => setPage(page)} pageSize={totalItems} />
+                </div> */}
+              </div>
+            ) : tab === "paymentList" ? (
+              <div className={styles.launched__container}>
+                <h5>Your payment List</h5>
+                <div className={styles.launched__game__list}>
+                  <div className={styles.launched__game__header}>
+                    <h6>Sl</h6>
+                    <h6>Credit</h6>
+                    <h6>Status</h6>
+                    <h6>Action</h6>
+                   
+                  </div>
+                  <hr />
+                  {/* {paymentList?.map((item:any, index) => (
+                    <div key={index}>
+                      <div className={styles.launched__game__header}>
+                        <p>{index+1}</p>
+                        <p>{item?.credit}</p>
+                        <p>{item?.status == "1" ? "Approved" : "Pending"}</p>
+                        <div style={{ margin: "auto 0px" }}>
+                          
+                          <a
+                            className={styles.edit__delete__button}
+                            onClick={() => handlewithdrawEdit(item)}
+                          >
+                            <FaEdit />
+                          </a>{" "}
+                          <a
+                            className={styles.edit__delete__button}
+                            onClick={() => handlewithDrawDelete(item)}
+                          >
+                            <MdDeleteSweep />
+                          </a>
+                        </div>
+                        
+                      </div>
+                      {withdrawList?.length - 1 == index ? null : <hr />}
+                    </div>
+                  ))} */}
+                </div>
+                {/* <div style={{ textAlign: 'center', marginTop: '10px' }}>
+                  <Pagination defaultCurrent={1} total={launchedGame?.length} onChange={(page, pageSize) => setPage(page)} pageSize={totalItems} />
+                </div> */}
+              </div>
             ) :
+
               null}
           </div>
         </div>
@@ -2051,7 +2234,37 @@ export default function Profile() {
             </form>
           </div>
         </Modal>
-      ) : null}
+      ) :modal == "edit withdraw" ? (
+        <Modal handleClose={() => setModal("")} title="Edit Withdraw Credit">
+          <div className={styles.edit__form}>
+            {/* <form onSubmit={onWithdrawEditSubmit}> */}
+                <div>
+                  <label className={styles.label}>Amount</label>
+                  <input
+                    className={styles.input}
+                    type="number"
+                    value={editcredit}
+                    onChange={(e)=>seteditcredit(e?.target?.value)}
+                    
+                  />
+                 
+                  {errorCredit ? 
+                  <span style={{color:'red'}}>{errorCredit}</span>
+                  : null 
+               }
+                </div>
+              <div className={styles.button1}>
+                <a onClick={()=>onWithdrawEditSubmit()}>
+                <p>Confirm</p>
+                </a>
+                
+              </div>
+            
+          </div>
+        </Modal>
+      ):
+      
+      null}
     </div>
   );
 }

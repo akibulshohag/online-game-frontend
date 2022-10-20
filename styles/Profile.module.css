@@ -197,6 +197,18 @@
   text-transform: uppercase;
   margin: 10px 0;
 }
+.button1 {
+  background-color: #0a1861;
+  border: none;
+  border-radius: 2px;
+  color: #fff;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin: 10px 0;
+  width: 70px;
+}
 .launch__game__container {
   background-color: #dcdddd;
   margin-top: 20px;
