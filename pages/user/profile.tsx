@@ -9,7 +9,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { AiFillEye } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
 import { MdDeleteSweep } from "react-icons/md";
-import { PayPalButton } from "react-paypal-button-v2";
 import Modal from "../../components/Modal/Modal";
 import { useStatus } from "../../context/ContextStatus";
 import deleteRequest from "../../lib/deleteRequest";
@@ -21,12 +20,10 @@ import styles from "../../styles/Profile.module.css";
 
 // paypal
 
-import {
-  PayPalScriptProvider,
-  PayPalButtons,
-  usePayPalScriptReducer
-} from "@paypal/react-paypal-js";
 import { PayPalScriptOptions } from "@paypal/paypal-js/types/script-options";
+import {
+  PayPalButtons, PayPalScriptProvider, usePayPalScriptReducer
+} from "@paypal/react-paypal-js";
 // import { PayPalButtonsComponentProps } from "@paypal/paypal-js/types/components/buttons";
 
 interface ILaunchedGames {
@@ -1769,38 +1766,27 @@ export default function Profile() {
                 <div className={styles.launched__game__list}>
                   <div className={styles.launched__game__header}>
                     <h6>Sl</h6>
-                    <h6>Credit</h6>
-                    <h6>Status</h6>
-                    <h6>Action</h6>
+                    <h6>Payment Id</h6>
+                    <h6>Amount</h6>
+                    <h6>currency</h6>
+                    <h6>Date</h6>
                    
                   </div>
                   <hr />
-                  {/* {paymentList?.map((item:any, index) => (
+                  {paymentList?.map((item:any, index) => (
                     <div key={index}>
                       <div className={styles.launched__game__header}>
                         <p>{index+1}</p>
-                        <p>{item?.credit}</p>
-                        <p>{item?.status == "1" ? "Approved" : "Pending"}</p>
-                        <div style={{ margin: "auto 0px" }}>
-                          
-                          <a
-                            className={styles.edit__delete__button}
-                            onClick={() => handlewithdrawEdit(item)}
-                          >
-                            <FaEdit />
-                          </a>{" "}
-                          <a
-                            className={styles.edit__delete__button}
-                            onClick={() => handlewithDrawDelete(item)}
-                          >
-                            <MdDeleteSweep />
-                          </a>
-                        </div>
+                        <p>{item?.paymentId}</p>
+                        <p>{item?.amount}</p>
+                        <p>{item?.currency}</p>
+                        <p>{item?.date}</p>
+                        
                         
                       </div>
                       {withdrawList?.length - 1 == index ? null : <hr />}
                     </div>
-                  ))} */}
+                  ))}
                 </div>
                 {/* <div style={{ textAlign: 'center', marginTop: '10px' }}>
                   <Pagination defaultCurrent={1} total={launchedGame?.length} onChange={(page, pageSize) => setPage(page)} pageSize={totalItems} />
