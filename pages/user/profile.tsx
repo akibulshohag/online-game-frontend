@@ -801,7 +801,7 @@ export default function Profile() {
       `player/deposit-list?player_id=${userId}`,
       token
     );
-    setdepositList(res?.data.slice(0,9));
+    setdepositList(res?.data.slice(0,10));
   }
 
  
@@ -1661,7 +1661,7 @@ export default function Profile() {
               </div>
             ) : tab === "depositList" ? (
               <div className={styles.launched__container}>
-                <h5>Diposit List</h5>
+                <h5>Deposit List</h5>
                 <div className={styles.launched__game__list}>
                   <div className={styles.deposit_list_header}>
                     <h6>Sl</h6>
