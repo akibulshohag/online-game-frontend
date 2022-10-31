@@ -44,6 +44,12 @@
   background-color: white;
   border-radius: 15px;
 }
+.review__drop {
+  margin: 0px 30px 0px 30px;
+  background-color: white;
+  border-radius: 15px;
+  height: 200px;
+}
 .launched__game__list h6 {
   padding: 8px 8px;
 }
@@ -207,6 +213,18 @@
   font-weight: 500;
   text-transform: uppercase;
   margin: 10px 0;
+  width: 70px;
+}
+.button2 {
+  background-color: #0a1861;
+  border: none;
+  border-radius: 2px;
+  color: #fff;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  
   width: 70px;
 }
 .launch__game__container {

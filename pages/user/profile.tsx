@@ -81,7 +81,7 @@ interface IGameLaunch {
   game_type: number;
   console_id: string;
   rules: string;
-  localDate:string
+  localDate: string
   plusdate: string
 }
 
@@ -148,7 +148,7 @@ interface IResultList {
   winnerPlayerCountry: string;
   winnerPlayerUserName: string;
   resultType?: string;
-  winPlayer:string
+  winPlayer: string
 }
 
 interface IPublishedResult {
@@ -185,7 +185,7 @@ interface IGamingConsole {
 interface withDrawCredit {
   amount: number;
   player_id: number,
-  credit:number,
+  credit: number,
 
 }
 
@@ -397,9 +397,9 @@ export default function Profile() {
     handleConsole();
 
     var date = new Date();
-     var date1 = moment(date).format("YYYY-MM-DD")
+    var date1 = moment(date).format("YYYY-MM-DD")
     setminDate(date1);
-    
+
   }, []);
 
   async function handleClassification() {
@@ -506,42 +506,42 @@ export default function Profile() {
     setModal(null);
   };
 
-  const onLaunchSubmit:SubmitHandler<IGameLaunch> = async (data) => {
+  const onLaunchSubmit: SubmitHandler<IGameLaunch> = async (data) => {
 
 
-    let  utcTimeAndDate= moment.utc(data?.date + ' '+ data?.time).local().format('YYYY-MM-DD HH:mm:ss');
+    let utcTimeAndDate = moment.utc(data?.date + ' ' + data?.time).local().format('YYYY-MM-DD HH:mm:ss');
     let utcDate = moment(utcTimeAndDate).format('YYYY-MM-DD')
     let utcTime = moment(utcTimeAndDate).format('HH:mm:ss')
 
-    
-    if(credit >= data?.amount){
+
+    if (credit >= data?.amount) {
       const res = await postRequest(`player/game-launched`, token, {
-      game_classification_id: data?.game_classification_id,
-      player_id: userId,
-      link: data?.link,
-      amount: data?.amount,
-      date: data?.date,
-      time: data?.time,
-      utc_date:utcDate,
-      utc_time:utcTime,
-      participated_member: gameType == 2 ? data?.participated_member : 2,
-      round: round,
-      rules: data?.rules,
-      game_type: gameType,
-      console_id: data?.console_id,
-    });
-    if (res?.status == "success") {
-      openNotificationWithIcon(res?.message, "success");
-      window.location.reload();
+        game_classification_id: data?.game_classification_id,
+        player_id: userId,
+        link: data?.link,
+        amount: data?.amount,
+        date: data?.date,
+        time: data?.time,
+        utc_date: utcDate,
+        utc_time: utcTime,
+        participated_member: gameType == 2 ? data?.participated_member : 2,
+        round: round,
+        rules: data?.rules,
+        game_type: gameType,
+        console_id: data?.console_id,
+      });
+      if (res?.status == "success") {
+        openNotificationWithIcon(res?.message, "success");
+        window.location.reload();
+      } else {
+        openNotificationWithIcon(res?.message, "error");
+      }
+
     } else {
-      openNotificationWithIcon(res?.message, "error");
-    }
-      
-    } else{
       openNotificationWithIcon('insufficient Credit', "error");
-      
+
     }
-    
+
   };
 
   async function handleAccept(value: IRequestList) {
@@ -828,21 +828,21 @@ export default function Profile() {
       `player/deposit-list?player_id=${userId}`,
       token
     );
-    setdepositList(res?.data.slice(0,10));
+    setdepositList(res?.data.slice(0, 10));
   }
 
- 
+
 
 
   //withdraw
 
   const onwithdrawSubmit: SubmitHandler<withDrawCredit> = async (data) => {
-    console.log('...........data',data?.amount);
-    
-    if(credit > data?.amount){
+    console.log('...........data', data?.amount);
+
+    if (credit > data?.amount) {
       const res = await postRequest(`player/withdraw-store`, token, {
-        player_id : userId,
-        credit    : data?.amount
+        player_id: userId,
+        credit: data?.amount
       });
       if (res?.status == "success") {
         openNotificationWithIcon(res?.message, "success");
@@ -850,10 +850,10 @@ export default function Profile() {
       } else {
         openNotificationWithIcon(res?.message, "error");
       }
-    } else{
+    } else {
       openNotificationWithIcon('Insufficient Credit balance', "error");
     }
-    
+
   };
 
   async function getWithdrawList() {
@@ -862,7 +862,7 @@ export default function Profile() {
       `player/withdraw-list?player_id=${userId}`,
       token
     );
-    
+
     setwithdrawList(res?.data);
   }
 
@@ -874,17 +874,17 @@ export default function Profile() {
     value?.status == "2"
       ? setModal("edit withdraw")
       : openNotificationWithIcon("Could not Edit!", "error");
-    
-      setwithcreditId(value?.id);
-      seteditcredit(value?.credit)
+
+    setwithcreditId(value?.id);
+    seteditcredit(value?.credit)
   }
 
-  const onWithdrawEditSubmit= async ()=>{
-    if(editcredit){
+  const onWithdrawEditSubmit = async () => {
+    if (editcredit) {
       const res = await putRequest(`player/withdraw-update`, token, {
         id: withcreditId,
-        credit:editcredit
-  
+        credit: editcredit
+
       });
       if (res?.status == "success") {
         openNotificationWithIcon(res?.message, "success");
@@ -894,16 +894,16 @@ export default function Profile() {
       } else {
         openNotificationWithIcon(res?.message, "error");
       }
-    } else{
+    } else {
       seterrorCredit('This Field Is Required!')
     }
-    
+
   }
 
-  const handlewithDrawDelete= async (value:any)=>{
-    console.log('..........value',value?.id);
-    
-    if(value?.status == "2"){
+  const handlewithDrawDelete = async (value: any) => {
+    console.log('..........value', value?.id);
+
+    if (value?.status == "2") {
       const res = await deleteRequest(`player/withdraw-delete`, token, {
         id: value?.id,
       });
@@ -911,70 +911,61 @@ export default function Profile() {
       if (res?.status == "success") {
         openNotificationWithIcon(res?.message, "success");
         // window.location.reload();
-        
+
       } else {
         openNotificationWithIcon(res?.message, "error");
       }
 
-    } else{
+    } else {
       openNotificationWithIcon('Could not delete', "error");
     }
-    
-      
-    } 
 
-    // payment list 
-    const [paymentList, setpaymentList] = useState([])
-    async function getPaymentList() {
-      setTab("paymentList");
-      const res = await request(
-        `player/payment-list?player_id=${userId}`,
-        token
-      );
-      // console.log('.................paymentList',res?.data);
-      
-      setpaymentList(res?.data);
+
+  }
+
+  // payment list 
+  const [paymentList, setpaymentList] = useState([])
+  async function getPaymentList() {
+    setTab("paymentList");
+    const res = await request(
+      `player/payment-list?player_id=${userId}`,
+      token
+    );
+    // console.log('.................paymentList',res?.data);
+
+    setpaymentList(res?.data);
+  }
+
+
+  // send review request
+
+  const [rating, setRating] = useState(0)
+  const [comment, setcomment] = useState('')
+  const sendReview = async () => {
+    setTab("review")
+  }
+
+  const handleRating = (rate: number) => {
+    setRating(rate)
+  }
+
+  const sendReviewAndComment = async () => {
+
+    const res = await postRequest(`player/review-send`, token, {
+      player_id: userId,
+      rating: rating,
+      comment: comment
+    });
+    if (res?.status == "success") {
+      openNotificationWithIcon(res?.message, "success");
+      window.location.reload();
+      setRating(0)
+      setcomment('')
+
+    } else {
+      openNotificationWithIcon(res?.message, "error");
     }
-
-
-    // send review request
-
-    const [rating, setRating] = useState(0)
-    const [comment, setcomment] = useState('')
-    const sendReview = async ()=>{
-        setTab("review")
-    }
-
-    const handleRating = (rate: number) => {
-      setRating(rate)
-    }
-    const handleMessages1 =(e:any)=>{
-      setcomment(e)
-      
-      
-    }
-
-    const sendReviewAndComment= async ()=>{
-      
-        const res = await postRequest(`player/review-send`, token, {
-          player_id: userId,
-          rating:rating,
-          comment:comment
-        });
-        console.log("response.........", res);
-        if (res?.status == "success") {
-          openNotificationWithIcon(res?.message, "success");
-          // window.location.reload();
-          
-        } else {
-          openNotificationWithIcon(res?.message, "error");
-        }
-    }
-
-    console.log('.......',comment);
-    console.log('.......',rating);
-  
-  
+  }
 
 
   return (
@@ -989,7 +980,7 @@ export default function Profile() {
                   height={200}
                   width={200}
                 />
-                <p style={{ fontSize: "14px",fontWeight: "600",}}>{username}</p>
+                <p style={{ fontSize: "14px", fontWeight: "600", }}>{username}</p>
                 <br />
                 <div>
                   {points != 0 ? (
@@ -1270,7 +1261,7 @@ export default function Profile() {
                         <input
                           className={styles.input}
                           type="date"
-                          min ={minDate}
+                          min={minDate}
                           {...register2("date", { required: true })}
                         />
                         {errors2.date && errors2.date.type === "required" && (
@@ -1717,7 +1708,7 @@ export default function Profile() {
                       className={styles.input}
                       placeholder="USD"
                       type="number"
-                      
+
                       onChange={(e) => handleMessages(e)}
                       style={{ width: '100%', borderRadius: 10, maxWidth: '200px', height: 35, padding: 5, marginBottom: 10 }}
                     />
@@ -1747,10 +1738,10 @@ export default function Profile() {
                     {/* <h6>Winner Player Username</h6> */}
                   </div>
                   <hr />
-                  {depositList?.map((item:any, index) => (
+                  {depositList?.map((item: any, index) => (
                     <div key={index}>
                       <div className={styles.deposit_list_header}>
-                        <p>{index+1}</p>
+                        <p>{index + 1}</p>
                         <p>{item?.payerEmail}</p>
                         <p>{item?.amount}</p>
                         <p>{item?.createdAt}</p>
@@ -1768,22 +1759,22 @@ export default function Profile() {
                 </h5>
                 <div className={styles.edit__form}>
                   <form onSubmit={handleSubmit5(onwithdrawSubmit)}>
-                      <div>
-                        <label className={styles.label}>Credit</label>
-                        <input
-                          className={styles.input}
-                          type="number"
-                          // onChange={(e) => handleMessages(e)}
-                          {...register5("amount", { required: true })}
-                        />
-                        {errors5.amount &&
-                          errors5.amount.type === "required" && (
-                            <span>This field is required</span>
-                          )}
-                      </div>
+                    <div>
+                      <label className={styles.label}>Credit</label>
+                      <input
+                        className={styles.input}
+                        type="number"
+                        // onChange={(e) => handleMessages(e)}
+                        {...register5("amount", { required: true })}
+                      />
+                      {errors5.amount &&
+                        errors5.amount.type === "required" && (
+                          <span>This field is required</span>
+                        )}
+                    </div>
                     <div>
                       <input
-                      // disabled={credit < withcredit ? true : false }
+                        // disabled={credit < withcredit ? true : false }
                         type="submit"
                         value="Confirm"
                         className={styles.button}
@@ -1801,17 +1792,17 @@ export default function Profile() {
                     <h6>Credit</h6>
                     <h6>Status</h6>
                     <h6>Action</h6>
-                   
+
                   </div>
                   <hr />
-                  {withdrawList?.map((item:any, index) => (
+                  {withdrawList?.map((item: any, index) => (
                     <div key={index}>
                       <div className={styles.launched__game__header}>
-                        <p>{index+1}</p>
+                        <p>{index + 1}</p>
                         <p>{item?.credit}</p>
                         <p>{item?.status == "1" ? "Approved" : "Pending"}</p>
                         <div style={{ margin: "auto 0px" }}>
-                          
+
                           <a
                             className={styles.edit__delete__button}
                             onClick={() => handlewithdrawEdit(item)}
@@ -1825,7 +1816,7 @@ export default function Profile() {
                             <MdDeleteSweep />
                           </a>
                         </div>
-                        
+
                       </div>
                       {withdrawList?.length - 1 == index ? null : <hr />}
                     </div>
@@ -1845,19 +1836,19 @@ export default function Profile() {
                     <h6>Amount</h6>
                     <h6>currency</h6>
                     <h6>Date</h6>
-                   
+
                   </div>
                   <hr />
-                  {paymentList?.map((item:any, index) => (
+                  {paymentList?.map((item: any, index) => (
                     <div key={index}>
                       <div className={styles.launched__game__header}>
-                        <p>{index+1}</p>
+                        <p>{index + 1}</p>
                         <p>{item?.paymentId}</p>
                         <p>{item?.amount}</p>
                         <p>{item?.currency}</p>
                         <p>{item?.date}</p>
-                        
-                        
+
+
                       </div>
                       {withdrawList?.length - 1 == index ? null : <hr />}
                     </div>
@@ -1870,32 +1861,34 @@ export default function Profile() {
             ) : tab === "review" ? (
               <div className={styles.launched__container}>
                 <h5>Drop Your Review</h5>
-                <div className={styles.launched__game__list}>
-                  <div style={{ padding: '20px'}}>
-                  <Rating onClick={handleRating} initialValue={rating} />
+                <div className={styles.review__drop}>
+                  <div style={{ padding: '20px' }}>
+                    <Rating onClick={handleRating} initialValue={rating} />
                   </div>
-                
-                  <div style={{ marginLeft: 20, alignItems: 'center', justifyContent: 'center' }}>
+
+                  <div style={{ marginLeft: 20,}}>
                     {/* <label className={styles.label}>Amount</label> */}
                     <p>Comment</p>
+                    <div style={{ width: '200px' }}>
+                      <input
+                        className={styles.input}
+                        type="text"
+                        value={comment}
+                        onChange={(e) => setcomment(e?.target?.value)}
 
-                    <textarea
-                      value={comment}
-                      className={styles.input}
-                      placeholder="Drop Your Comment"
-                      onChange={(e) => handleMessages1(e)}
-                      style={{ width: '100%', borderRadius: 10, maxWidth: '200px', height: 35, padding: 5, marginBottom: 10 }}
-                    />
+                      />
+                    </div>
+                    
                   </div>
-                  <div style={{marginLeft:'20px',marginBottom:'10px'}} className={styles.button1}>
-                      <a onClick={()=>sendReviewAndComment()}>
-                      <p>Confirm</p>
+                  <div style={{marginTop:10,margin:20}} className={styles.button2}>
+                      <a onClick={() => sendReviewAndComment()}>
+                        <p>Confirm</p>
                       </a>
-                
-              </div>
-                  
+
+                    </div>
+
                 </div>
-                
+
               </div>
             ) :
 
@@ -2325,37 +2318,37 @@ export default function Profile() {
             </form>
           </div>
         </Modal>
-      ) :modal == "edit withdraw" ? (
+      ) : modal == "edit withdraw" ? (
         <Modal handleClose={() => setModal("")} title="Edit Withdraw Credit">
           <div className={styles.edit__form}>
             {/* <form onSubmit={onWithdrawEditSubmit}> */}
-                <div>
-                  <label className={styles.label}>Amount</label>
-                  <input
-                    className={styles.input}
-                    type="number"
-                    value={editcredit}
-                    onChange={(e)=>seteditcredit(e?.target?.value)}
-                    
-                  />
-                 
-                  {errorCredit ? 
-                  <span style={{color:'red'}}>{errorCredit}</span>
-                  : null 
-               }
-                </div>
-              <div className={styles.button1}>
-                <a onClick={()=>onWithdrawEditSubmit()}>
+            <div>
+              <label className={styles.label}>Amount</label>
+              <input
+                className={styles.input}
+                type="number"
+                value={editcredit}
+                onChange={(e) => seteditcredit(e?.target?.value)}
+
+              />
+
+              {errorCredit ?
+                <span style={{ color: 'red' }}>{errorCredit}</span>
+                : null
+              }
+            </div>
+            <div className={styles.button1}>
+              <a onClick={() => onWithdrawEditSubmit()}>
                 <p>Confirm</p>
-                </a>
-                
-              </div>
-            
+              </a>
+
+            </div>
+
           </div>
         </Modal>
-      ):
-      
-      null}
+      ) :
+
+        null}
     </div>
   );
 }
