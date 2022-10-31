@@ -22,6 +22,7 @@
     "react-hook-form": "^7.32.2",
     "react-icons": "^4.4.0",
     "react-paypal-button-v2": "^2.6.3",
+    "react-simple-star-rating": "^5.1.6",
     "react-tabs": "^5.1.0"
   },
   "devDependencies": {

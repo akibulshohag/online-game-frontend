@@ -26,7 +26,7 @@ interface IGames {
 }
 
 export default function AvailableGames() {
-  const { userId, setUserId, token, setToken } = useStatus();
+  const { userId, setUserId, token, setToken,credit } = useStatus();
   const [games, setGames] = useState<IGames[] | []>([]);
   const [activeGame, setActiveGame] = useState<IGames | null>(null);
   const openNotificationWithIcon = (
@@ -39,14 +39,14 @@ export default function AvailableGames() {
     }
   };
 
-  console.log("user...............", userId);
+  // console.log("user...............", userId);
   useEffect(() => {
     (async () => {
       const response = await request(
         `player/published-game-list?player_id=${userId}`,
         token
       );
-      console.log("response...........", response?.data);
+      // console.log("response...........gamed", response?.data);
       setGames(response?.data);
       setActiveGame(response?.data?.length ? response?.data[0] : null);
     })();
@@ -171,12 +171,15 @@ export default function AvailableGames() {
                     <span style={{ fontWeight: "700" }}>$ {item?.amount}</span>{" "}
                     - Entry Fee
                   </h5>
+                  {credit >= item?.amount ? 
                   <button
                     className={styles.request__button}
                     onClick={() => handleRequest(item)}
                   >
                     Request for Entry
                   </button>
+                  : null
+                  }
                 </div>
               ))}
         </div>

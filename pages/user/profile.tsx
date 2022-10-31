@@ -9,6 +9,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { AiFillEye } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
 import { MdDeleteSweep } from "react-icons/md";
+import { Rating } from 'react-simple-star-rating';
 import Modal from "../../components/Modal/Modal";
 import { useStatus } from "../../context/ContextStatus";
 import deleteRequest from "../../lib/deleteRequest";
@@ -24,6 +25,7 @@ import { PayPalScriptOptions } from "@paypal/paypal-js/types/script-options";
 import {
   PayPalButtons, PayPalScriptProvider, usePayPalScriptReducer
 } from "@paypal/react-paypal-js";
+import moment from "moment";
 // import { PayPalButtonsComponentProps } from "@paypal/paypal-js/types/components/buttons";
 
 interface ILaunchedGames {
@@ -79,6 +81,8 @@ interface IGameLaunch {
   game_type: number;
   console_id: string;
   rules: string;
+  localDate:string
+  plusdate: string
 }
 
 interface IRequestList {
@@ -144,6 +148,7 @@ interface IResultList {
   winnerPlayerCountry: string;
   winnerPlayerUserName: string;
   resultType?: string;
+  winPlayer:string
 }
 
 interface IPublishedResult {
@@ -231,6 +236,7 @@ export default function Profile() {
   const [price, setprice] = useState('')
   const [depositList, setdepositList] = useState([])
   const [withdrawList, setwithdrawList] = useState([])
+  const [minDate, setminDate] = useState('')
 
   const {
     register,
@@ -389,6 +395,11 @@ export default function Profile() {
     getLaunchedGame();
     handleClassification();
     handleConsole();
+
+    var date = new Date();
+     var date1 = moment(date).format("YYYY-MM-DD")
+    setminDate(date1);
+    
   }, []);
 
   async function handleClassification() {
@@ -398,7 +409,7 @@ export default function Profile() {
 
   async function handleConsole() {
     const res = await optionsRequest(`player/console`, token);
-    console.log("response from console ...", res?.data);
+    // console.log("response from console ...", res?.data);
     setGamingConsole(res?.data);
   }
 
@@ -495,14 +506,24 @@ export default function Profile() {
     setModal(null);
   };
 
-  const onLaunchSubmit: SubmitHandler<IGameLaunch> = async (data) => {
-    const res = await postRequest(`player/game-launched`, token, {
+  const onLaunchSubmit:SubmitHandler<IGameLaunch> = async (data) => {
+
+
+    let  utcTimeAndDate= moment.utc(data?.date + ' '+ data?.time).local().format('YYYY-MM-DD HH:mm:ss');
+    let utcDate = moment(utcTimeAndDate).format('YYYY-MM-DD')
+    let utcTime = moment(utcTimeAndDate).format('HH:mm:ss')
+
+    
+    if(credit >= data?.amount){
+      const res = await postRequest(`player/game-launched`, token, {
       game_classification_id: data?.game_classification_id,
       player_id: userId,
       link: data?.link,
       amount: data?.amount,
       date: data?.date,
       time: data?.time,
+      utc_date:utcDate,
+      utc_time:utcTime,
       participated_member: gameType == 2 ? data?.participated_member : 2,
       round: round,
       rules: data?.rules,
@@ -515,6 +536,12 @@ export default function Profile() {
     } else {
       openNotificationWithIcon(res?.message, "error");
     }
+      
+    } else{
+      openNotificationWithIcon('insufficient Credit', "error");
+      
+    }
+    
   };
 
   async function handleAccept(value: IRequestList) {
@@ -904,10 +931,48 @@ export default function Profile() {
         `player/payment-list?player_id=${userId}`,
         token
       );
-      console.log('.................paymentList',res?.data);
+      // console.log('.................paymentList',res?.data);
       
       setpaymentList(res?.data);
     }
+
+
+    // send review request
+
+    const [rating, setRating] = useState(0)
+    const [comment, setcomment] = useState('')
+    const sendReview = async ()=>{
+        setTab("review")
+    }
+
+    const handleRating = (rate: number) => {
+      setRating(rate)
+    }
+    const handleMessages1 =(e:any)=>{
+      setcomment(e)
+      
+      
+    }
+
+    const sendReviewAndComment= async ()=>{
+      
+        const res = await postRequest(`player/review-send`, token, {
+          player_id: userId,
+          rating:rating,
+          comment:comment
+        });
+        console.log("response.........", res);
+        if (res?.status == "success") {
+          openNotificationWithIcon(res?.message, "success");
+          // window.location.reload();
+          
+        } else {
+          openNotificationWithIcon(res?.message, "error");
+        }
+    }
+
+    console.log('.......',comment);
+    console.log('.......',rating);
   
   
 
@@ -924,12 +989,13 @@ export default function Profile() {
                   height={200}
                   width={200}
                 />
+                <p style={{ fontSize: "14px",fontWeight: "600",}}>{username}</p>
                 <br />
                 <div>
                   {points != 0 ? (
                     <button
                       style={{
-                        marginTop: "10px",
+                        marginTop: "5px",
                         marginRight: "5px",
                         fontSize: "14px",
                         border: "none",
@@ -946,7 +1012,7 @@ export default function Profile() {
                   {credit != 0 ? (
                     <button
                       style={{
-                        marginTop: "10px",
+                        marginTop: "5px",
                         fontSize: "14px",
                         border: "none",
                         padding: "5px 10px",
@@ -963,7 +1029,7 @@ export default function Profile() {
                   {honesty != '' ? (
                     <button
                       style={{
-                        marginTop: "10px",
+                        marginTop: "5px",
                         fontSize: "14px",
                         border: "none",
                         padding: "5px 10px",
@@ -1086,6 +1152,13 @@ export default function Profile() {
               >
                 payment List
               </a>
+              <a
+                className={`${tab === "review" ? styles.border__bottom : null
+                  }`}
+                onClick={() => sendReview()}
+              >
+                Drop Review
+              </a>
               <a onClick={handleLogout}>Log out</a>
             </div>
           </div>
@@ -1197,6 +1270,7 @@ export default function Profile() {
                         <input
                           className={styles.input}
                           type="date"
+                          min ={minDate}
                           {...register2("date", { required: true })}
                         />
                         {errors2.date && errors2.date.type === "required" && (
@@ -1221,6 +1295,7 @@ export default function Profile() {
                         <input
                           className={styles.input}
                           type="number"
+                          min="1"
                           {...register2("amount", { required: true })}
                         />
                         {errors2.amount &&
@@ -1792,6 +1867,36 @@ export default function Profile() {
                   <Pagination defaultCurrent={1} total={launchedGame?.length} onChange={(page, pageSize) => setPage(page)} pageSize={totalItems} />
                 </div> */}
               </div>
+            ) : tab === "review" ? (
+              <div className={styles.launched__container}>
+                <h5>Drop Your Review</h5>
+                <div className={styles.launched__game__list}>
+                  <div style={{ padding: '20px'}}>
+                  <Rating onClick={handleRating} initialValue={rating} />
+                  </div>
+                
+                  <div style={{ marginLeft: 20, alignItems: 'center', justifyContent: 'center' }}>
+                    {/* <label className={styles.label}>Amount</label> */}
+                    <p>Comment</p>
+
+                    <textarea
+                      value={comment}
+                      className={styles.input}
+                      placeholder="Drop Your Comment"
+                      onChange={(e) => handleMessages1(e)}
+                      style={{ width: '100%', borderRadius: 10, maxWidth: '200px', height: 35, padding: 5, marginBottom: 10 }}
+                    />
+                  </div>
+                  <div style={{marginLeft:'20px',marginBottom:'10px'}} className={styles.button1}>
+                      <a onClick={()=>sendReviewAndComment()}>
+                      <p>Confirm</p>
+                      </a>
+                
+              </div>
+                  
+                </div>
+                
+              </div>
             ) :
 
               null}
@@ -2172,7 +2277,7 @@ export default function Profile() {
               <span>
                 <b>Winner:</b>
               </span>{" "}
-              {viewResult?.winnerPlayerUserName}
+              {viewResult?.winPlayer}
             </p>
             {viewResult?.screenShort != 0 && <a
               href={`${viewResult?.screenShort}`}
