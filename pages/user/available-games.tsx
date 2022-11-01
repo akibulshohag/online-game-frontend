@@ -1,4 +1,5 @@
 import { notification } from "antd";
+import moment from "moment";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useStatus } from "../../context/ContextStatus";
@@ -17,6 +18,8 @@ interface ISingleGame {
   time: string;
   game_type: string;
   round: number;
+  utcTime: string;
+  utcDate: string;
 }
 interface IGames {
   classificationId: number;
@@ -46,7 +49,7 @@ export default function AvailableGames() {
         `player/published-game-list?player_id=${userId}`,
         token
       );
-      // console.log("response...........gamed", response?.data);
+      console.log("response...........gamed", response?.data);
       setGames(response?.data);
       setActiveGame(response?.data?.length ? response?.data[0] : null);
     })();
@@ -160,7 +163,11 @@ export default function AvailableGames() {
                   />
                   <h4 style={{ fontSize: "18px", margin: "auto 0px" }}>
                     {activeGame?.classificationName} - Starts{" "}
-                    {item?.date?.toString()} {item?.time} |{" "}
+                    {/* {item?.date.toString()} {item?.time} */}
+                    {/* {new Date(item?.date + ' ' + item?.time).toString()} */}
+                    
+                    {moment.utc(item?.utcDate + ' ' + item?.utcTime ).local().format('YYYY-MM-DD HH:mm')}
+                       |{" "}
                     {item?.game_type == "1" ? "Single" : "Team"}
                   </h4>
                   <h5 style={{ margin: "auto 0px", fontSize: "16px" }}>
