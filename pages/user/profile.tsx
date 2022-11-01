@@ -507,12 +507,14 @@ export default function Profile() {
   };
 
   const onLaunchSubmit: SubmitHandler<IGameLaunch> = async (data) => {
+  
 
-
-    let utcTimeAndDate = moment.utc(data?.date + ' ' + data?.time).local().format('YYYY-MM-DD HH:mm:ss');
+    let date         = new Date(data?.date + ' ' + data?.time);
+    let milliseconds = date.getTime();
+    let timeZone     = new Date().getTimezoneOffset() * 60 * 1000;
+    let utcTimeAndDate = new Date(milliseconds + timeZone)
     let utcDate = moment(utcTimeAndDate).format('YYYY-MM-DD')
-    let utcTime = moment(utcTimeAndDate).format('HH:mm:ss')
-
+    let utcTime = moment(utcTimeAndDate).format('HH:mm')
 
     if (credit >= data?.amount) {
       const res = await postRequest(`player/game-launched`, token, {
