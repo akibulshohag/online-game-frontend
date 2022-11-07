@@ -1942,7 +1942,7 @@ export default function Profile() {
 
                     </div>
                         {link ? 
-                        <p>{originUrl}{router.pathname}/{slugs}&=={userId}##plyerId{slugs}</p>
+                        <p>{originUrl}{router.pathname}/{slugs}&&{userId}plyerId{slugs}</p>
                         : null}
                     
 
