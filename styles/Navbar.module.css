@@ -1,0 +1,221 @@
+.main {
+  background-color: #0a1861;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 11;
+}
+.main a{
+  text-decoration: none !important;
+}
+.container {
+  max-width: 1420px;
+  margin: 0px auto;
+  padding: 0px 0px;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  grid-gap: 25px;
+}
+.login__button {
+  color: #f35237 !important;
+  background-color: white !important;
+  margin: auto 0px;
+  padding: 5px 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.login__button:hover {
+  color: white !important;
+  background-color: #ffb130 !important;
+}
+.user__button{
+  color: #ffb130;
+  /* background-color: white; */
+  /* padding: 7px 8px; */
+  border-radius: 50%;
+}
+.profile__tooltip{
+  visibility: hidden;
+  /* width: 100px; */
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 3px 5px;
+  font-size: 10px;
+
+  /* Position the tooltip */
+  position: absolute;
+  top: 38px;
+  left: 0px;
+  z-index: 1;
+}
+.profile__tooltip::after{
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent black transparent;
+}
+.user__button:hover .profile__tooltip {
+  visibility: visible;
+}
+.dropdown{
+  margin: auto 0px;
+  position: relative;
+  display: inline-block;
+}
+.dropdown__content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  color: #ffb130;
+  width: 230px;
+  z-index: 1;
+}
+.dropdown__content a {
+  color: #ffb130;
+  padding: 6px 10px;
+  text-decoration: none;
+  display: block;
+}
+.dropdown__content a:hover {
+  background-color: #ffb130;
+  color: white !important;
+}
+.logout__button:hover {
+  color: white;
+}
+.dropdown:hover .dropdown__content {
+  display: block;
+}
+.dropdown:hover .user__button {
+  color: white;
+}
+.user__button:hover{
+  color: white;
+}
+.header {
+  padding: 10px 0px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.border {
+  border: 0.5px solid rgba(131, 140, 150, 0.6);
+  width: 60px;
+  text-align: center;
+}
+.header p {
+  font-size: 14px;
+  color: rgb(104, 109, 114);
+}
+.container__google {
+  padding: 5px 15px 5px 15px;
+}
+.google__box {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  grid-gap: 10;
+  /* padding:0px 5px 0px 5px; */
+  justify-content: center;
+  align-items: center;
+  border: 0.5px solid rgb(223, 213, 213);
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+.arrow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 10px 10px 10px;
+}
+.arrow:hover {
+  background-color: #00acf6;
+  cursor: pointer;
+  color: #fff;
+}
+.image__border {
+  border-right: 0.5px solid rgb(224, 215, 215);
+  text-align: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+.footer {
+  text-align: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.footer p {
+  font-size: 12px;
+}
+.footer span {
+  color: #00acf6;
+  cursor: pointer;
+}
+
+.input__header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+  padding: 5px 10px 5px 10px;
+  border-bottom: 0.5px solid rgb(200, 215, 230);
+  box-shadow: 1px 1px 5px #888888;
+  cursor: pointer;
+}
+.input__header p {
+  font-size: 12px;
+}
+
+.main1 form div {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 5px;
+  margin-top: 10px;
+  padding: 0px 30px 0px 30px;
+}
+
+.input {
+  border: 1px solid #000;
+  border-radius: 2px;
+  height: 30px;
+  width: 100%;
+  padding: 0px 10px;
+  outline: none;
+}
+.label {
+  font-size: 12px;
+  font-weight: 500;
+  /* margin-bottom: 1px; */
+}
+.main1 form div span {
+  color: red;
+  font-size: 12px;
+  font-weight: bold;
+}
+.button {
+  background-color: #0A1861;
+  border: none;
+  border-radius: 2px;
+  color: #fff;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin: 0px 0;
+}
+.password p {
+  font-size: 12px;
+  color: #afbbc0;
+  cursor: pointer;
+}
+.password p:hover {
+  text-decoration: underline;
+  color: #00acf6;
+}

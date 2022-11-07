@@ -19,6 +19,7 @@ import putRequest from "../../lib/putRequest";
 import request from "../../lib/request";
 import styles from "../../styles/Profile.module.css";
 
+
 // paypal
 
 import { PayPalScriptOptions } from "@paypal/paypal-js/types/script-options";
@@ -970,6 +971,36 @@ export default function Profile() {
   }
 
 
+ 
+  // const { profile } = router.query
+  
+  
+
+  const linkGenerate =()=>{
+    setTab("link")
+  }
+
+  const originUrl =
+    typeof window !== 'undefined' && window.location.origin
+        ? window.location.origin
+        : '';
+
+        const [link, setlink] = useState(false)
+        const [slugs, setslugs] = useState('')
+
+  const linkUrl=()=>{
+    setlink(true)
+      const slug = Math.random().toString(36)
+      console.log(',,,,,',slugs);
+      
+      setslugs(slug)
+    // router.push({
+    //   pathname: '/user/profile/[profile]',
+    //   query: { profile: `asdsfsfas${userId}zdsfgsdfgsdfg` },
+    //  })
+  }
+
+
   return (
     <div className={styles.main}>
       <div className={styles.container}>
@@ -1151,6 +1182,13 @@ export default function Profile() {
                 onClick={() => sendReview()}
               >
                 Drop Review
+              </a>
+              <a
+                className={`${tab === "link" ? styles.border__bottom : null
+                  }`}
+                onClick={() => linkGenerate()}
+              >
+                Link
               </a>
               <a onClick={handleLogout}>Log out</a>
             </div>
@@ -1888,6 +1926,25 @@ export default function Profile() {
                       </a>
 
                     </div>
+
+                </div>
+
+              </div>
+            ) : tab === "link" ? (
+              <div className={styles.launched__container}>
+                <h5>Link Generate</h5>
+                <div className={styles.review__drop}>
+                  
+                  <div style={{marginTop:10,margin:20}} className={styles.button2}>
+                      <a onClick={() => linkUrl()}>
+                        <p>Confirm</p>
+                      </a>
+
+                    </div>
+                        {link ? 
+                        <p>{originUrl}{router.pathname}/{slugs}&=={userId}##plyerId{slugs}</p>
+                        : null}
+                    
 
                 </div>
 
