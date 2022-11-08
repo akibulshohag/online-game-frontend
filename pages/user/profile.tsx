@@ -1,5 +1,6 @@
 // import { PayPalButtons,PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { notification, Pagination } from "antd";
+import { nanoid } from 'nanoid';
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -904,7 +905,6 @@ export default function Profile() {
   }
 
   const handlewithDrawDelete = async (value: any) => {
-    console.log('..........value', value?.id);
 
     if (value?.status == "2") {
       const res = await deleteRequest(`player/withdraw-delete`, token, {
@@ -986,18 +986,22 @@ export default function Profile() {
         : '';
 
         const [link, setlink] = useState(false)
-        const [slugs, setslugs] = useState('')
+        const [createurl, setcreateurl] = useState('')
 
   const linkUrl=()=>{
     setlink(true)
-      const slug = Math.random().toString(36)
-      console.log(',,,,,',slugs);
-      
-      setslugs(slug)
-    // router.push({
-    //   pathname: '/user/profile/[profile]',
-    //   query: { profile: `asdsfsfas${userId}zdsfgsdfgsdfg` },
-    //  })
+      const slug = nanoid(10)
+      const slug1 = nanoid(10)
+    
+      const urlLink = `${originUrl}${router.pathname}/${slug}&&plyerId${slug1}${userId}`
+      setcreateurl(urlLink)
+
+ 
+  }
+
+  const copyToClipBoard = ()=>{
+    navigator.clipboard.writeText(createurl)
+    openNotificationWithIcon('Copied', "success");
   }
 
 
@@ -1933,18 +1937,26 @@ export default function Profile() {
             ) : tab === "link" ? (
               <div className={styles.launched__container}>
                 <h5>Link Generate</h5>
-                <div className={styles.review__drop}>
-                  
-                  <div style={{marginTop:10,margin:20}} className={styles.button2}>
+                <div className={styles.review__drop1}>
+                  <p style={{margin:20}}>Do you want to generate a link?</p>
+                  <div style={{margin:20}} className={styles.button3}>
                       <a onClick={() => linkUrl()}>
-                        <p>Confirm</p>
+                        <p>Link Create</p>
                       </a>
 
                     </div>
-                        {link ? 
-                        <p>{originUrl}{router.pathname}/{slugs}&&{userId}plyerId{slugs}</p>
-                        : null}
-                    
+
+                    {link ? 
+                    <div>
+                        
+                        <p style={{margin:20}}>{createurl}</p>
+                        
+                        <button style={{margin:20}} className={styles.button2}
+                          onClick={() => copyToClipBoard()}>
+                          Copy
+                      </button>
+                      </div>   
+                      : null}                
 
                 </div>
 
