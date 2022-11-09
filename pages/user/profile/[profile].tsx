@@ -65,6 +65,7 @@ export default function Navbar() {
 
   const {profile}:any = router.query
   const [link, setlink] = useState(profile)
+ 
 
 
 useEffect(() => {
@@ -124,7 +125,14 @@ const onRegistrationSubmit: SubmitHandler<RegistrationInputs> = async (data) => 
   const registrationResponse = await postRequest(
     `player-affiliate-registration`,
     null,
-    data1
+   {
+    reference_player_id: Number(profile.slice(29)),
+    username: data?.username,
+    email: data?.email,
+    date_of_birth: data?.dateOfBirth,
+    country: data?.country,
+    password: data?.password,
+   }
   );
   console.log("response from registration.........", registrationResponse);
   if (registrationResponse?.status == "success") {
@@ -171,7 +179,9 @@ const onRegistrationSubmit: SubmitHandler<RegistrationInputs> = async (data) => 
 
   return (
     <div className={styles.main}>
-      <Modal title={"Sign up"} handleClose={() => setModal("")}>
+
+
+      <Modal title={"Sign up"} handleClose={() => setModal("sign up")}>
      
              <div>
                 
