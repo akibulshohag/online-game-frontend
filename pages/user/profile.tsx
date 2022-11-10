@@ -239,6 +239,7 @@ export default function Profile() {
   const [depositList, setdepositList] = useState([])
   const [withdrawList, setwithdrawList] = useState([])
   const [minDate, setminDate] = useState('')
+  const [affiliateList, setaffiliateList] = useState([])
 
   const {
     register,
@@ -832,6 +833,7 @@ export default function Profile() {
       `player/deposit-list?player_id=${userId}`,
       token
     );
+    
     setdepositList(res?.data.slice(0, 10));
   }
 
@@ -970,6 +972,16 @@ export default function Profile() {
     }
   }
 
+  
+  async function getAffiliateList() {
+    setTab("affiliate list");
+    const res = await request(
+      `player/affiliate-list?player_id=${userId}`,
+      token
+    );
+
+    setaffiliateList(res?.data.slice(0, 10));
+  }
 
  
   // const { profile } = router.query
@@ -1192,7 +1204,14 @@ export default function Profile() {
                   }`}
                 onClick={() => linkGenerate()}
               >
-                Link
+                Affiliate Link
+              </a>
+              <a
+                className={`${tab === "affiliate list" ? styles.border__bottom : null
+                  }`}
+                onClick={() => getAffiliateList()}
+              >
+                Affiliate List
               </a>
               <a onClick={handleLogout}>Log out</a>
             </div>
@@ -1960,6 +1979,33 @@ export default function Profile() {
 
                 </div>
 
+              </div>
+            ) : tab === "affiliate list" ? (
+              <div className={styles.launched__container}>
+                <h5>Deposit List</h5>
+                <div className={styles.launched__game__list}>
+                  <div className={styles.deposit_list_header}>
+                    <h6>Sl</h6>
+                    <h6>Payer Email</h6>
+                    <h6>Name</h6>
+                    <h6>Country</h6>
+                    <h6>Status</h6>
+                    {/* <h6>Winner Player Username</h6> */}
+                  </div>
+                  <hr />
+                  {affiliateList?.map((item: any, index) => (
+                    <div key={index}>
+                      <div className={styles.deposit_list_header}>
+                        <p>{index + 1}</p>
+                        <p>{item?.email}</p>
+                        <p>{item?.username}</p>
+                        <p>{item?.country}</p>
+                        <p>{item?.status}</p>
+                      </div>
+                      {affiliateList?.length - 1 == index ? null : <hr />}
+                    </div>
+                  ))}
+                </div>
               </div>
             ) :
 
