@@ -112,13 +112,19 @@ export default function Footer() {
                 </ul>
             </div>
             <div className={styles.page__info__content}>
-                <h4>Other</h4>
+                <h4>Information</h4>
                 <ul>
                     <li>
-                        <Link href="/"><a>Terms of Use</a></Link>
+                        <Link href="/about-us"><a>About Us</a></Link>
                     </li>
                     <li>
-                        <Link href="/"><a>Privacy Policy</a></Link>
+                        <Link href="/privacy-policy"><a>Privacy Policy</a></Link>
+                    </li>
+                    <li>
+                        <Link href="/term-and-condition"><a>Terms and Condition</a></Link>
+                    </li>
+                    <li>
+                        <Link href="/disclaimer"><a>Disclaimer</a></Link>
                     </li>
                 </ul>
             </div>

@@ -147,6 +147,18 @@
   background-color: white !important;
   color: #f15336 !important;
 }
+.edit__delete__button1 {
+  background-color: #f15336;
+  color: white !important;
+  margin-bottom: 0px;
+  border-radius: 15px;
+  
+  
+}
+.edit__delete__button1:hover {
+  /* background-color: #f15336 !important; */
+  color: #f15336 !important;
+}
 .accept__button {
   background-color: #74a378;
   color: white;
@@ -262,4 +274,12 @@
 .border__bottom {
   background-color: #f15336;
   color: white !important;
+}
+
+.main1 form div {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 5px;
+  margin-top: 10px;
+  padding: 0px 30px 0px 30px;
 }

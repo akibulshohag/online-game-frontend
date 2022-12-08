@@ -14,6 +14,9 @@ function StatusProvider({ children }) {
   const [points, setPoints] = useState(cookie?.points ? cookie?.points : 0)
   const [credit, setCredit] = useState(cookie?.credit ? cookie?.credit : 0)
   const [honesty, sethonesty] = useState('')
+  const [status, setstatus] = useState(cookie?.status ? cookie?.status : 2)
+  const [country, setcountry] = useState(cookie?.country ? cookie?.country : '')
+  const [birthday, setbirthday] = useState(cookie?.date_of_birth ? cookie?.date_of_birth : '')
 
   return (
     <ContextStatusProvider
@@ -33,7 +36,14 @@ function StatusProvider({ children }) {
         credit,
         setCredit,
         honesty,
-        sethonesty
+        sethonesty,
+        status,
+        setstatus,
+        country,
+        setcountry,
+        birthday,
+        setbirthday,
+
       }}
     >
       {children}

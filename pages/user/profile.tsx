@@ -27,6 +27,7 @@ import { PayPalScriptOptions } from "@paypal/paypal-js/types/script-options";
 import {
   PayPalButtons, PayPalScriptProvider, usePayPalScriptReducer
 } from "@paypal/react-paypal-js";
+import axios from "axios";
 import moment from "moment";
 // import { PayPalButtonsComponentProps } from "@paypal/paypal-js/types/components/buttons";
 
@@ -190,6 +191,33 @@ interface withDrawCredit {
   credit: number,
 
 }
+type countryName = {
+  common: string;
+  official: string;
+};
+
+type allCountryType = {
+  name: countryName;
+  independent: boolean;
+  status: string;
+  unMember: boolean;
+  region: string;
+  subregion: string;
+  landlocked: boolean;
+  flag: string;
+  population: number;
+  fifa: string;
+};
+
+type RegistrationInputs = {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  dateOfBirth: string;
+  country: string;
+  refernce_player_id:number
+};
 
 export default function Profile() {
   const {
@@ -208,7 +236,13 @@ export default function Profile() {
     credit,
     setCredit,
     honesty,
-    sethonesty
+    sethonesty,
+    status,
+    setstatus,
+    country,
+    setcountry,
+    birthday,
+    setbirthday
   } = useStatus();
 
   const [tab, setTab] = useState("launched");
@@ -240,6 +274,7 @@ export default function Profile() {
   const [withdrawList, setwithdrawList] = useState([])
   const [minDate, setminDate] = useState('')
   const [affiliateList, setaffiliateList] = useState([])
+  const [allCountry, setAllCountry] = useState<allCountryType[]>([]);
 
   const {
     register,
@@ -275,6 +310,13 @@ export default function Profile() {
     formState: { errors: errors4 },
   } = useForm<ISendOpinion>();
 
+  const {
+    register: register6,
+    handleSubmit: handleSubmit6,
+    watch: watch6,
+    formState: { errors: errors6 },
+  } = useForm<RegistrationInputs>();
+
   const router = useRouter();
 
   const openNotificationWithIcon = (
@@ -292,10 +334,20 @@ export default function Profile() {
     setUsername(null);
     setUserEmail(null);
     setUserId(null);
+    setstatus(2)
+    setCredit(0)
+    setPoints(0)
+    setcountry('')
+    setbirthday('')
     destroyCookie(null, "token");
     destroyCookie(null, "username");
     destroyCookie(null, "userEmail");
     destroyCookie(null, "userId");
+    destroyCookie(null, "status");
+    destroyCookie(null, "credit");
+    destroyCookie(null,"points")
+    destroyCookie(null, "country");
+    destroyCookie(null,"date_of_birth")
     router.push("/");
   };
 
@@ -519,7 +571,7 @@ export default function Profile() {
     let utcDate = moment(utcTimeAndDate).format('YYYY-MM-DD')
     let utcTime = moment(utcTimeAndDate).format('HH:mm')
 
-    if (credit >= data?.amount) {
+    if (credit >= data?.amount && status == 1) {
       const res = await postRequest(`player/game-launched`, token, {
         game_classification_id: data?.game_classification_id,
         player_id: userId,
@@ -543,7 +595,7 @@ export default function Profile() {
       }
 
     } else {
-      openNotificationWithIcon('insufficient Credit', "error");
+      openNotificationWithIcon('insufficient Credit and Inactive', "error");
 
     }
 
@@ -1017,6 +1069,92 @@ export default function Profile() {
   }
 
 
+  useEffect(() => {
+    (async () => {
+      const getAllCountry = await axios.get(
+        `https://restcountries.com/v3.1/all`
+      );
+      setAllCountry(getAllCountry?.data);
+    })();
+  }, []);
+  
+  
+  const onEditProfileSubmit: SubmitHandler<RegistrationInputs> = async (data) => {
+  
+    const data1={
+        player_id: userId,
+        username: data?.username ? data?.username : username,
+        email: data?.email ? data?.email : userEmail,
+        date_of_birth: data?.dateOfBirth ? data?.dateOfBirth : birthday,
+        country: data?.country ? data?.country : country,
+        password: data?.password ?data?.password:'' ,
+    }
+    console.log('.........data1',data1);
+    
+    const res = await putRequest(`player/edit`, token, {
+      player_id: userId,
+        username: data?.username ? data?.username : username,
+        email: data?.email ? data?.email : userEmail,
+        date_of_birth: data?.dateOfBirth ? data?.dateOfBirth : birthday,
+        country: data?.country ? data?.country : country,
+        password: data?.password ?data?.password:'' ,
+    });
+    console.log("edit profile.........", res);
+    if (res?.status) {
+      openNotificationWithIcon(res?.message, "success");
+      setToken(res?.data?.access_token);
+      setUsername(res?.data?.user?.username);
+      setUserEmail(res?.data?.user?.email);
+      setUserId(res?.data?.user?.id);
+      setPoints(res?.data?.user?.points);
+      setCredit(res?.data?.user?.credit);
+      setstatus(res?.data?.user?.status);
+      setcountry(res?.data?.user?.country)
+      // setbirthday(res?.data?.user?.date_of_birth)
+      // setCookie(null, "date_of_birth", res?.data?.user?.date_of_birth, {
+      //   maxAge: res?.data?.expires_in,
+      //   path: "/",
+      // });
+      setCookie(null, "country", res?.data?.user?.country, {
+        maxAge: res?.data?.expires_in,
+        path: "/",
+      });
+      setCookie(null, "status", res?.data?.user?.status, {
+        maxAge: res?.data?.expires_in,
+        path: "/",
+      });
+      setCookie(null, "credit", res?.data?.user?.credit, {
+        maxAge: res?.data?.expires_in,
+        path: "/",
+      });
+      setCookie(null, "points", res?.data?.user?.points, {
+        maxAge: res?.data?.expires_in,
+        path: "/",
+      });
+      setCookie(null, "token", res?.data?.access_token, {
+        maxAge: res?.data?.expires_in,
+        path: "/",
+      });
+      setCookie(null, "username", res?.data?.user?.username, {
+        maxAge: res?.data?.expires_in,
+        path: "/",
+      });
+      setCookie(null, "userEmail", res?.data?.user?.email, {
+        maxAge: res?.data?.expires_in,
+        path: "/",
+      });
+      setCookie(null, "userId", res?.data?.user?.id, {
+        maxAge: res?.data?.expires_in,
+        path: "/",
+      });
+      setModal("");
+      // window.location.reload()
+     } else {
+       openNotificationWithIcon(res?.message, "error");
+     }
+  };
+
+
   return (
     <div className={styles.main}>
       <div className={styles.container}>
@@ -1024,12 +1162,25 @@ export default function Profile() {
           <div>
             <div className={styles.profile__dashboard}>
               <div style={{ textAlign: "center", padding: "20px 0px" }}>
+                <div style={{position: "relative",zIndex:1}}>
                 <Image
                   src="/assets/images/profile.png"
                   height={200}
                   width={200}
                 />
+                <div style={{position: "absolute",zIndex:2,bottom:20,right:40}}>
+                <a
+                  className={styles.edit__delete__button1}
+                   onClick={() => setModal('edit profile')}
+                >
+                  <FaEdit color={"#000"} size={20}/>
+                 </a>
+                 </div>
+                </div>
+                
+                
                 <p style={{ fontSize: "14px", fontWeight: "600", }}>{username}</p>
+                <p style={{ fontSize: "14px", fontWeight: "600", }}>{userEmail}</p>
                 <br />
                 <div>
                   {points != 0 ? (
@@ -2463,6 +2614,145 @@ export default function Profile() {
 
           </div>
         </Modal>
+      ) : modal == "edit profile" ? (
+        <Modal title={"Edit Profile"} handleClose={() => setModal("")}>
+     
+             <div>
+                
+                <div>
+                  <div className={styles.main1}>
+                    <form onSubmit={handleSubmit6(onEditProfileSubmit)}>
+                      {/* register your input into the hook by invoking the "register" function */}
+                      <div>
+                        <label className={styles.label}>User Name</label>
+                        <input
+                          className={styles.input}
+                          placeholder="Enter User Name"
+                          defaultValue={username}
+                          {...register6("username", { required: true })}
+                        />
+                        {/* errors will return when field validation fails  */}
+                        {errors6.username &&
+                          errors6.username.type === "required" && (
+                            <span>Username is required!</span>
+                          )}
+                        {/* {errors.phone && errors.phone.type === "pattern" && <span>Enter a valid phone number!</span>} */}
+                      </div>
+
+                      {/* include validation with required or other standard HTML validation rules */}
+                      <div>
+                        <label className={styles.label}>Email</label>
+                        <input
+                          className={styles.input}
+                          placeholder="Email"
+                          type="email"
+                          defaultValue={userEmail}
+                          {...register6("email", { required: true })}
+                        />
+                        {/* errors will return when field validation fails  */}
+                        {errors6.email && errors6.email.type === "required" && (
+                          <span>Email is required</span>
+                        )}
+                        {/* {errors.password && errors.password.type === 'minLength' && <span>Minimum 6 character is required</span>} */}
+                      </div>
+                      <div>
+                        <label className={styles.label}>Change Password</label>
+                        <input
+                          className={styles.input}
+                          placeholder="Password"
+                          type="password"
+                          {...register6("password", {
+                            required: false,
+                            minLength: 8,
+                          })}
+                        />
+                        {/* errors will return when field validation fails  */}
+                        {errors6.password &&
+                          errors6.password.type === "required" && (
+                            <span>Password is required</span>
+                          )}
+                        {errors6.password &&
+                          errors6.password.type === "minLength" && (
+                            <span>Minimum 8 characters required!</span>
+                          )}
+                        {/* {errors.password && errors.password.type === 'minLength' && <span>Minimum 6 character is required</span>} */}
+                      </div>
+                      <div>
+                        <label className={styles.label}>Confirm change Password</label>
+                        <input
+                          className={styles.input}
+                          placeholder="Confirm Password"
+                          type="password"
+                          {...register6("confirmPassword", {
+                            required: false,
+                            minLength: 8,
+                          })}
+                        />
+                        {/* errors will return when field validation fails  */}
+                        {errors6.confirmPassword &&
+                          errors6.confirmPassword.type === "required" && (
+                            <span>Confirm Password is required</span>
+                          )}
+                        {errors6.confirmPassword &&
+                          errors6.confirmPassword.type === "minLength" && (
+                            <span>Minimum 8 characters required!</span>
+                          )}
+                        {/* {errors.password && errors.password.type === 'minLength' && <span>Minimum 6 character is required</span>} */}
+                      </div>
+                      {/* <div>
+                        <label className={styles.label}>Birth Date</label>
+                        <input
+                          className={styles.input}
+                          placeholder="Password"
+                          type="date"
+                          defaultValue={birthday}
+                          {...register6("dateOfBirth", { required: true })}
+                        />
+                        
+                        {errors6.dateOfBirth &&
+                          errors6.dateOfBirth.type === "required" && (
+                            <span>Date of Birth is required</span>
+                          )}
+                      </div> */}
+                      <div>
+                        <label className={styles.label}>Country</label>
+                        <select
+                          className={styles.input}
+                          {...register6("country", { required: true })}
+                        >
+                          <option value={country}>{country}</option>
+                          {allCountry?.map((item, index) => (
+                            <option value={item?.name?.common} key={index}>
+                              {item?.name?.common?.slice(0, 35)}
+                            </option>
+                          ))}
+                        </select>
+                        {/* <input
+                          className={styles.input}
+                          placeholder="Enter your country"
+                          type="text"
+                          {...register2("country", { required: true })}
+                        /> */}
+                        {/* errors will return when field validation fails  */}
+                        {errors6.country &&
+                          errors6.country.type === "required" && (
+                            <span>Country is required</span>
+                          )}
+                        {/* {errors.password && errors.password.type === 'minLength' && <span>Minimum 6 character is required</span>} */}
+                      </div>
+                      
+                      <div style={{ textAlign: "center",marginBottom:'20px' }}>
+                        <input
+                          className={styles.button}
+                          type="submit"
+                          value="Edit Profile"
+                        />
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              </Modal>
       ) :
 
         null}

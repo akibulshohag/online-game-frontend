@@ -60,6 +60,12 @@ export default function Navbar() {
     setPoints,
     credit,
     setCredit,
+    status,
+    setstatus,
+    country,
+    setcountry,
+    birthday,
+    setbirthday
   } = useStatus();
   const router = useRouter();
   const {
@@ -114,6 +120,21 @@ export default function Navbar() {
       setUserId(res?.data?.user?.id);
       setPoints(res?.data?.user?.points);
       setCredit(res?.data?.user?.credit);
+      setstatus(res?.data?.user?.status);
+      setcountry(res?.data?.user?.country)
+      setbirthday(res?.data?.user?.date_of_birth)
+      setCookie(null, "date_of_birth", res?.data?.user?.date_of_birth, {
+        maxAge: res?.data?.expires_in,
+        path: "/",
+      });
+      setCookie(null, "country", res?.data?.user?.country, {
+        maxAge: res?.data?.expires_in,
+        path: "/",
+      });
+      setCookie(null, "status", res?.data?.user?.status, {
+        maxAge: res?.data?.expires_in,
+        path: "/",
+      });
       setCookie(null, "credit", res?.data?.user?.credit, {
         maxAge: res?.data?.expires_in,
         path: "/",
@@ -145,6 +166,7 @@ export default function Navbar() {
     }
   };
 
+
   const onRegistrationSubmit: SubmitHandler<RegistrationInputs> = async (
     data
   ) => {
@@ -160,7 +182,7 @@ export default function Navbar() {
         password: data?.password,
       }
     );
-    console.log("response from registration.........", registrationResponse);
+    // console.log("response from registration.........", registrationResponse);
     if (registrationResponse?.status == "success") {
       openNotificationWithIcon(registrationResponse?.message, "success");
       setToken(registrationResponse?.response?.access_token);
@@ -199,6 +221,10 @@ export default function Navbar() {
       openNotificationWithIcon(registrationResponse?.message, "error");
     }
   };
+
+
+
+  
 
   return (
     <div className={styles.main}>
