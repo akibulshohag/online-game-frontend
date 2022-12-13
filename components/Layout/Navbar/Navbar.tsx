@@ -41,6 +41,7 @@ type RegistrationInputs = {
   confirmPassword: string;
   dateOfBirth: string;
   country: string;
+  phone:string
 };
 
 export default function Navbar() {
@@ -177,6 +178,7 @@ export default function Navbar() {
       {
         username: data?.username,
         email: data?.email,
+        phone:data?.phone,
         date_of_birth: data?.dateOfBirth,
         country: data?.country,
         password: data?.password,
@@ -475,7 +477,7 @@ export default function Navbar() {
                         <label className={styles.label}>User Name</label>
                         <input
                           className={styles.input}
-                          placeholder="Enter User Name"
+                          placeholder="e.g. PSN ID, Xbox Gamertag,etc."
                           {...register2("username", { required: true })}
                         />
                         {/* errors will return when field validation fails  */}
@@ -498,6 +500,20 @@ export default function Navbar() {
                         {/* errors will return when field validation fails  */}
                         {errors2.email && errors2.email.type === "required" && (
                           <span>Email is required</span>
+                        )}
+                        {/* {errors.password && errors.password.type === 'minLength' && <span>Minimum 6 character is required</span>} */}
+                      </div>
+                      <div>
+                        <label className={styles.label}>Phone No</label>
+                        <input
+                          className={styles.input}
+                          placeholder="Enter Your Phone No"
+                          type="text"
+                          {...register2("phone", { required: true })}
+                        />
+                        {/* errors will return when field validation fails  */}
+                        {errors2.phone && errors2.phone.type === "required" && (
+                          <span>Phone no is required</span>
                         )}
                         {/* {errors.password && errors.password.type === 'minLength' && <span>Minimum 6 character is required</span>} */}
                       </div>

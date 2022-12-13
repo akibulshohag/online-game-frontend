@@ -127,7 +127,7 @@
 }
 .request__list__header {
   display: grid;
-  grid-template-columns: 250px 180px 180px 180px 180px;
+  grid-template-columns: 180px 180px 120px 150px 150px 100px 150px;
   grid-gap: 20px;
 }
 .request__list__header h6 {

@@ -39,6 +39,7 @@ type RegistrationInputs = {
   dateOfBirth: string;
   country: string;
   refernce_player_id:number
+  phone:string
 };
 
 export default function Navbar() {
@@ -116,6 +117,7 @@ const onRegistrationSubmit: SubmitHandler<RegistrationInputs> = async (data) => 
       refernce_player_id: Number(profile.slice(29)),
       username: data?.username,
       email: data?.email,
+      phone:data?.phone,
       date_of_birth: data?.dateOfBirth,
       country: data?.country,
       password: data?.password,
@@ -216,6 +218,20 @@ const onRegistrationSubmit: SubmitHandler<RegistrationInputs> = async (data) => 
                         {/* errors will return when field validation fails  */}
                         {errors2.email && errors2.email.type === "required" && (
                           <span>Email is required</span>
+                        )}
+                        {/* {errors.password && errors.password.type === 'minLength' && <span>Minimum 6 character is required</span>} */}
+                      </div>
+                      <div>
+                        <label className={styles.label}>Phone No</label>
+                        <input
+                          className={styles.input}
+                          placeholder="Enter Your Phone no"
+                          type="text"
+                          {...register2("phone", { required: true })}
+                        />
+                        {/* errors will return when field validation fails  */}
+                        {errors2.phone && errors2.phone.type === "required" && (
+                          <span>Phone no is required</span>
                         )}
                         {/* {errors.password && errors.password.type === 'minLength' && <span>Minimum 6 character is required</span>} */}
                       </div>

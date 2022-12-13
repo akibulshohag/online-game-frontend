@@ -96,6 +96,8 @@ interface IRequestList {
   playerUserName: string;
   playerCountry: string;
   gameAmount: number;
+  skill: string;
+  honesty:string;
 }
 
 interface IPlayer {
@@ -269,7 +271,7 @@ export default function Profile() {
   const [editRound, setEditRound] = useState(1);
   const [page, setPage] = useState(1)
   const [totalItems, setTotalItems] = useState(1)
-  const [price, setprice] = useState('')
+  const [price, setprice] = useState<any>('')
   const [depositList, setdepositList] = useState([])
   const [withdrawList, setwithdrawList] = useState([])
   const [minDate, setminDate] = useState('')
@@ -400,6 +402,7 @@ export default function Profile() {
       `player/game-request-list?player_id=${userId}`,
       token
     );
+    
     setRequestList(res?.data);
   }
 
@@ -759,7 +762,6 @@ export default function Profile() {
       status: orderDetails?.status
 
     });
-    console.log("response.........", res);
     if (res?.status == "success") {
       openNotificationWithIcon(res?.message, "success");
       // window.location.reload();
@@ -825,7 +827,7 @@ export default function Profile() {
         {isPending ? <h2>Load Smart Payment Button...</h2> : null}
         {/* <PayPalButtons disabled={price ? false : true} {...paypalbuttonTransactionProps} /> */}
         <PayPalButtons
-          disabled={price ? false : true}
+          disabled={price >= 1000  ? false : true}
           // style: { layout: "vertical", innerHeight: 48, shape: 'rect' }
 
           createOrder={async (data, actions) => {
@@ -844,7 +846,6 @@ export default function Profile() {
 
           onApprove={async (data, actions) => {
             const order = await actions.order?.capture();
-            console.log('...........order', order);
             setprice('')
             alert(
               `Transaction completed by ${order?.payer.name?.given_name}`
@@ -895,9 +896,8 @@ export default function Profile() {
   //withdraw
 
   const onwithdrawSubmit: SubmitHandler<withDrawCredit> = async (data) => {
-    console.log('...........data', data?.amount);
 
-    if (credit > data?.amount) {
+    if (credit > data?.amount && data?.amount >= 2000) {
       const res = await postRequest(`player/withdraw-store`, token, {
         player_id: userId,
         credit: data?.amount
@@ -909,7 +909,7 @@ export default function Profile() {
         openNotificationWithIcon(res?.message, "error");
       }
     } else {
-      openNotificationWithIcon('Insufficient Credit balance', "error");
+      openNotificationWithIcon('Insufficient Credit balance and min 2000', "error");
     }
 
   };
@@ -1044,7 +1044,7 @@ export default function Profile() {
     setTab("link")
   }
 
-  const originUrl =
+   const originUrl =
     typeof window !== 'undefined' && window.location.origin
         ? window.location.origin
         : '';
@@ -1588,8 +1588,10 @@ export default function Profile() {
                 <h5>Game Request List</h5>
                 <div className={styles.launched__game__list}>
                   <div className={styles.request__list__header}>
-                    <h6>Game Classification Name</h6>
+                    <h6>Game Name</h6>
                     <h6>Player Name</h6>
+                    <h6>Skill</h6>
+                    <h6>Honesty</h6>
                     <h6>Player Country</h6>
                     <h6>Amount</h6>
                     <h6>Action</h6>
@@ -1600,6 +1602,8 @@ export default function Profile() {
                       <div className={styles.request__list__header}>
                         <p>{item?.gameClassificationName}</p>
                         <p>{item?.playerUserName}</p>
+                        <p>{item?.skill}</p>
+                        <p>{item?.honesty}</p>
                         <p>{item?.playerCountry}</p>
                         <p>{item?.gameAmount}</p>
                         <div style={{ margin: "auto 0px" }}>
@@ -1920,7 +1924,7 @@ export default function Profile() {
                     <input
                       value={price}
                       className={styles.input}
-                      placeholder="USD"
+                      placeholder="Minimum 1000"
                       type="number"
 
                       onChange={(e) => handleMessages(e)}
@@ -1930,9 +1934,11 @@ export default function Profile() {
 
 
                   <div style={{ alignItems: 'center', justifyContent: 'center', marginLeft: 20, width: 100 }}>
+                   
                     <PayPalScriptProvider options={paypalScriptOptions}>
                       <Button />
                     </PayPalScriptProvider>
+                    
                   </div>
 
 
@@ -2615,7 +2621,7 @@ export default function Profile() {
           </div>
         </Modal>
       ) : modal == "edit profile" ? (
-        <Modal title={"Edit Profile"} handleClose={() => setModal("")}>
+          <Modal title={"Edit Profile"} handleClose={() => setModal("")}>
      
              <div>
                 
@@ -2752,7 +2758,7 @@ export default function Profile() {
                   </div>
                 </div>
               </div>
-              </Modal>
+          </Modal>
       ) :
 
         null}

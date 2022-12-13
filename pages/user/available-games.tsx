@@ -20,6 +20,8 @@ interface ISingleGame {
   round: number;
   utcTime: string;
   utcDate: string;
+  skill:string;
+  honesty:string
 }
 interface IGames {
   classificationId: number;
@@ -49,7 +51,7 @@ export default function AvailableGames() {
         `player/published-game-list?player_id=${userId}`,
         token
       );
-      console.log("response...........gamed", response?.data);
+      // console.log("response...........gamed", response?.data);
       setGames(response?.data);
       setActiveGame(response?.data?.length ? response?.data[0] : null);
     })();
@@ -64,7 +66,7 @@ export default function AvailableGames() {
       game_type: Number(gameDetails?.game_type),
       status: 2,
     });
-    console.log("response.........", res);
+    // console.log("response.........", res);
     if (res?.status == "success") {
       openNotificationWithIcon(res?.message, "success");
       window.location.reload();
@@ -173,6 +175,23 @@ export default function AvailableGames() {
                   <h5 style={{ margin: "auto 0px", fontSize: "16px" }}>
                     Launch Player - {item?.launchGamePlayerUserName}
                   </h5>
+                  <div className={styles.skillContainer}>
+                    <h5 style={{ margin: "auto 0px", fontSize: "16px",color:'#f35237' }}>
+                    Skill
+                    </h5>
+                    <div className={styles.skill}>
+                    <h5 style={{ margin: "auto 0px", fontSize: "16px",color:'#fff' }}>{item?.skill}</h5>
+                  </div>
+                  </div>
+                  <div className={styles.honestyContainer}>
+                    <h5 style={{ margin: "auto 0px", fontSize: "16px",color:'#f35237' }}>
+                    Honesty
+                    </h5>
+                    <div className={styles.honesty}>
+                    <h5 style={{ margin: "auto 0px", fontSize: "16px",color:'#fff' }}>{item?.honesty}</h5>
+                  </div>
+                  </div>
+                  
                   <h5 style={{ margin: "auto 0px", fontSize: "16px" }}>Round - {item?.round}</h5>
                   <h5 style={{ margin: "auto 0px", fontSize: "16px" }}>
                     <span style={{ fontWeight: "700" }}>$ {item?.amount}</span>{" "}

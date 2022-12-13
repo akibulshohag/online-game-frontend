@@ -93,7 +93,7 @@
 .active__single__game__container {
   padding: 15px 20px;
   display: grid;
-  grid-template-columns: 40px 2fr 1fr 1fr 1fr auto;
+  grid-template-columns: 40px 2fr 1fr 50px 70px 100px 120px auto;
   grid-gap: 25px;
 }
 .active__single__game__container:hover {
@@ -115,3 +115,52 @@ box-shadow: 0px 2px 15px 8px rgba(0,0,0,0.24); */
   color: white;
   background-color:#f35237;
 }
+
+.skillContainer{
+  margin: auto 0px;
+  font-size: 16px;
+  color:#f35237;
+  position: relative;
+  z-index: 3;
+  
+}
+.honestyContainer{
+  margin: auto 0px;
+  font-size: 16px;
+  color:#f35237;
+  position: relative;
+  z-index: 3;
+  
+}
+
+.skill{
+  display:none;
+  cursor: pointer;
+  position: absolute;
+  z-index: 111;
+  background-color: #f35237;
+  bottom: 30px;
+  padding: 3px;
+  border-radius: 5px;
+}
+.honesty{
+  display:none;
+  cursor: pointer;
+  position: absolute;
+  z-index: 111;
+  background-color: #f35237;
+  bottom: 30px;
+  padding: 3px;
+  border-radius: 5px;
+  
+}
+
+.skillContainer:hover .skill{
+  display: block;
+  cursor: pointer;
+}
+.honestyContainer:hover .honesty{
+  display: block;
+  cursor: pointer;
+}
+
