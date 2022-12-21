@@ -16,7 +16,15 @@ const Home: NextPage = () => {
       </Head>
       <div className={styles.home__container}>
         <div className={styles.video__overlay}></div>
-        <video src={"/assets/videos/gaming2.webm"} autoPlay loop muted />
+        {/* <video src={"/assets/videos/gaming2.webm"} autoPlay loop muted /> */}
+        <div style={{width:'100%',height:900}}>
+        <Image
+              style={{marginTop:5}}
+               src={`/assets/images/slider1.jpeg`}
+               layout='fill'
+               />
+        </div>
+            
         <div className={styles.video__content}>
           <h1>
             GET PAID TO{" "}
