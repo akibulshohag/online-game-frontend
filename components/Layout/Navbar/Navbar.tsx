@@ -238,6 +238,52 @@ export default function Navbar() {
             </a>
           </Link>
         </div>
+          <div className={styles.middleContainer}>
+         <div className={styles.aboutUs}>
+            <p style={{color:'#fff',cursor:'pointer'}}>
+              About Us
+            </p>
+              <div className={styles.aboutUsHover}>
+              <Link href="/term-and-condition">
+              <p className={styles.termAndCondition} style={{color:'#fff'}}>
+                Term And Condition
+              </p>
+              </Link>
+              <Link href="/privacy-policy">
+              <p className={styles.privacy} style={{color:'#fff'}}>
+                Privacy Policy
+              </p>
+              </Link>
+              </div>
+          </div>
+            <div className={styles.competition}>
+            <p style={{color:'#fff'}}>
+              Competition
+            </p>
+            <div className={styles.aboutUsHover}>
+              <Link href="/user/available-games">
+              <p className={styles.termAndCondition} style={{color:'#fff'}}>
+                Challenges
+              </p>
+              </Link>
+              <Link href="/user/available-games">
+              <p className={styles.privacy} style={{color:'#fff'}}>
+                Tournaments
+              </p>
+              </Link>
+              </div>
+            </div>
+          <Link href="/">
+          <p style={{color:'#fff'}}>
+            Affiliate Program
+          </p>
+          </Link>
+          <div style={{color:'#fff'}}>
+          <a onClick={()=>window.open("mailto:hello@upaesports.com?subject=SendMail&body=Description")}>
+            Contact Us
+          </a>
+          </div>
+          </div>
         {token ? null : (
           <a className={styles.login__button} onClick={() => setModal("login")}>
             Login
@@ -248,7 +294,7 @@ export default function Navbar() {
             className={styles.login__button}
             onClick={() => setModal("signup")}
           >
-            Sign up
+            Open An Account
           </a>
         )}
         {token ? (
@@ -275,6 +321,59 @@ export default function Navbar() {
             </div> */}
           </div>
         ) : null}
+        <div>
+        <div className={styles.aboutUs}>
+          <div className={styles.language}>
+            <p style={{color:'#fff',cursor:'pointer'}}>
+              Language ( En <Image
+              style={{marginTop:5}}
+               src={`/assets/images/icons/kingdom.png`}
+               height={15}
+               width={15}
+               />)
+            </p>
+              
+            </div>
+              <div className={styles.languageSelect}>
+                <div className={styles.languageWithFlag}>
+                <p>
+                  English
+                </p>
+                <Image
+              style={{width:25}}
+               src={`/assets/images/icons/kingdom.png`}
+               height={17}
+               width={17}
+               />
+                </div>
+                <div className={styles.languageWithFlag}>
+                <p>
+                  Portugues
+                </p>
+                <Image
+              style={{width:25}}
+               src={`/assets/images/icons/brazil.png`}
+               height={17}
+               width={17}
+               />
+                </div>
+                <div className={styles.languageWithFlag}>
+                <p>
+                  Spanish
+                </p>
+                <Image
+              style={{width:25}}
+               src={`/assets/images/icons/spain.png`}
+               height={17}
+               width={17}
+               />
+                </div>
+                
+             
+              
+              </div>
+          </div>
+        </div>
       </div>
       {modal == "login" ? (
         <Modal title={"Login"} handleClose={() => setModal("")}>

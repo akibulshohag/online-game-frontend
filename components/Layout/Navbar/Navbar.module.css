@@ -13,9 +13,97 @@
   margin: 0px auto;
   padding: 0px 0px;
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: 1fr 1fr auto auto auto;
   grid-gap: 25px;
+  align-items: center;
 }
+
+/* middle container */
+.middleContainer{
+  margin: 0px auto;
+  padding: 0px 0px;
+  display: grid;
+  grid-template-columns: 100px 100px 150px 100px;
+  grid-gap: 25px;
+  
+}
+.middleContainer a{
+  color: #fff;
+}
+.aboutUs{
+  position: relative;
+  z-index: 1;
+}
+.aboutUsHover{
+  display: none;
+  max-width:200px;
+  width: 170px;
+  background-color:#f35237;
+  cursor: pointer;
+  padding: 5px 5px;
+  border-radius: 5px;
+}
+
+.aboutUs:hover .aboutUsHover{
+ display: block;
+ position:absolute;
+ z-index: 11;
+ top:24px;
+}
+.languageSelect{
+  display: none;
+  background-color:#fff;
+  width: 110px;
+  border-radius: 5px;
+}
+.languageWithFlag{
+  padding: 3px 5px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+justify-content: space-between;  
+}
+.languageWithFlag:hover{
+  background-color: #ccd6da;
+  border-radius: 5px;
+}
+.aboutUs:hover .languageSelect{
+ display: block;
+ position:absolute;
+ z-index: 11;
+ top:24px;
+ 
+}
+.termAndCondition{
+  padding:2px 5px;
+  border-bottom: 1px solid #0a1861;
+}
+.privacy{
+  padding:2px 5px;
+}
+ .termAndCondition:hover{
+  background-color:#0a1861;
+  color: #fff !important;
+  border-radius:3px;
+
+}
+ .privacy:hover{
+  background-color:#0a1861;
+  color: #fff !important;
+  border-radius:3px;
+}
+.competition{
+  position: relative;
+  z-index: 1;
+}
+.competition:hover .aboutUsHover{
+  display: block;
+ position:absolute;
+ z-index: 11;
+ top:24px;
+}
+
 .login__button {
   color: #f35237 !important;
   background-color: white !important;

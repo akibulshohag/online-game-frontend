@@ -2165,7 +2165,6 @@ export default function Profile() {
                 </div>
               </div>
             ) :
-
               null}
           </div>
         </div>
@@ -2760,7 +2759,6 @@ export default function Profile() {
               </div>
           </Modal>
       ) :
-
         null}
     </div>
   );

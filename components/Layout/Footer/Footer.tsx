@@ -55,12 +55,12 @@ export default function Footer() {
           </div>
           <div className={styles.page__content__wrapper}>
             <div className={styles.page__info__content}>
-                <h4>Contact</h4>
+                <h4>+18</h4>
                 <ul>
                     <li>
-                        <Link href="/"><a>Influencer</a></Link>
+                        <Link href="/disclaimer"><a>Disclaimer</a></Link>
                     </li>
-                    <li>
+                    {/* <li>
                         <Link href="/"><a>Communities</a></Link>
                     </li>
                     <li>
@@ -68,53 +68,44 @@ export default function Footer() {
                     </li>
                     <li>
                         <Link href="/"><a>Brands</a></Link>
-                    </li>
+                    </li> */}
                 </ul>
             </div>
             <div className={styles.page__info__content}>
-                <h4>Platform</h4>
+              <Link href="/about-us">
+                <h4 style={{cursor:'pointer'}}>About Us</h4>
+                </Link>
                 <ul>
+                    {/* <li>
+                        <Link href="/about-us"><a>About Us</a></Link>
+                    </li> */}
+                    <li>
+                        <Link href="/privacy-policy"><a>Privacy Policy</a></Link>
+                    </li>
+                    <li>
+                        <Link href="/term-and-condition"><a>Terms and Condition</a></Link>
+                    </li>
+                    
+                </ul>
+            </div>
+            <div className={styles.page__info__content}>
+                <h4>Competition</h4>
+                <ul>
+                    <li>
+                        <Link href="/"><a>Challenges</a></Link>
+                    </li>
                     <li>
                         <Link href="/"><a>Tournaments</a></Link>
                     </li>
-                    <li>
-                        <Link href="/"><a>Market Place</a></Link>
-                    </li>
-                    <li>
-                        <Link href="/"><a>Fortnite</a></Link>
-                    </li>
-                    <li>
-                        <Link href="/"><a>League of Legends</a></Link>
-                    </li>
-                    <li>
-                        <Link href="/"><a>DOTA 2</a></Link>
-                    </li>
-                    <li>
-                        <Link href="/"><a>PUBG: BATTLEGROUNDS</a></Link>
-                    </li>
-                    <li>
-                        <Link href="/"><a>Call of Duty: Warzone</a></Link>
-                    </li>
-                </ul>
-            </div>
-            <div className={styles.page__info__content}>
-                <h4>Company</h4>
-                <ul>
-                    <li>
-                        <Link href="/"><a>Contact</a></Link>
-                    </li>
-                    <li>
-                        <Link href="/"><a>News & Blogs</a></Link>
-                    </li>
-                    <li>
+                    {/* <li>
                         <Link href="/"><a>Linkedin</a></Link>
-                    </li>
+                    </li> */}
                 </ul>
             </div>
             <div className={styles.page__info__content}>
-                <h4>Information</h4>
+                <h4>Affiliate Program</h4>
                 <ul>
-                    <li>
+                    {/* <li>
                         <Link href="/about-us"><a>About Us</a></Link>
                     </li>
                     <li>
@@ -125,7 +116,32 @@ export default function Footer() {
                     </li>
                     <li>
                         <Link href="/disclaimer"><a>Disclaimer</a></Link>
+                    </li> */}
+                </ul>
+            </div>
+            <div className={styles.page__info__content}>
+              <a href="mailto:hello@upaesports.com?subject=SendMail&body=Description">
+                <h4>Contact</h4>
+                </a>
+                <ul>
+                    <li>
+                    <a href="mailto:hello@upaesports.com?subject=SendMail&body=Description">
+                    <Image
+                      src={`/assets/images/icons/gmail.png`}
+                      height={20}
+                      width={20}
+                    />
+                  </a>
                     </li>
+                    {/* <li>
+                        <Link href="/privacy-policy"><a>Privacy Policy</a></Link>
+                    </li>
+                    <li>
+                        <Link href="/term-and-condition"><a>Terms and Condition</a></Link>
+                    </li>
+                    <li>
+                        <Link href="/disclaimer"><a>Disclaimer</a></Link>
+                    </li> */}
                 </ul>
             </div>
           </div>
