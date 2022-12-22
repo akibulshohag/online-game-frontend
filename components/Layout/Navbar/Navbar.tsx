@@ -44,6 +44,10 @@ type RegistrationInputs = {
   phone:string
 };
 
+type ForgotPassword={
+  email:string;
+}
+
 export default function Navbar() {
   const [allCountry, setAllCountry] = useState<allCountryType[]>([]);
   const {
@@ -81,6 +85,12 @@ export default function Navbar() {
     watch: watch2,
     formState: { errors: errors2 },
   } = useForm<RegistrationInputs>();
+  const {
+    register: register3,
+    handleSubmit: handleSubmit3,
+    watch: watch3,
+    formState: { errors: errors3 },
+  } = useForm<ForgotPassword>();
   // const { loginModal } = useContext(ContextStatus)
 
   const openNotificationWithIcon = (
@@ -162,6 +172,23 @@ export default function Navbar() {
       });
       setModal("");
       router.push("/user/profile");
+    } else {
+      openNotificationWithIcon(res?.message, "error");
+    }
+  };
+
+
+  const onForgotPasswordSubmit: SubmitHandler<ForgotPassword> = async (data) => {
+    console.log(data);
+    const res = await postRequest(`player-forget-password`, null, {
+      email: data?.email,
+      
+    });
+    console.log("response from login.........", res);
+    if (res?.status) {
+      openNotificationWithIcon(res?.message, "success");
+      
+      setModal("");
     } else {
       openNotificationWithIcon(res?.message, "error");
     }
@@ -340,7 +367,6 @@ export default function Navbar() {
                   English
                 </p>
                 <Image
-              style={{width:25}}
                src={`/assets/images/icons/kingdom.png`}
                height={17}
                width={17}
@@ -351,7 +377,6 @@ export default function Navbar() {
                   Portugues
                 </p>
                 <Image
-              style={{width:25}}
                src={`/assets/images/icons/brazil.png`}
                height={17}
                width={17}
@@ -362,7 +387,6 @@ export default function Navbar() {
                   Spanish
                 </p>
                 <Image
-              style={{width:25}}
                src={`/assets/images/icons/spain.png`}
                height={17}
                width={17}
@@ -482,7 +506,7 @@ export default function Navbar() {
                           )}
                         {/* {errors.password && errors.password.type === 'minLength' && <span>Minimum 6 character is required</span>} */}
                       </div>
-                      <div className={styles.password}>
+                      <div onClick={()=>setModal('resetPassword')} className={styles.password}>
                         <p>Forgot your password</p>
                       </div>
                       <div style={{ textAlign: "center" }}>
@@ -700,9 +724,9 @@ export default function Navbar() {
                           )}
                         {/* {errors.password && errors.password.type === 'minLength' && <span>Minimum 6 character is required</span>} */}
                       </div>
-                      <div className={styles.password}>
+                      {/* <div className={styles.password}>
                         <p>Forgot your password</p>
-                      </div>
+                      </div> */}
                       <div style={{ textAlign: "center" }}>
                         <input
                           className={styles.button}
@@ -723,6 +747,111 @@ export default function Navbar() {
             </div>
           </div>
         </Modal>
+      ) : modal == "resetPassword"? (
+        <Modal title={"Reset Your Password"} handleClose={() => setModal("")}>
+        <div>
+          {activeTab == 0 ? (
+            <>
+              <div className={styles.header}>
+                <div className={styles.border}></div>
+                <p>Choose How you want to login</p>
+                <div className={styles.border}></div>
+              </div>
+              <div className={styles.container__google}>
+                <div className={styles.google__box}>
+                  <div className={styles.image__border}>
+                    <Image
+                      src={`/assets/images/icons/google.jpg`}
+                      alt="Google Image"
+                      height={30}
+                      width={30}
+                    />
+                  </div>
+                  <div className={styles.arrow}>
+                    <p style={{ marginLeft: 10 }}>Login With Google</p>
+                    <FaAngleRight />
+                  </div>
+                </div>
+                <div className={styles.google__box}>
+                  <div className={styles.image__border}>
+                    <Image
+                      src={`/assets/images/icons/facebook.png`}
+                      alt="Google Image"
+                      height={30}
+                      width={30}
+                    />
+                  </div>
+                  <div className={styles.arrow}>
+                    <p style={{ marginLeft: 10 }}>Login With Facebook</p>
+                    <FaAngleRight />
+                  </div>
+                </div>
+                <div
+                  onClick={() => setactiveTab(1)}
+                  className={styles.google__box}
+                >
+                  <div className={styles.image__border}>
+                    <FaPaperPlane />
+                  </div>
+                  <div className={styles.arrow}>
+                    <p style={{ marginLeft: 10 }}>Login With Email</p>
+                    <FaAngleRight />
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : null}
+          {activeTab == 1 ? (
+            <div>
+              <div
+                onClick={() => setactiveTab(0)}
+                className={styles.input__header}
+              >
+                <FaAngleLeft />
+                <p style={{ marginLeft: 5 }}>Back To All options</p>
+              </div>
+              <div>
+                <div className={styles.main1}>
+                  <form onSubmit={handleSubmit3(onForgotPasswordSubmit)}>
+                    {/* register your input into the hook by invoking the "register" function */}
+                    <div>
+                      <label className={styles.label}>Email</label>
+                      <input
+                        className={styles.input}
+                        placeholder="Enter Email"
+                        type="text"
+                        {...register3("email", { required: true })}
+                      />
+                      {/* <input {...register("emailRequired", { required: true })} /> */}
+                      {errors3.email && errors3.email.type === "required" && (
+                        <span>This field is required</span>
+                      )}
+                      {/* errors will return when field validation fails  */}
+                      {/* {errors.email && errors.email.type === "required" && <span>Email is required!</span>} */}
+                      {/* {errors.phone && errors.phone.type === "pattern" && <span>Enter a valid phone number!</span>} */}
+                    </div>
+
+                    <div style={{ textAlign: "center" }}>
+                      <input
+                        className={styles.button}
+                        type="submit"
+                        value="Submit"
+                      />
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          ) : null}
+          <div className={styles.footer}>
+            <p>
+             Back To ?{" "}
+              <span onClick={() => setModal("login")}>Login</span>
+            </p>
+          </div>
+        </div>
+      </Modal>
+
       ) : null}
     </div>
   );
