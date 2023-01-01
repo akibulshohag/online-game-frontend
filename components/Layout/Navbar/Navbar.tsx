@@ -13,6 +13,8 @@ import { setCookie } from "nookies";
 import { SubmitHandler, useForm } from "react-hook-form";
 import postRequest from "../../../lib/postRequest";
 import styles from "./Navbar.module.css";
+import '../../../pages/i18next'
+import { useTranslation } from 'react-i18next';
 
 type countryName = {
   common: string;
@@ -50,6 +52,7 @@ type ForgotPassword={
 
 export default function Navbar() {
   const [allCountry, setAllCountry] = useState<allCountryType[]>([]);
+  const { t, i18n } = useTranslation();
   const {
     modal,
     setModal,
@@ -70,7 +73,9 @@ export default function Navbar() {
     country,
     setcountry,
     birthday,
-    setbirthday
+    setbirthday,
+    selectedLanguage,
+    setselectedLanguage
   } = useStatus();
   const router = useRouter();
   const {
@@ -251,6 +256,14 @@ export default function Navbar() {
     }
   };
 
+const clickLanguage =(lang:string)=>{
+  i18n.changeLanguage(lang);
+  setselectedLanguage(lang)
+  setCookie(null, "language", lang, {
+    maxAge: 30 * 24 * 60 * 60,
+    path: "/",
+  });
+}
 
 
   
@@ -268,7 +281,7 @@ export default function Navbar() {
           <div className={styles.middleContainer}>
          <div className={styles.aboutUs}>
             <p style={{color:'#fff',cursor:'pointer'}}>
-              About Us
+              {t('aboutus')}
             </p>
               <div className={styles.aboutUsHover}>
               <Link href="/term-and-condition">
@@ -352,18 +365,44 @@ export default function Navbar() {
         <div className={styles.aboutUs}>
           <div className={styles.language}>
             <p style={{color:'#fff',cursor:'pointer'}}>
-              Language ( En <Image
+              Language (
+                {selectedLanguage === 'en' ? 
+                  <>
+                  En <Image
+               style={{marginTop:5}}
+                src={`/assets/images/icons/kingdom.png`}
+                height={15}
+                width={15}
+                />
+                </>
+                : selectedLanguage === 'pr' ? 
+                <>
+                 Pr <Image
               style={{marginTop:5}}
-               src={`/assets/images/icons/kingdom.png`}
+               src={`/assets/images/icons/brazil.png`}
                height={15}
                width={15}
-               />)
+               />
+               </>
+               : selectedLanguage === 'sp' ?
+               <>
+                 Sp <Image
+              style={{marginTop:5}}
+               src={`/assets/images/icons/spain.png`}
+               height={15}
+               width={15}
+               />
+               </>
+               : null
+              }
+                
+               )
             </p>
               
             </div>
               <div className={styles.languageSelect}>
-                <div className={styles.languageWithFlag}>
-                <p>
+                <div onClick={()=>clickLanguage('en')} className={styles.languageWithFlag}>
+                <p >
                   English
                 </p>
                 <Image
@@ -372,7 +411,7 @@ export default function Navbar() {
                width={17}
                />
                 </div>
-                <div className={styles.languageWithFlag}>
+                <div onClick={()=>clickLanguage('pr')} className={styles.languageWithFlag}>
                 <p>
                   Portugues
                 </p>
@@ -382,7 +421,7 @@ export default function Navbar() {
                width={17}
                />
                 </div>
-                <div className={styles.languageWithFlag}>
+                <div onClick={()=>clickLanguage('sp')} className={styles.languageWithFlag}>
                 <p>
                   Spanish
                 </p>

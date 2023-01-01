@@ -5,6 +5,7 @@ import { Container } from "react-bootstrap";
 import { useStatus } from "../context/ContextStatus";
 import styles from "../styles/Home.module.css";
 
+
 const Home: NextPage = () => {
   const { modal, setModal } = useStatus();
   return (
@@ -17,26 +18,29 @@ const Home: NextPage = () => {
       <div className={styles.home__container}>
         <div className={styles.video__overlay}></div>
         {/* <video src={"/assets/videos/gaming2.webm"} autoPlay loop muted /> */}
-        <div style={{width:'100%',height:900}}>
+        <div style={{width:'100%',height:900, position: 'relative'}}>
         <Image
               style={{marginTop:5}}
                src={`/assets/images/slider1.jpeg`}
                layout='fill'
+               priority={true}
+              //  width='100%'
+              //  height={900}
                />
         </div>
             
         <div className={styles.video__content}>
           <h1>
-            GET PAID TO{" "}
-            <span className={styles.video__content__play}>PLAY</span>
+            PLAY GAMES
+            <span className={styles.video__content__play}>GET PAID</span>
           </h1>
-          <div style={{ textAlign: "center", marginTop: "15px" }}>
+          {/* <div style={{ textAlign: "center", marginTop: "15px" }}>
             <p style={{ marginBottom: "0px" }}>
               Compete in Free and Paid entry Tournaments in just a
             </p>
             <p>few clicks without any additional downloads</p>
-          </div>
-          <div className={styles.counter__container}>
+          </div> */}
+          {/* <div className={styles.counter__container}>
             <div>
               <p>Games Played on Repeat</p>
               <h5>260,828,947</h5>
@@ -47,7 +51,7 @@ const Home: NextPage = () => {
                 <span>$</span>986,843
               </h5>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       <Container>
@@ -109,6 +113,32 @@ const Home: NextPage = () => {
           </div>
         </div>
       </Container>
+      <div style={{ margin: "50px 0px" }}>
+        <h2
+          style={{
+            textAlign: "center",
+            marginBottom: "50px",
+            fontWeight: "700",
+          }}
+          className={styles.connect__mobile}
+        >
+          CONNECT WITH OUR MOBILE APP
+        </h2>
+        <Container className={styles.download__app__container}>
+          <div style={{ margin: "auto 0px" }}>
+            <a className={styles.download__button}>Download App Now</a>
+            <p>Available app</p>
+            <Image src={`/assets/images/play.png`} height={90} width={220} />
+            <Image src={`/assets/images/app.png`} height={90} width={220} />
+            <h6 style={{color:'#000'}}>Download the UPA mobile app to create/accept challenges/tournaments and manage your account in the palm of your hand. </h6>
+          </div>
+          <Image
+            src={`/assets/images/mobile1.webp`}
+            height={500}
+            width={700}
+          />
+        </Container>
+      </div>
       <div className={styles.unlimited__container}>
         <h3
           style={{

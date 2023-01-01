@@ -180,3 +180,23 @@
   background-color: #0A1861;
   color: white !important;
 }
+
+.download__app__container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+  text-align: center;
+}
+.download__app__container p {
+  margin-top: 50px;
+  font-size: 25px;
+  font-weight: 700;
+}
+.download__button {
+  background-color: #be454b;
+  text-decoration: none;
+  color: white;
+  padding: 20px 30px;
+  font-size: 20px;
+  font-weight: 700;
+}

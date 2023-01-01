@@ -12,7 +12,7 @@ export default function Footer() {
             <div>
               <Image src={`/assets/images/logo__transparent.png`} height={60} width={150} />
               <ul>
-                <li>
+                {/* <li>
                   <a href="https://discord.com">
                     <Image
                       src={`/assets/images/icons/discord.png`}
@@ -47,28 +47,20 @@ export default function Footer() {
                       width={20}
                     />
                   </a>
-                </li>
+                </li> */}
               </ul>
             </div>
-            <p>Ultimate Players Arena allows you to enter free tournaments to win cash and other prizes</p>
-            <p><span className={styles.copyright__text}>Ultimate Players Arena(UPA) 2022 All Rights Reserved.</span></p>
+            {/* <p>Ultimate Players Arena allows you to enter free tournaments to win cash and other prizes</p>
+            <p><span className={styles.copyright__text}>Ultimate Players Arena(UPA) 2022 All Rights Reserved.</span></p> */}
           </div>
           <div className={styles.page__content__wrapper}>
-            <div className={styles.page__info__content}>
+            <div className={styles.page__info__content1}>
                 <h4>+18</h4>
                 <ul>
                     <li>
                         <Link href="/disclaimer"><a>Disclaimer</a></Link>
                     </li>
-                    {/* <li>
-                        <Link href="/"><a>Communities</a></Link>
-                    </li>
-                    <li>
-                        <Link href="/"><a>Developers</a></Link>
-                    </li>
-                    <li>
-                        <Link href="/"><a>Brands</a></Link>
-                    </li> */}
+                   
                 </ul>
             </div>
             <div className={styles.page__info__content}>
@@ -124,7 +116,7 @@ export default function Footer() {
                 <h4>Contact</h4>
                 </a>
                 <ul>
-                    <li>
+                    {/* <li>
                     <a href="mailto:hello@upaesports.com?subject=SendMail&body=Description">
                     <Image
                       src={`/assets/images/icons/gmail.png`}
@@ -132,7 +124,7 @@ export default function Footer() {
                       width={20}
                     />
                   </a>
-                    </li>
+                    </li> */}
                     {/* <li>
                         <Link href="/privacy-policy"><a>Privacy Policy</a></Link>
                     </li>

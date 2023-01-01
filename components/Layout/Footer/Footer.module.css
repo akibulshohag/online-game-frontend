@@ -40,7 +40,9 @@
 .page__info__content {
   flex-basis: unset;
   padding-left: 64px;
+  
 }
+
 .page__info__content h4 {
   font-size: 16px;
   color: white;
@@ -54,4 +56,27 @@
 }
 .page__info__content a:hover {
   color: white;
+}
+.page__info__content1 {
+  flex-basis: unset;
+  padding-left: 50px;
+  width: 500px;
+}
+.page__info__content1 h4 {
+  font-size: 16px;
+  color: white;
+}
+.page__info__content1 li {
+  padding: 6px 0px;
+}
+.page__info__content1 h4 {
+  font-size: 16px;
+  color: white;
+}
+.page__info__content1 a:hover {
+  color: white;
+}
+.page__info__content1 ul {
+  list-style: none;
+  padding-left: 0;
 }
