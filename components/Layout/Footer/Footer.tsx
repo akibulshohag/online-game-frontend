@@ -2,8 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import BottomFooter from "./BottomFooter";
 import styles from "./Footer.module.css";
+import { useTranslation } from 'react-i18next';
 
 export default function Footer() {
+  const { t, i18n } = useTranslation();
   return (
     <div className={styles.main}>
       <div className={styles.footer}>
@@ -65,7 +67,7 @@ export default function Footer() {
             </div>
             <div className={styles.page__info__content}>
               <Link href="/about-us">
-                <h4 style={{cursor:'pointer'}}>About Us</h4>
+                <h4 style={{cursor:'pointer'}}>{t('aboutus')}</h4>
                 </Link>
                 <ul>
                     {/* <li>

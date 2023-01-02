@@ -11,10 +11,10 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { setCookie } from "nookies";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useTranslation } from 'react-i18next';
+import '../../../context/i18next';
 import postRequest from "../../../lib/postRequest";
 import styles from "./Navbar.module.css";
-import '../../../pages/i18next'
-import { useTranslation } from 'react-i18next';
 
 type countryName = {
   common: string;
@@ -53,6 +53,7 @@ type ForgotPassword={
 export default function Navbar() {
   const [allCountry, setAllCountry] = useState<allCountryType[]>([]);
   const { t, i18n } = useTranslation();
+  const { isFallback, events } = useRouter()
   const {
     modal,
     setModal,
@@ -265,11 +266,68 @@ const clickLanguage =(lang:string)=>{
   });
 }
 
+// useEffect(() => {
+//   function googleTranslateElementInit() {
+//     if (!window['google']) {
+//         console.log('script added');
+//         var script = document.createElement('SCRIPT');
+//         script.setAttribute(
+//               "src",
+//               "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+//             );
+//         document.getElementsByTagName('HEAD')[0].appendChild(script);
+//     }
+  
+    
+//         console.log('translation loaded');
+//         new window.google.translate.TranslateElement(
+//             {
+//                 pageLanguage: 'tr',
+//                 includedLanguages: 'ar,en,es,jv,ko,pt,ru,zh-CN,tr',
+//                 layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+//                 //autoDisplay: false,
+//             },
+//             'google_translate_element'
+//         );
+   
+//   }
+//   googleTranslateElementInit()
+// }, [])
+
+
+const googleTranslateElementInit = () => {
+  new window.google.translate.TranslateElement(
+    {
+        pageLanguage: 'tr',
+        includedLanguages: 'ar,en,es,jv,ko,pt,ru,zh-CN,tr',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        //autoDisplay: false,
+    },
+    'google_translate_element'
+);
+};
+
+useEffect(() => {
+  var addScript = document.createElement("script");
+  addScript.setAttribute(
+    "src",
+    "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+  );
+  document.body.appendChild(addScript);
+  window.googleTranslateElementInit = googleTranslateElementInit; 
+}, [1]);
+
+
+
+
+
+
+
 
   
 
   return (
-    <div className={styles.main}>
+    <div   id="google_translate_element"   className={styles.main}>
       <div className={styles.container}>
         <div>
           <Link href="/">
@@ -278,7 +336,7 @@ const clickLanguage =(lang:string)=>{
             </a>
           </Link>
         </div>
-          <div className={styles.middleContainer}>
+          <div   className={styles.middleContainer}>
          <div className={styles.aboutUs}>
             <p style={{color:'#fff',cursor:'pointer'}}>
               {t('aboutus')}
@@ -362,7 +420,7 @@ const clickLanguage =(lang:string)=>{
           </div>
         ) : null}
         <div>
-        <div className={styles.aboutUs}>
+        <div  className={styles.aboutUs}>
           <div className={styles.language}>
             <p style={{color:'#fff',cursor:'pointer'}}>
               Language (
