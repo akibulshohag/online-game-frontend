@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useStatus } from "../../../context/ContextStatus";
 import Modal from "../../Modal/Modal";
+import Script from 'next/script'
 // import ContextStatus from '../../../context/ContextStatus.js';
 import { notification } from "antd";
 import axios from "axios";
@@ -15,6 +16,15 @@ import { useTranslation } from 'react-i18next';
 import '../../../context/i18next';
 import postRequest from "../../../lib/postRequest";
 import styles from "./Navbar.module.css";
+import Head from 'next/head'
+import googleTranslateElementInit from '../../../context/text'
+
+// import document, { Html, Head, Main, NextScript } from 'next/document'
+
+
+import jquery from 'jquery';
+const $: JQueryStatic = jquery;
+
 
 type countryName = {
   common: string;
@@ -49,6 +59,14 @@ type RegistrationInputs = {
 type ForgotPassword={
   email:string;
 }
+
+// type google={
+//   google:any
+// }
+
+
+
+
 
 export default function Navbar() {
   const [allCountry, setAllCountry] = useState<allCountryType[]>([]);
@@ -266,73 +284,59 @@ const clickLanguage =(lang:string)=>{
   });
 }
 
+
+
+
+useEffect(() => {
+  // const googleTranslateElementInit =async () => {
+  //   try {
+        
+  //      new google.translate.TranslateElement({ includedLanguages: 'en,es,pt', layout: google.translate.TranslateElement.InlineLayout.SIMPLE }, 'google_translate_element');
+  //   } catch (error) {
+      
+  //   }
+     
+  // };
+  googleTranslateElementInit('google_translate_element')
+},[1]);
+
+
+
 // useEffect(() => {
-//   function googleTranslateElementInit() {
-//     if (!window['google']) {
-//         console.log('script added');
-//         var script = document.createElement('SCRIPT');
-//         script.setAttribute(
-//               "src",
-//               "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-//             );
-//         document.getElementsByTagName('HEAD')[0].appendChild(script);
-//     }
-  
-    
-//         console.log('translation loaded');
-//         new window.google.translate.TranslateElement(
-//             {
-//                 pageLanguage: 'tr',
-//                 includedLanguages: 'ar,en,es,jv,ko,pt,ru,zh-CN,tr',
-//                 layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-//                 //autoDisplay: false,
-//             },
-//             'google_translate_element'
-//         );
-   
-//   }
-//   googleTranslateElementInit()
+//   $(document).ready(function(){
+//     $('#google_translate_element').bind('DOMNodeInserted', function(event) {
+//       $('.goog-te-menu-value span:first').html('LANGUAGE');
+//       $('.goog-te-menu-frame.skiptranslate').load(function():void{
+//         setTimeout(function(){
+//           $('.goog-te-menu-frame.skiptranslate').contents().find('.goog-te-menu2-item-selected .text').html('LANGUAGE');    
+//         }, 100);
+//       });
+//     });
+//   });
 // }, [])
 
 
-const googleTranslateElementInit = () => {
-  new window.google.translate.TranslateElement(
-    {
-        pageLanguage: 'tr',
-        includedLanguages: 'ar,en,es,jv,ko,pt,ru,zh-CN,tr',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-        //autoDisplay: false,
-    },
-    'google_translate_element'
-);
-};
-
-useEffect(() => {
-  var addScript = document.createElement("script");
-  addScript.setAttribute(
-    "src",
-    "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-  );
-  document.body.appendChild(addScript);
-  window.googleTranslateElementInit = googleTranslateElementInit; 
-}, [1]);
-
-
-
-
-
-
-
-
-  
-
   return (
-    <div   id="google_translate_element"   className={styles.main}>
+    <>
+    {/* <Head>
+    <script type="text/javascript">
+     {`function googleTranslateElementInit() {
+       new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: "en,fr,ar,es", layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element')
+     }`}
+     </script>
+    </Head> */}
+
+   
+      
+    <div   className={styles.main}>
+  
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+   
       <div className={styles.container}>
         <div>
           <Link href="/">
             <a>
-              <Image src={`/assets/images/logo.png`} height={60} width={160} />
+              <Image src={`/assets/images/logo.png`} height={60} width={160} />  
             </a>
           </Link>
         </div>
@@ -420,8 +424,9 @@ useEffect(() => {
           </div>
         ) : null}
         <div>
-        <div  className={styles.aboutUs}>
-          <div className={styles.language}>
+        <div id='google_translate_element' className={styles.aboutUs}>
+          
+          {/* <div className={styles.language}>
             <p style={{color:'#fff',cursor:'pointer'}}>
               Language (
                 {selectedLanguage === 'en' ? 
@@ -457,8 +462,8 @@ useEffect(() => {
                )
             </p>
               
-            </div>
-              <div className={styles.languageSelect}>
+            </div> */}
+              {/* <div className={styles.languageSelect}>
                 <div onClick={()=>clickLanguage('en')} className={styles.languageWithFlag}>
                 <p >
                   English
@@ -492,9 +497,10 @@ useEffect(() => {
                 
              
               
-              </div>
+              </div> */}
           </div>
         </div>
+        
       </div>
       {modal == "login" ? (
         <Modal title={"Login"} handleClose={() => setModal("")}>
@@ -951,6 +957,8 @@ useEffect(() => {
 
       ) : null}
     </div>
+    
+    </>
   );
 }
 // function useForm(): { register: any; handleSubmit: any; formState: { errors: any; }; } {

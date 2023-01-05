@@ -22,3 +22,37 @@ p {
 hr {
   margin: 0rem 0 !important;
 }
+
+ .goog-te-banner-frame {
+  display: none;
+  height: 0 !important;
+  visibility: hidden
+} 
+
+/* #google_translate_element {
+  display: none;
+} */
+
+.goog-te-gadget-icon {
+  display:none;
+}
+
+
+.goog-te-gadget-simple {
+    background-color: #0a1861 !important;
+    border:0 !important;
+    font-size: 10pt;
+   font-weight:800;
+    display: inline-block;
+    padding:7px 7px !important;
+    cursor: pointer;
+    zoom: 1;
+}
+
+.goog-te-gadget-simple  span {
+   color:#e3692d !important;
+
+}
+.goog-te-menu2{
+  color: #130047 !important;
+}

@@ -139,7 +139,7 @@ const Home: NextPage = () => {
           />
         </Container>
       </div>
-      <div className={styles.unlimited__container}>
+      {/* <div className={styles.unlimited__container}>
         <h3
           style={{
             color: "#F35237",
@@ -170,8 +170,8 @@ const Home: NextPage = () => {
             <a>Join Now</a>
           </div>
         </Container>
-      </div>
-      <div style={{ backgroundColor: "#F0F0F0" }}>
+      </div> */}
+      {/* <div style={{ backgroundColor: "#F0F0F0" }}>
         <Container>
           <div className={styles.leader__board__container}>
             <div>
@@ -194,8 +194,8 @@ const Home: NextPage = () => {
             </div>
           </div>
         </Container>
-      </div>
-      <div style={{ backgroundColor: "#0A1861" }}>
+      </div> */}
+      {/* <div style={{ backgroundColor: "#0A1861" }}>
         <Container>
           <div className={styles.result__board__container}>
             <div>
@@ -234,7 +234,7 @@ const Home: NextPage = () => {
             </div>
           </div>
         </Container>
-      </div>
+      </div> */}
     </div>
   );
 };
