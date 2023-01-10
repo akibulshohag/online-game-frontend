@@ -218,7 +218,8 @@ type RegistrationInputs = {
   confirmPassword: string;
   dateOfBirth: string;
   country: string;
-  refernce_player_id:number
+  refernce_player_id:number;
+  image: string;
 };
 interface IGames {
   classificationId: number;
@@ -241,6 +242,10 @@ interface ISingleGame {
   utcDate: string;
   skill:string;
   honesty:string
+}
+
+interface ProfileInputs{
+  image: string;
 }
 
 export default function Profile() {
@@ -302,7 +307,7 @@ export default function Profile() {
   const [games, setGames] = useState<IGames[] | []>([]);
   const [activeGame, setActiveGame] = useState<IGames | null>(null);
   const [imageUrl, setImageUrl] = useState("");
-  const [profileImage, setprofileImage] = useState<any>(0)
+  const [profileImage, setprofileImage] = useState<ProfileInputs | 0>()
 
 
   const {
