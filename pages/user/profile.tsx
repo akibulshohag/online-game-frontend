@@ -220,6 +220,28 @@ type RegistrationInputs = {
   country: string;
   refernce_player_id:number
 };
+interface IGames {
+  classificationId: number;
+  classificationImage: string;
+  classificationName: string;
+  games: ISingleGame[] | 0;
+}
+interface ISingleGame {
+  gameId: number;
+  launchGamePlayerId: number;
+  launchGamePlayerUserName: string;
+  launchGamePlayerCountry: string;
+  link: string;
+  amount: number;
+  date: string;
+  time: string;
+  game_type: string;
+  round: number;
+  utcTime: string;
+  utcDate: string;
+  skill:string;
+  honesty:string
+}
 
 export default function Profile() {
   const {
@@ -244,10 +266,10 @@ export default function Profile() {
     country,
     setcountry,
     birthday,
-    setbirthday
+    setbirthday,
   } = useStatus();
 
-  const [tab, setTab] = useState("launched");
+  const [tab, setTab] = useState("available-game");
   const [gameType, setGameType] = useState(1);
   const [launchedGame, setLaunchedGame] = useState<ILaunchedGames[] | []>();
   const [activeLaunchedGame, setActiveLaunchedGame] =
@@ -277,6 +299,8 @@ export default function Profile() {
   const [minDate, setminDate] = useState('')
   const [affiliateList, setaffiliateList] = useState([])
   const [allCountry, setAllCountry] = useState<allCountryType[]>([]);
+  const [games, setGames] = useState<IGames[] | []>([]);
+  const [activeGame, setActiveGame] = useState<IGames | null>(null);
 
   const {
     register,
@@ -394,6 +418,20 @@ export default function Profile() {
     setTotalItems(res?.last_page * res?.data?.length)
     setLaunchedGame(res?.data);
   }
+  async function getAvailableGame() {
+    setTab("available-game");
+    const res = await request(
+      `player/published-game-list?player_id=${userId}`,
+      token
+    );
+    
+    // setTotalItems(res?.last_page * res?.data?.length)
+    // setLaunchedGame(res?.data);
+    setGames(res?.data);
+    setActiveGame(res?.data?.length ? res?.data[0] : null);
+  }
+
+  
 
 
   async function getRequestList() {
@@ -446,11 +484,12 @@ export default function Profile() {
   }
 
   useEffect(() => {
-    getLaunchedGame()
-  }, [page])
+    // getLaunchedGame()
+    getAvailableGame()
+  }, [])
 
   useEffect(() => {
-    getLaunchedGame();
+    // getLaunchedGame();
     handleClassification();
     handleConsole();
 
@@ -1154,6 +1193,39 @@ export default function Profile() {
      }
   };
 
+  const [imageUrl, setImageUrl] = useState("");
+
+
+  
+
+  const handlePicChange = (info:any) => {
+    console.log(
+      "info.........",
+      getBase64(info).then((data) => setImageUrl(data))
+    );
+    // getBase64(info).then( data => console.log(data) )
+  };
+
+  async function handleRequest(gameDetails: ISingleGame) {
+    console.log("request sending button working...........", gameDetails);
+    const res = await postRequest(`player/game-request-send`, token, {
+      game_id: gameDetails?.gameId,
+      launch_player_id: gameDetails?.launchGamePlayerId,
+      accept_player_id: Number(userId),
+      game_type: Number(gameDetails?.game_type),
+      status: 2,
+    });
+    // console.log("response.........", res);
+    if (res?.status == "success") {
+      openNotificationWithIcon(res?.message, "success");
+      window.location.reload();
+    } else {
+      openNotificationWithIcon(res?.message, "error");
+    }
+  }
+
+
+
 
   return (
     <div className={styles.main}>
@@ -1235,9 +1307,15 @@ export default function Profile() {
                   ) : null}
                 </div>
               </div>
-              <Link href={"/user/available-games"}>
+              {/* <Link href={"/user/available-games"}>
                 <a>Available Games</a>
-              </Link>
+              </Link> */}
+              <a
+                className={`${tab === "available-game" ? styles.border__bottom : null}`}
+                onClick={() => setTab("available-game")}
+              >
+                Available Games
+              </a>
               <a
                 className={`${tab === "launch" ? styles.border__bottom : null}`}
                 onClick={() => setTab("launch")}
@@ -2164,6 +2242,94 @@ export default function Profile() {
                   ))}
                 </div>
               </div>
+            ) : tab === "available-game" ? (
+              <div className={styles.launched__container}>
+                <div className={styles.available__games__container}>
+                      {games?.map((item, index) => (
+                        <div
+                          key={index}
+                          className={styles.single__games__container}
+                          onClick={() => setActiveGame(item)}
+                        >
+                          <Image src={item?.classificationImage} height={80} width={100} />
+                          <h6
+                            style={{ textAlign: "center", color: "#fff", fontWeight: "700" }}
+                          >
+                            {item?.classificationName}{" "}
+                            <span
+                              style={{
+                                backgroundColor: "white",
+                                color: "#F35237",
+                                padding: "0px 5px",
+                              }}
+                            >
+                              {item?.games == 0 ? 0 : item?.games?.length}
+                            </span>
+                          </h6>
+                        </div>
+                      ))}
+                  </div>
+                <h5>Your Available Game List</h5>
+                <div className={styles.available__game__list}>
+                  <div className={styles.available__game__header}>
+                    <h6>Game Name</h6>
+                    <h6>Launch Player</h6>
+                    <h6>Start Time</h6>
+                    <h6>Round</h6>
+                    <h6>Honesty</h6>
+                    <h6>Entry Fee</h6>
+                    <h6>Action</h6>
+                  </div>
+                  <hr />
+                  {activeGame?.games == 0 ? null 
+                  : activeGame?.games?.map((item, index) => (
+                    <div key={index}>
+                      <div className={styles.available__game__header}>
+                        <p>{activeGame?.classificationName} </p>
+                        <p>{item?.launchGamePlayerUserName}</p>
+                        <p> {moment.utc(item?.utcDate + ' ' + item?.utcTime ).local().format('YYYY-MM-DD HH:mm')}</p>
+                        <p>{item?.game_type == "1" ? "Single" : "Team"}</p>
+                        <p>{item?.honesty}</p>
+                        <p>{item?.amount} $</p>
+                        {/* <div style={{ margin: "auto 0px" }}>
+                          <a
+                            className={styles.edit__delete__button}
+                            onClick={() => handleView(item)}
+                          >
+                            <AiFillEye />
+                          </a>{" "}
+                          <a
+                            className={styles.edit__delete__button}
+                            onClick={() => handleEdit(item)}
+                          >
+                            <FaEdit />
+                          </a>{" "}
+                          <a
+                            className={styles.edit__delete__button}
+                            onClick={() => handleDelete(item)}
+                          >
+                            <MdDeleteSweep />
+                          </a>
+                        </div> */}
+                        {credit >= item?.amount ? 
+                          <button
+                          className={styles.request__button}
+                           onClick={() => handleRequest(item)}
+                          >
+                             Request for Entry
+                           </button>
+                           : null
+                           }
+                      </div>
+                      { activeGame?.games == 0 ? null : activeGame?.games?.length - 1 == index ? null : <hr />}
+                      {/* {activeGame?.games?.length - 1 == index ? null : <hr />} */}
+                    </div>
+                  ))}
+                </div>
+                {/* <div style={{ textAlign: 'center', marginTop: '10px' }}>
+                  <Pagination defaultCurrent={1} total={launchedGame?.length} onChange={(page, pageSize) => setPage(page)} pageSize={totalItems} />
+                </div> */}
+              </div>
             ) :
               null}
           </div>
@@ -2745,6 +2911,24 @@ export default function Profile() {
                           )}
                         {/* {errors.password && errors.password.type === 'minLength' && <span>Minimum 6 character is required</span>} */}
                       </div>
+                      <div>
+                        <label className={styles.label}>
+                          Your Profile Image <span style={{ color: "red" }}>*</span>
+                        </label>
+                        <input
+                          type="file"
+                          accept="image/png, image/gif, image/jpeg"
+                          onChange={(e) => handlePicChange(e.target.files[0])}
+                        />
+                          {imageUrl &&  <div>
+                                                <img src={imageUrl}  style={{height:"140px",width:"120px"}}/>
+                                              </div>}
+                        {/* <Upload onChange={handlePicChange} listType="text" status="success">
+                                    <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                                </Upload> */}
+                        {/* {errors.image && errors.image.type === 'required' && <span>This image is required</span>} */}
+                      </div>
+
                       
                       <div style={{ textAlign: "center",marginBottom:'20px' }}>
                         <input

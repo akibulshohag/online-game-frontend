@@ -94,7 +94,9 @@ export default function Navbar() {
     birthday,
     setbirthday,
     selectedLanguage,
-    setselectedLanguage
+    setselectedLanguage,
+    setselectedChallenge
+
   } = useStatus();
   const router = useRouter();
   const {
@@ -285,53 +287,30 @@ const clickLanguage =(lang:string)=>{
 }
 
 
-
-
 useEffect(() => {
-  // const googleTranslateElementInit =async () => {
-  //   try {
-        
-  //      new google.translate.TranslateElement({ includedLanguages: 'en,es,pt', layout: google.translate.TranslateElement.InlineLayout.SIMPLE }, 'google_translate_element');
-  //   } catch (error) {
-      
-  //   }
-     
-  // };
+  
   googleTranslateElementInit('google_translate_element')
 },[1]);
 
 
-
-// useEffect(() => {
-//   $(document).ready(function(){
-//     $('#google_translate_element').bind('DOMNodeInserted', function(event) {
-//       $('.goog-te-menu-value span:first').html('LANGUAGE');
-//       $('.goog-te-menu-frame.skiptranslate').load(function():void{
-//         setTimeout(function(){
-//           $('.goog-te-menu-frame.skiptranslate').contents().find('.goog-te-menu2-item-selected .text').html('LANGUAGE');    
-//         }, 100);
-//       });
-//     });
-//   });
-// }, [])
+const redirectChallange =()=>{
+  
+    router.push('/user/available-games')
+    setselectedChallenge("Challenges")
+  
+}
+const redirectTournament =()=>{
+  
+    router.push('/user/available-games')
+    setselectedChallenge("Tournament")
+  
+}
 
 
   return (
     <>
-    {/* <Head>
-    <script type="text/javascript">
-     {`function googleTranslateElementInit() {
-       new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: "en,fr,ar,es", layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element')
-     }`}
-     </script>
-    </Head> */}
-
-   
-      
+    
     <div   className={styles.main}>
-  
-    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
-   
       <div className={styles.container}>
         <div>
           <Link href="/">
@@ -340,7 +319,7 @@ useEffect(() => {
             </a>
           </Link>
         </div>
-          <div   className={styles.middleContainer}>
+          <div  className={styles.middleContainer}>
          <div className={styles.aboutUs}>
             <p style={{color:'#fff',cursor:'pointer'}}>
               {t('aboutus')}
@@ -363,16 +342,16 @@ useEffect(() => {
               Competition
             </p>
             <div className={styles.aboutUsHover}>
-              <Link href="/user/available-games">
-              <p className={styles.termAndCondition} style={{color:'#fff'}}>
+              <a onClick={()=>redirectChallange()}>
+              <p  className={styles.termAndCondition} style={{color:'#fff'}}>
                 Challenges
               </p>
-              </Link>
-              <Link href="/user/available-games">
+              </a>
+              <a onClick={()=>redirectTournament()}>
               <p className={styles.privacy} style={{color:'#fff'}}>
                 Tournaments
               </p>
-              </Link>
+              </a> 
               </div>
             </div>
           <Link href="/">
@@ -425,6 +404,8 @@ useEffect(() => {
         ) : null}
         <div>
         <div id='google_translate_element' className={styles.aboutUs}>
+        <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" ></script>
+       
           
           {/* <div className={styles.language}>
             <p style={{color:'#fff',cursor:'pointer'}}>

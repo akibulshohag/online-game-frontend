@@ -6,6 +6,8 @@ import { useStatus } from "../../context/ContextStatus";
 import postRequest from "../../lib/postRequest";
 import request from "../../lib/request";
 import styles from "../../styles/AvailableGames.module.css";
+import { useRouter } from "next/router";
+
 
 interface ISingleGame {
   gameId: number;
@@ -21,19 +23,23 @@ interface ISingleGame {
   utcTime: string;
   utcDate: string;
   skill:string;
-  honesty:string
+  honesty:string;
+  count:number
 }
 interface IGames {
   classificationId: number;
   classificationImage: string;
   classificationName: string;
   games: ISingleGame[] | 0;
+  count: number;
 }
 
 export default function AvailableGames() {
-  const { userId, setUserId, token, setToken,credit } = useStatus();
+  const { userId, setUserId, token, setToken,credit,modal,setModal,selectedChallenge } = useStatus();
   const [games, setGames] = useState<IGames[] | []>([]);
   const [activeGame, setActiveGame] = useState<IGames | null>(null);
+  const router = useRouter();
+
   const openNotificationWithIcon = (
     message: string,
     type: string,
@@ -44,36 +50,66 @@ export default function AvailableGames() {
     }
   };
 
-  // console.log("user...............", userId);
+  // useEffect(() => {
+  //   (async () => {
+  //     const response = await request(
+  //       `player/published-game-list?player_id=${userId}`,
+  //       token
+  //     );
+  //     // console.log("response...........gamed", response?.data);
+  //     setGames(response?.data);
+  //     setActiveGame(response?.data?.length ? response?.data[0] : null);
+  //   })();
+  // }, []);
+
+
   useEffect(() => {
     (async () => {
-      const response = await request(
-        `player/published-game-list?player_id=${userId}`,
-        token
-      );
-      // console.log("response...........gamed", response?.data);
-      setGames(response?.data);
-      setActiveGame(response?.data?.length ? response?.data[0] : null);
+      if(selectedChallenge === 'Challenges'){
+        const response = await request(
+          `challenge`,
+          null
+        );
+        setGames(response?.data);
+        // setActiveGame(response?.data?.length ? response?.data[0] : null);
+      } else{
+        const response = await request(
+          `tournament`,
+          null
+        );
+        setGames(response?.data);
+      }
+      
     })();
-  }, []);
+  }, [selectedChallenge]);
 
-  async function handleRequest(gameDetails: ISingleGame) {
-    console.log("request sending button working...........", gameDetails);
-    const res = await postRequest(`player/game-request-send`, token, {
-      game_id: gameDetails?.gameId,
-      launch_player_id: gameDetails?.launchGamePlayerId,
-      accept_player_id: Number(userId),
-      game_type: Number(gameDetails?.game_type),
-      status: 2,
-    });
-    // console.log("response.........", res);
-    if (res?.status == "success") {
-      openNotificationWithIcon(res?.message, "success");
-      window.location.reload();
-    } else {
-      openNotificationWithIcon(res?.message, "error");
+  // async function handleRequest(gameDetails: ISingleGame) {
+  //   console.log("request sending button working...........", gameDetails);
+  //   const res = await postRequest(`player/game-request-send`, token, {
+  //     game_id: gameDetails?.gameId,
+  //     launch_player_id: gameDetails?.launchGamePlayerId,
+  //     accept_player_id: Number(userId),
+  //     game_type: Number(gameDetails?.game_type),
+  //     status: 2,
+  //   });
+  //   // console.log("response.........", res);
+  //   if (res?.status == "success") {
+  //     openNotificationWithIcon(res?.message, "success");
+  //     window.location.reload();
+  //   } else {
+  //     openNotificationWithIcon(res?.message, "error");
+  //   }
+  // }
+
+  const redirectPage =()=>{
+    if(token){
+      router.push('/user/profile')
+    } else{
+      setModal('login')
     }
   }
+
+
 
   return (
     <div className={styles.main}>
@@ -104,7 +140,7 @@ export default function AvailableGames() {
           >
             Available
           </span>{" "}
-          Games
+           {selectedChallenge} Games
         </h3>
       </div>
       <div className={styles.available__games__container}>
@@ -112,7 +148,7 @@ export default function AvailableGames() {
           <div
             key={index}
             className={styles.single__games__container}
-            onClick={() => setActiveGame(item)}
+            onClick={() => redirectPage()}
           >
             <Image src={item?.classificationImage} height={300} width={300} />
             <h5
@@ -126,13 +162,13 @@ export default function AvailableGames() {
                   padding: "0px 10px",
                 }}
               >
-                {item?.games == 0 ? 0 : item?.games?.length}
+                {item?.count == 0 ? 0 : item?.count}
               </span>
             </h5>
           </div>
         ))}
       </div>
-      <div className={styles.container__with__shadow}>
+      {/* <div className={styles.container__with__shadow}>
         <div style={{ paddingLeft: "20px" }}>
           <h3
             style={{
@@ -145,7 +181,6 @@ export default function AvailableGames() {
           >
             {activeGame?.classificationName}
           </h3>
-          {/* <h6 style={{marginBottom:"0px"}}></h6> */}
           <p style={{ fontSize: "12px" }}>
             Last Chance to Grab! These tournaments are ending soon.
           </p>
@@ -165,8 +200,7 @@ export default function AvailableGames() {
                   />
                   <h4 style={{ fontSize: "18px", margin: "auto 0px" }}>
                     {activeGame?.classificationName} - Starts{" "}
-                    {/* {item?.date.toString()} {item?.time} */}
-                    {/* {new Date(item?.date + ' ' + item?.time).toString()} */}
+                   
                     
                     {moment.utc(item?.utcDate + ' ' + item?.utcTime ).local().format('YYYY-MM-DD HH:mm')}
                        |{" "}
@@ -209,7 +243,7 @@ export default function AvailableGames() {
                 </div>
               ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -3,6 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     domains: [`onlinegame.demoff.xyz`]
+    // domains: [`192.168.68.117`]
   }
 }
 

@@ -1,13 +1,65 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { useStatus } from "../context/ContextStatus";
+import request from "../lib/request";
 import styles from "../styles/Home.module.css";
+import { useRouter } from "next/router";
 
+
+interface IGames {
+  classificationId: number;
+  classificationImage: string;
+  classificationName: string;
+  games: ISingleGame[] | 0;
+  count: number;
+}
+interface ISingleGame {
+  gameId: number;
+  launchGamePlayerId: number;
+  launchGamePlayerUserName: string;
+  launchGamePlayerCountry: string;
+  link: string;
+  amount: number;
+  date: string;
+  time: string;
+  game_type: string;
+  round: number;
+  utcTime: string;
+  utcDate: string;
+  skill:string;
+  honesty:string
+}
 
 const Home: NextPage = () => {
-  const { modal, setModal } = useStatus();
+  const { modal, setModal ,token} = useStatus();
+  const [games, setGames] = useState<IGames[] | []>([]);
+  const router = useRouter();
+
+
+  useEffect(() => {
+    (async () => {
+      const response = await request(
+        `combined`,
+        null
+      );
+      setGames(response?.data);
+    })();
+  }, []);
+
+  const redirectPage =()=>{
+    if(token){
+      router.push('/user/profile')
+    } else{
+      setModal('login')
+    }
+  }
+
+
+ 
+  
   return (
     <div className={styles.main}>
       <Head>
@@ -56,7 +108,7 @@ const Home: NextPage = () => {
       </div>
       <Container>
         <div className={styles.games__container}>
-          <h3 style={{ color: "black" }}>Available Games</h3>
+          <h3 style={{ color: "black" }}>Mini Platform</h3>
           <p>We are constantly adding new games</p>
           <div
             style={{
@@ -74,43 +126,62 @@ const Home: NextPage = () => {
               <h6 style={{ fontSize: "19px" }}>Create Account</h6>
             </a>
           </div>
+          {games?.length > 0 ? 
           <div className={styles.games__grid__view}>
-            <div>
+            {games.map((item,index)=>
+            <div onClick={() => setModal("signup")}>
               <Image
-                src={`/assets/images/game/banner.png`}
+                src={`${item?.classificationImage}`}
                 height={350}
-                width={230}
+                width={300}
               />
+              <h3 style={{color:'#000'}}>{item?.classificationName} : {item?.count}</h3>
             </div>
-            <div>
-              <Image
-                src={`/assets/images/game/banner.png`}
-                height={350}
-                width={230}
-              />
-            </div>
-            <div>
-              <Image
-                src={`/assets/images/game/banner.png`}
-                height={350}
-                width={230}
-              />
-            </div>
-            <div>
-              <Image
-                src={`/assets/images/game/banner.png`}
-                height={350}
-                width={230}
-              />
-            </div>
-            <div>
-              <Image
-                src={`/assets/images/game/banner.png`}
-                height={350}
-                width={230}
-              />
-            </div>
+            )}
+            
+            
           </div>
+          : <div className={styles.games__grid__view}>
+            
+          <div onClick={() => redirectPage()}>
+            <Image
+              src={`/assets/images/game/banner.png`}
+              height={350}
+              width={230}
+            />
+            <h3 style={{color:'#000'}}>Football</h3>
+          </div>
+          
+          <div>
+            <Image
+              src={`/assets/images/game/banner.png`}
+              height={350}
+              width={230}
+            />
+          </div>
+          <div>
+            <Image
+              src={`/assets/images/game/banner.png`}
+              height={350}
+              width={230}
+            />
+          </div>
+          <div>
+            <Image
+              src={`/assets/images/game/banner.png`}
+              height={350}
+              width={230}
+            />
+          </div>
+          <div>
+            <Image
+              src={`/assets/images/game/banner.png`}
+              height={350}
+              width={230}
+            />
+          </div>
+        </div>
+          }
         </div>
       </Container>
       <div style={{ margin: "50px 0px" }}>

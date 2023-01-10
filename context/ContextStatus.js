@@ -18,6 +18,7 @@ function StatusProvider({ children }) {
   const [country, setcountry] = useState(cookie?.country ? cookie?.country : '')
   const [birthday, setbirthday] = useState(cookie?.date_of_birth ? cookie?.date_of_birth : '')
   const [selectedLanguage, setselectedLanguage] = useState(cookie?.language ? cookie?.language : 'en')
+  const [selectedChallenge, setselectedChallenge] = useState('Challenges')
 
   return (
     <ContextStatusProvider
@@ -45,7 +46,9 @@ function StatusProvider({ children }) {
         birthday,
         setbirthday,
         selectedLanguage,
-        setselectedLanguage
+        setselectedLanguage,
+        selectedChallenge,
+        setselectedChallenge
       }}
     >
       {children}
