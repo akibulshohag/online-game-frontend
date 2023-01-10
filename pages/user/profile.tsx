@@ -301,6 +301,9 @@ export default function Profile() {
   const [allCountry, setAllCountry] = useState<allCountryType[]>([]);
   const [games, setGames] = useState<IGames[] | []>([]);
   const [activeGame, setActiveGame] = useState<IGames | null>(null);
+  const [imageUrl, setImageUrl] = useState("");
+  const [profileImage, setprofileImage] = useState<any>(0)
+
 
   const {
     register,
@@ -486,6 +489,7 @@ export default function Profile() {
   useEffect(() => {
     // getLaunchedGame()
     getAvailableGame()
+    getProfile()
   }, [])
 
   useEffect(() => {
@@ -508,6 +512,13 @@ export default function Profile() {
     const res = await optionsRequest(`player/console`, token);
     // console.log("response from console ...", res?.data);
     setGamingConsole(res?.data);
+  }
+
+  async function getProfile() {
+    const res = await request(`player/profile?player_id=${userId}`, token);
+    console.log('.........res',res?.data);
+    setprofileImage(res?.data?.image)
+  
   }
 
   async function handleEdit(value: ILaunchedGames) {
@@ -1127,18 +1138,19 @@ export default function Profile() {
         date_of_birth: data?.dateOfBirth ? data?.dateOfBirth : birthday,
         country: data?.country ? data?.country : country,
         password: data?.password ?data?.password:'' ,
+        image: imageUrl? [imageUrl] :''
     }
     console.log('.........data1',data1);
     
     const res = await putRequest(`player/edit`, token, {
-      player_id: userId,
+        player_id: userId,
         username: data?.username ? data?.username : username,
         email: data?.email ? data?.email : userEmail,
         date_of_birth: data?.dateOfBirth ? data?.dateOfBirth : birthday,
         country: data?.country ? data?.country : country,
         password: data?.password ?data?.password:'' ,
+        image: imageUrl? [imageUrl] :''
     });
-    console.log("edit profile.........", res);
     if (res?.status) {
       openNotificationWithIcon(res?.message, "success");
       setToken(res?.data?.access_token);
@@ -1187,23 +1199,32 @@ export default function Profile() {
         path: "/",
       });
       setModal("");
-      // window.location.reload()
+      window.location.reload()
      } else {
        openNotificationWithIcon(res?.message, "error");
      }
   };
 
-  const [imageUrl, setImageUrl] = useState("");
 
-
+  const convertBase64 = (file: any): any => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
   
 
-  const handlePicChange = (info:any) => {
-    console.log(
-      "info.........",
-      getBase64(info).then((data) => setImageUrl(data))
-    );
-    // getBase64(info).then( data => console.log(data) )
+  const handlePicChange = async (data:any) => {
+    console.log("data.........", data);
+    let file = data[0];
+    const base64:any = await convertBase64(file);
+    setImageUrl(base64);
   };
 
   async function handleRequest(gameDetails: ISingleGame) {
@@ -1235,11 +1256,19 @@ export default function Profile() {
             <div className={styles.profile__dashboard}>
               <div style={{ textAlign: "center", padding: "20px 0px" }}>
                 <div style={{position: "relative",zIndex:1}}>
+                  {profileImage == 0 ?
                 <Image
                   src="/assets/images/profile.png"
                   height={200}
                   width={200}
                 />
+                : <Image
+                src={`${profileImage}`}
+                height={200}
+                width={200}
+              />
+              }
+
                 <div style={{position: "absolute",zIndex:2,bottom:20,right:40}}>
                 <a
                   className={styles.edit__delete__button1}
@@ -2918,7 +2947,7 @@ export default function Profile() {
                         <input
                           type="file"
                           accept="image/png, image/gif, image/jpeg"
-                          onChange={(e) => handlePicChange(e.target.files[0])}
+                          onChange={(e) => handlePicChange(e.target.files)}
                         />
                           {imageUrl &&  <div>
                                                 <img src={imageUrl}  style={{height:"140px",width:"120px"}}/>
