@@ -19,7 +19,7 @@ function StatusProvider({ children }) {
   const [birthday, setbirthday] = useState(cookie?.date_of_birth ? cookie?.date_of_birth : '')
   const [selectedLanguage, setselectedLanguage] = useState(cookie?.language ? cookie?.language : 'en')
   const [selectedChallenge, setselectedChallenge] = useState('Challenges')
-  const [image, setimage] = useState(cookie?.image ? cookie?.image : 0)
+  
 
   return (
     <ContextStatusProvider
@@ -50,8 +50,7 @@ function StatusProvider({ children }) {
         setselectedLanguage,
         selectedChallenge,
         setselectedChallenge,
-        image,
-        setimage
+      
       }}
     >
       {children}

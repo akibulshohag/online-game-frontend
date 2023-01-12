@@ -272,8 +272,7 @@ export default function Profile() {
     setcountry,
     birthday,
     setbirthday,
-    image,
-    setimage
+   
   } = useStatus();
 
   const [tab, setTab] = useState("available-game");
