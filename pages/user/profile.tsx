@@ -272,6 +272,8 @@ export default function Profile() {
     setcountry,
     birthday,
     setbirthday,
+    image,
+    setimage
   } = useStatus();
 
   const [tab, setTab] = useState("available-game");
@@ -307,7 +309,7 @@ export default function Profile() {
   const [games, setGames] = useState<IGames[] | []>([]);
   const [activeGame, setActiveGame] = useState<IGames | null>(null);
   const [imageUrl, setImageUrl] = useState("");
-  const [profileImage, setprofileImage] = useState<ProfileInputs | 0>()
+  const [profileImage, setprofileImage] = useState<any>("/assets/images/profile.png")
 
 
   const {
@@ -382,6 +384,7 @@ export default function Profile() {
     destroyCookie(null,"points")
     destroyCookie(null, "country");
     destroyCookie(null,"date_of_birth")
+    destroyCookie(null,"image")
     router.push("/");
   };
 
@@ -523,6 +526,10 @@ export default function Profile() {
     const res = await request(`player/profile?player_id=${userId}`, token);
     console.log('.........res',res?.data);
     setprofileImage(res?.data?.image)
+    setCookie(null, "image", res?.data?.image, {
+      maxAge: 30 * 24 * 60 * 60,
+      path: "/",
+    });
   
   }
 
@@ -1261,18 +1268,19 @@ export default function Profile() {
             <div className={styles.profile__dashboard}>
               <div style={{ textAlign: "center", padding: "20px 0px" }}>
                 <div style={{position: "relative",zIndex:1}}>
-                  {profileImage == 0 ?
-                <Image
-                  src="/assets/images/profile.png"
+                 {profileImage == 0?  <Image
+                  src={"/assets/images/profile.png"}
                   height={200}
                   width={200}
-                />
-                : <Image
-                src={`${profileImage}`}
+                /> 
+                :
+                 <Image
+                src={profileImage}
                 height={200}
                 width={200}
-              />
-              }
+              />}
+                
+               
 
                 <div style={{position: "absolute",zIndex:2,bottom:20,right:40}}>
                 <a

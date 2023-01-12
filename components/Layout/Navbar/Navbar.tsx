@@ -403,7 +403,7 @@ const redirectTournament =()=>{
           </div>
         ) : null}
         <div>
-        <div id='google_translate_element' className={styles.aboutUs}>
+        <div className={styles.aboutUs}>
         <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" ></script>
        
           
