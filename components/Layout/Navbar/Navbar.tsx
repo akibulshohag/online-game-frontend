@@ -276,9 +276,9 @@ export default function Navbar() {
     });
   };
 
-  useEffect(() => {
-    googleTranslateElementInit("google_translate_element");
-  }, [1]);
+  // useEffect(() => {
+  //   googleTranslateElementInit("google_translate_element");
+  // }, [1]);
 
   const redirectChallange = () => {
     router.push("/user/available-games");
