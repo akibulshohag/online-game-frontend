@@ -5,7 +5,7 @@
   width: 100%;
   z-index: 11;
 }
-.main a{
+.main a {
   text-decoration: none !important;
 }
 .container {
@@ -19,89 +19,86 @@
 }
 
 /* middle container */
-.middleContainer{
+.middleContainer {
   margin: 0px auto;
   padding: 0px 0px;
   display: grid;
   grid-template-columns: 100px 100px 150px 100px;
   grid-gap: 25px;
-  
 }
-.middleContainer a{
+.middleContainer a {
   color: #fff;
 }
-.aboutUs{
+.aboutUs {
   position: relative;
   z-index: 1;
 }
-.aboutUsHover{
+.aboutUsHover {
   display: none;
-  max-width:200px;
-  width: 170px;
-  background-color:#f35237;
+  max-width: 200px;
+  width: 190px;
+  background-color: #f35237;
   cursor: pointer;
   padding: 5px 5px;
   border-radius: 5px;
 }
 
-.aboutUs:hover .aboutUsHover{
- display: block;
- position:absolute;
- z-index: 11;
- top:24px;
+.aboutUs:hover .aboutUsHover {
+  display: block;
+  position: absolute;
+  z-index: 11;
+  top: 24px;
 }
-.languageSelect{
+.languageSelect {
   display: none;
-  background-color:#fff;
+  background-color: #fff;
   width: 110px;
   border-radius: 5px;
 }
-.languageWithFlag{
+.languageWithFlag {
   padding: 3px 5px;
   cursor: pointer;
   display: flex;
   flex-direction: row;
   align-items: center;
-justify-content: space-between;  
+  justify-content: space-between;
 }
-.languageWithFlag:hover{
+.languageWithFlag:hover {
   background-color: #ccd6da;
   border-radius: 5px;
 }
-.aboutUs:hover .languageSelect{
- display: block;
- position:absolute;
- z-index: 11;
- top:24px;
- 
+.aboutUs:hover .languageSelect {
+  display: block;
+  position: absolute;
+  z-index: 11;
+  top: 24px;
 }
-.termAndCondition{
-  padding:2px 5px;
+.termAndCondition {
+  padding: 2px 5px;
   border-bottom: 1px solid #0a1861;
 }
-.privacy{
-  padding:2px 5px;
+.privacy {
+  padding: 2px 5px;
 }
- .termAndCondition:hover{
-  background-color:#0a1861;
+.termAndCondition:hover {
+  background-color: #0a1861;
   color: #fff !important;
-  border-radius:3px;
-
+  border-radius: 3px;
 }
- .privacy:hover{
-  background-color:#0a1861;
+.privacy:hover {
+  background-color: #0a1861;
   color: #fff !important;
-  border-radius:3px;
+  border-radius: 3px;
 }
-.competition{
+.competition {
   position: relative;
   z-index: 1;
 }
-.competition:hover .aboutUsHover{
+.competition:hover .aboutUsHover {
   display: block;
- position:absolute;
- z-index: 11;
- top:24px;
+  position: absolute;
+  z-index: 11;
+  top: 24px;
 }
 
 .login__button {
@@ -116,13 +113,13 @@ justify-content: space-between;
   color: white !important;
   background-color: #ffb130 !important;
 }
-.user__button{
+.user__button {
   color: #ffb130;
   /* background-color: white; */
   /* padding: 7px 8px; */
   border-radius: 50%;
 }
-.profile__tooltip{
+.profile__tooltip {
   visibility: hidden;
   /* width: 100px; */
   background-color: black;
@@ -138,7 +135,7 @@ justify-content: space-between;
   left: 0px;
   z-index: 1;
 }
-.profile__tooltip::after{
+.profile__tooltip::after {
   content: "";
   position: absolute;
   bottom: 100%;
@@ -151,7 +148,7 @@ justify-content: space-between;
 .user__button:hover .profile__tooltip {
   visibility: visible;
 }
-.dropdown{
+.dropdown {
   margin: auto 0px;
   position: relative;
   display: inline-block;
@@ -183,7 +180,7 @@ justify-content: space-between;
 .dropdown:hover .user__button {
   color: white;
 }
-.user__button:hover{
+.user__button:hover {
   color: white;
 }
 .header {
@@ -288,7 +285,7 @@ justify-content: space-between;
   font-weight: bold;
 }
 .button {
-  background-color: #0A1861;
+  background-color: #0a1861;
   border: none;
   border-radius: 2px;
   color: #fff;

@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 import BottomFooter from "./BottomFooter";
 import styles from "./Footer.module.css";
-import { useTranslation } from 'react-i18next';
 
 export default function Footer() {
   const { t, i18n } = useTranslation();
@@ -12,7 +12,11 @@ export default function Footer() {
         <div className={styles.content__wrapper}>
           <div className={styles.brand__content__wrapper}>
             <div>
-              <Image src={`/assets/images/logo__transparent.png`} height={60} width={150} />
+              <Image
+                src={`/assets/images/logo__transparent.png`}
+                height={60}
+                width={150}
+              />
               <ul>
                 {/* <li>
                   <a href="https://discord.com">
@@ -57,49 +61,72 @@ export default function Footer() {
           </div>
           <div className={styles.page__content__wrapper}>
             <div className={styles.page__info__content1}>
-                <h4>+18</h4>
-                <ul>
-                    <li>
-                        <Link href="/disclaimer"><a>Disclaimer</a></Link>
-                    </li>
-                   
-                </ul>
+              <h4>+18</h4>
+              <ul>
+                <li>
+                  {/* <Link href="/disclaimer"> */}
+                  <a>
+                    The Ultimate Players Arena is an online service that
+                    facilitates Challenges and tournaments for users who play
+                    video games they have purchased on their own video game
+                    consoles and PCs. The Ultimate Players Arena does not sell
+                    or license video games and is not endorsed by, directly
+                    affiliated with, maintained, or sponsored by, any video game
+                    manufacturer, sports league, content, games titles, trade
+                    names, and/or trade dress, trademarks, artwork, and
+                    associated imagery. They are trademarks and/or copyright
+                    material of their respective owners.
+                  </a>
+                  {/* </Link> */}
+                </li>
+              </ul>
             </div>
             <div className={styles.page__info__content}>
               <Link href="/about-us">
-                <h4 style={{cursor:'pointer'}}>{t('aboutus')}</h4>
-                </Link>
-                <ul>
-                    {/* <li>
+                <h4 style={{ cursor: "pointer" }}>{t("aboutus")}</h4>
+              </Link>
+              <ul>
+                {/* <li>
                         <Link href="/about-us"><a>About Us</a></Link>
                     </li> */}
-                    <li>
-                        <Link href="/privacy-policy"><a>Privacy Policy</a></Link>
-                    </li>
-                    <li>
-                        <Link href="/term-and-condition"><a>Terms and Condition</a></Link>
-                    </li>
-                    
-                </ul>
+                <li>
+                  <Link href="/privacy-policy">
+                    <a>Privacy Policy</a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/terms-and-conditions">
+                    <a>Terms and Condition</a>
+                  </Link>
+                </li>
+              </ul>
             </div>
             <div className={styles.page__info__content}>
-                <h4>Competition</h4>
-                <ul>
-                    <li>
-                        <Link href="/"><a>Challenges</a></Link>
-                    </li>
-                    <li>
-                        <Link href="/"><a>Tournaments</a></Link>
-                    </li>
-                    {/* <li>
+              <h4>Competition</h4>
+              <ul>
+                <li>
+                  <Link href="/">
+                    <a>Challenges</a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/">
+                    <a>Tournaments</a>
+                  </Link>
+                </li>
+                {/* <li>
                         <Link href="/"><a>Linkedin</a></Link>
                     </li> */}
-                </ul>
+              </ul>
             </div>
             <div className={styles.page__info__content}>
-                <h4>Affiliate Program</h4>
-                <ul>
-                    {/* <li>
+              <Link href="/terms-and-conditions">
+                <a>
+                  <h4>Affiliate Program</h4>
+                </a>
+              </Link>
+              <ul>
+                {/* <li>
                         <Link href="/about-us"><a>About Us</a></Link>
                     </li>
                     <li>
@@ -111,14 +138,14 @@ export default function Footer() {
                     <li>
                         <Link href="/disclaimer"><a>Disclaimer</a></Link>
                     </li> */}
-                </ul>
+              </ul>
             </div>
             <div className={styles.page__info__content}>
               <a href="mailto:hello@upaesports.com?subject=SendMail&body=Description">
                 <h4>Contact</h4>
-                </a>
-                <ul>
-                    {/* <li>
+              </a>
+              <ul>
+                {/* <li>
                     <a href="mailto:hello@upaesports.com?subject=SendMail&body=Description">
                     <Image
                       src={`/assets/images/icons/gmail.png`}
@@ -127,7 +154,7 @@ export default function Footer() {
                     />
                   </a>
                     </li> */}
-                    {/* <li>
+                {/* <li>
                         <Link href="/privacy-policy"><a>Privacy Policy</a></Link>
                     </li>
                     <li>
@@ -136,7 +163,7 @@ export default function Footer() {
                     <li>
                         <Link href="/disclaimer"><a>Disclaimer</a></Link>
                     </li> */}
-                </ul>
+              </ul>
             </div>
           </div>
         </div>

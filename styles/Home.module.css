@@ -2,7 +2,10 @@
   min-height: 48vh;
   width: 100%;
 }
-.main h5, .main h1, .main h3, .main h6{
+.main h5,
+.main h1,
+.main h3,
+.main h6 {
   color: white;
 }
 .home__container video {
@@ -31,7 +34,7 @@
   font-weight: 600;
 }
 .video__content__play {
-  background-color: #F35237;
+  background-color: #f35237;
   padding: 0px 15px;
 }
 .video__overlay {
@@ -85,99 +88,99 @@
   color: #747474;
   font-weight: 600;
 }
-.inner__unlimited__container h3{
+.inner__unlimited__container h3 {
   font-size: 55px;
   font-weight: 600;
 }
-.inner__unlimited__container a{
-  background-color: #0A1861;
+.inner__unlimited__container a {
+  background-color: #0a1861;
   color: white !important;
   padding: 10px 25px;
-  border: 2px solid #0A1861;
+  border: 2px solid #0a1861;
   cursor: pointer;
   font-weight: 600;
 }
-.inner__unlimited__container a:hover{
+.inner__unlimited__container a:hover {
   background-color: white;
-  color: #0A1861 !important;
+  color: #0a1861 !important;
 }
-.leader__board__container{
+.leader__board__container {
   display: grid;
   grid-template-columns: auto 1fr;
   grid-gap: 80px;
   padding: 80px 10px;
 }
-.leader__board__container h3{
+.leader__board__container h3 {
   font-size: 60px;
   font-weight: 700;
 }
-.leader__board__container p{
+.leader__board__container p {
   color: #747474;
   font-weight: 600;
 }
-.leader__board__container a{
-  background-color: #0A1861;
+.leader__board__container a {
+  background-color: #0a1861;
   color: white !important;
   padding: 10px 30px;
   cursor: pointer;
-  border: 2px solid #0A1861;
+  border: 2px solid #0a1861;
   font-weight: 600;
 }
-.leader__board__container a:hover{
+.leader__board__container a:hover {
   background-color: white;
-  color: #0A1861 !important;
+  color: #0a1861 !important;
 }
-.result__board__container{
+.result__board__container {
   display: grid;
   grid-template-columns: 1fr auto;
   grid-gap: 80px;
   padding: 80px 10px;
   color: white;
 }
-.result__board__container h3{
+.result__board__container h3 {
   font-size: 60px;
   font-weight: 700;
 }
-.result__board__container p{
+.result__board__container p {
   font-weight: 600;
 }
-.result__board__container a{
+.result__board__container a {
   background-color: white;
-  color: #0A1861 !important;
+  color: #0a1861 !important;
   padding: 10px 30px;
   cursor: pointer;
   border: none;
   font-weight: 600;
 }
-.result__board__container a:hover{
-  background-color: #F35237;
+.result__board__container a:hover {
+  background-color: #f35237;
   color: white !important;
 }
-.start__board__container{
-  background-color: #F67600;
+.start__board__container {
+  background-color: #f67600;
   display: grid;
   grid-template-columns: 1fr auto;
   grid-gap: 20px;
   padding: 30px 50px;
   color: white;
 }
-.start__board__container h3{
+.start__board__container h3 {
   font-size: 60px;
   font-weight: 700;
 }
-.start__board__container p{
+.start__board__container p {
   font-weight: 600;
 }
-.start__board__container a{
+.start__board__container a {
   background-color: white;
-  color: #00ACF6 !important;
+  color: #00acf6 !important;
   padding: 10px 30px;
   cursor: pointer;
   border: none;
   font-weight: 600;
 }
-.start__board__container a:hover{
-  background-color: #0A1861;
+.start__board__container a:hover {
+  background-color: #0a1861;
   color: white !important;
 }
 
@@ -193,7 +196,7 @@
   font-weight: 700;
 }
 .download__button {
-  background-color: #be454b;
+  background-color: #f88921;
   text-decoration: none;
   color: white;
   padding: 20px 30px;

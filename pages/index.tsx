@@ -1,13 +1,12 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { useStatus } from "../context/ContextStatus";
 import request from "../lib/request";
 import styles from "../styles/Home.module.css";
-import { useRouter } from "next/router";
-
 
 interface IGames {
   classificationId: number;
@@ -29,37 +28,34 @@ interface ISingleGame {
   round: number;
   utcTime: string;
   utcDate: string;
-  skill:string;
-  honesty:string
+  skill: string;
+  honesty: string;
 }
 
 const Home: NextPage = () => {
-  const { modal, setModal ,token} = useStatus();
+  const { modal, setModal, token } = useStatus();
   const [games, setGames] = useState<IGames[] | []>([]);
   const router = useRouter();
 
-
   useEffect(() => {
     (async () => {
-      const response = await request(
-        `combined`,
-        null
-      );
-      setGames(response?.data);
+      try {
+        const response = await request(`combined`, null);
+        setGames(response?.data);
+      } catch (error) {
+        console.log("........err", error);
+      }
     })();
   }, []);
 
-  const redirectPage =()=>{
-    if(token){
-      router.push('/user/profile')
-    } else{
-      setModal('login')
+  const redirectPage = () => {
+    if (token) {
+      router.push("/user/profile");
+    } else {
+      setModal("login");
     }
-  }
+  };
 
-
- 
-  
   return (
     <div className={styles.main}>
       <Head>
@@ -70,17 +66,17 @@ const Home: NextPage = () => {
       <div className={styles.home__container}>
         <div className={styles.video__overlay}></div>
         {/* <video src={"/assets/videos/gaming2.webm"} autoPlay loop muted /> */}
-        <div style={{width:'100%',height:900, position: 'relative'}}>
-        <Image
-              style={{marginTop:5}}
-               src={`/assets/images/slider1.jpeg`}
-               layout='fill'
-               priority={true}
-              //  width='100%'
-              //  height={900}
-               />
+        <div style={{ width: "100%", height: 900, position: "relative" }}>
+          <Image
+            style={{ marginTop: 5 }}
+            src={`/assets/images/slider1.jpeg`}
+            layout="fill"
+            priority={true}
+            //  width='100%'
+            //  height={900}
+          />
         </div>
-            
+
         <div className={styles.video__content}>
           <h1>
             PLAY GAMES
@@ -126,62 +122,62 @@ const Home: NextPage = () => {
               <h6 style={{ fontSize: "19px" }}>Create Account</h6>
             </a>
           </div>
-          {games?.length > 0 ? 
-          <div className={styles.games__grid__view}>
-            {games.map((item,index)=>
-            <div key={index} onClick={() => setModal("signup")}>
-              <Image
-                src={`${item?.classificationImage}`}
-                height={350}
-                width={300}
-              />
-              <h3 style={{color:'#000'}}>{item?.classificationName} : {item?.count}</h3>
+          {games?.length > 0 ? (
+            <div className={styles.games__grid__view}>
+              {games.map((item, index) => (
+                <div key={index} onClick={() => setModal("signup")}>
+                  <Image
+                    src={`${item?.classificationImage}`}
+                    height={300}
+                    width={300}
+                  />
+                  <h3 style={{ color: "#000" }}>
+                    {item?.classificationName} : {item?.count}
+                  </h3>
+                </div>
+              ))}
             </div>
-            )}
-            
-            
-          </div>
-          : <div className={styles.games__grid__view}>
-            
-          <div onClick={() => redirectPage()}>
-            <Image
-              src={`/assets/images/game/banner.png`}
-              height={350}
-              width={230}
-            />
-            <h3 style={{color:'#000'}}>Football</h3>
-          </div>
-          
-          <div>
-            <Image
-              src={`/assets/images/game/banner.png`}
-              height={350}
-              width={230}
-            />
-          </div>
-          <div>
-            <Image
-              src={`/assets/images/game/banner.png`}
-              height={350}
-              width={230}
-            />
-          </div>
-          <div>
-            <Image
-              src={`/assets/images/game/banner.png`}
-              height={350}
-              width={230}
-            />
-          </div>
-          <div>
-            <Image
-              src={`/assets/images/game/banner.png`}
-              height={350}
-              width={230}
-            />
-          </div>
-        </div>
-          }
+          ) : (
+            <div className={styles.games__grid__view}>
+              <div onClick={() => redirectPage()}>
+                <Image
+                  src={`/assets/images/game/banner.png`}
+                  height={300}
+                  width={230}
+                />
+                <h3 style={{ color: "#000" }}>Football</h3>
+              </div>
+
+              <div>
+                <Image
+                  src={`/assets/images/game/banner.png`}
+                  height={300}
+                  width={230}
+                />
+              </div>
+              <div>
+                <Image
+                  src={`/assets/images/game/banner.png`}
+                  height={300}
+                  width={230}
+                />
+              </div>
+              <div>
+                <Image
+                  src={`/assets/images/game/banner.png`}
+                  height={300}
+                  width={230}
+                />
+              </div>
+              <div>
+                <Image
+                  src={`/assets/images/game/banner.png`}
+                  height={350}
+                  width={230}
+                />
+              </div>
+            </div>
+          )}
         </div>
       </Container>
       <div style={{ margin: "50px 0px" }}>
@@ -198,16 +194,16 @@ const Home: NextPage = () => {
         <Container className={styles.download__app__container}>
           <div style={{ margin: "auto 0px" }}>
             <a className={styles.download__button}>Download App Now</a>
-            <p>Available app</p>
+            <p></p>
             <Image src={`/assets/images/play.png`} height={90} width={220} />
             <Image src={`/assets/images/app.png`} height={90} width={220} />
-            <h6 style={{color:'#000'}}>Download the UPA mobile app to create/accept challenges/tournaments and manage your account in the palm of your hand. </h6>
+            <h6 style={{ color: "#000" }}>
+              Download the UPA mobile app to create/accept
+              challenges/tournaments and manage your account in the palm of your
+              hand.{" "}
+            </h6>
           </div>
-          <Image
-            src={`/assets/images/mobile1.webp`}
-            height={500}
-            width={700}
-          />
+          <Image src={`/assets/images/mobile1.webp`} height={500} width={700} />
         </Container>
       </div>
       {/* <div className={styles.unlimited__container}>

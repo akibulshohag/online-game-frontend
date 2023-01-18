@@ -1,8 +1,7 @@
 // import { PayPalButtons,PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { notification, Pagination } from "antd";
-import { nanoid } from 'nanoid';
+import { nanoid } from "nanoid";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { destroyCookie, setCookie } from "nookies";
 import { useEffect, useState } from "react";
@@ -10,7 +9,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { AiFillEye } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
 import { MdDeleteSweep } from "react-icons/md";
-import { Rating } from 'react-simple-star-rating';
+import { Rating } from "react-simple-star-rating";
 import Modal from "../../components/Modal/Modal";
 import { useStatus } from "../../context/ContextStatus";
 import deleteRequest from "../../lib/deleteRequest";
@@ -20,12 +19,13 @@ import putRequest from "../../lib/putRequest";
 import request from "../../lib/request";
 import styles from "../../styles/Profile.module.css";
 
-
 // paypal
 
 import { PayPalScriptOptions } from "@paypal/paypal-js/types/script-options";
 import {
-  PayPalButtons, PayPalScriptProvider, usePayPalScriptReducer
+  PayPalButtons,
+  PayPalScriptProvider,
+  usePayPalScriptReducer,
 } from "@paypal/react-paypal-js";
 import axios from "axios";
 import moment from "moment";
@@ -84,8 +84,8 @@ interface IGameLaunch {
   game_type: number;
   console_id: string;
   rules: string;
-  localDate: string
-  plusdate: string
+  localDate: string;
+  plusdate: string;
 }
 
 interface IRequestList {
@@ -97,7 +97,7 @@ interface IRequestList {
   playerCountry: string;
   gameAmount: number;
   skill: string;
-  honesty:string;
+  honesty: string;
 }
 
 interface IPlayer {
@@ -153,7 +153,7 @@ interface IResultList {
   winnerPlayerCountry: string;
   winnerPlayerUserName: string;
   resultType?: string;
-  winPlayer: string
+  winPlayer: string;
 }
 
 interface IPublishedResult {
@@ -189,9 +189,8 @@ interface IGamingConsole {
 }
 interface withDrawCredit {
   amount: number;
-  player_id: number,
-  credit: number,
-
+  player_id: number;
+  credit: number;
 }
 type countryName = {
   common: string;
@@ -218,7 +217,7 @@ type RegistrationInputs = {
   confirmPassword: string;
   dateOfBirth: string;
   country: string;
-  refernce_player_id:number;
+  refernce_player_id: number;
   image: string;
 };
 interface IGames {
@@ -240,11 +239,11 @@ interface ISingleGame {
   round: number;
   utcTime: string;
   utcDate: string;
-  skill:string;
-  honesty:string
+  skill: string;
+  honesty: string;
 }
 
-interface ProfileInputs{
+interface ProfileInputs {
   image: string;
 }
 
@@ -272,7 +271,6 @@ export default function Profile() {
     setcountry,
     birthday,
     setbirthday,
-   
   } = useStatus();
 
   const [tab, setTab] = useState("available-game");
@@ -284,11 +282,20 @@ export default function Profile() {
     useState<IGameClassifications[]>();
   const [requestList, setRequestList] = useState<IRequestList[]>();
   const [gameSingleList, setGameSingleList] = useState<IGameList[] | []>();
-  const [gameTournamentList, setGameTournamentList] = useState<IGameList[] | []>();
-  const [singleResultList, setSingleResultList] = useState<IResultList[] | []>([]);
-  const [tournamentResultList, setTournamentResultList] = useState<IResultList[] | []>();
-  const [resultSendList, setResultSendList] = useState<IResultSendList[] | []>();
-  const [resultSendGameList, setResultSendGameList] = useState<IResultSendGameList>();
+  const [gameTournamentList, setGameTournamentList] = useState<
+    IGameList[] | []
+  >();
+  const [singleResultList, setSingleResultList] = useState<IResultList[] | []>(
+    []
+  );
+  const [tournamentResultList, setTournamentResultList] = useState<
+    IResultList[] | []
+  >();
+  const [resultSendList, setResultSendList] = useState<
+    IResultSendList[] | []
+  >();
+  const [resultSendGameList, setResultSendGameList] =
+    useState<IResultSendGameList>();
   const [resultOpinion, setResultOpinion] = useState<IResultList>();
   const [viewResult, setViewResult] = useState<IResultList>();
   const [publishedResult, setPublishedResult] = useState<IPublishedResult[]>();
@@ -297,19 +304,20 @@ export default function Profile() {
   const [isValid, setIsValid] = useState(true);
   const [round, setRound] = useState(1);
   const [editRound, setEditRound] = useState(1);
-  const [page, setPage] = useState(1)
-  const [totalItems, setTotalItems] = useState(1)
-  const [price, setprice] = useState<any>('')
-  const [depositList, setdepositList] = useState([])
-  const [withdrawList, setwithdrawList] = useState([])
-  const [minDate, setminDate] = useState('')
-  const [affiliateList, setaffiliateList] = useState([])
+  const [page, setPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(1);
+  const [price, setprice] = useState<any>("");
+  const [depositList, setdepositList] = useState([]);
+  const [withdrawList, setwithdrawList] = useState([]);
+  const [minDate, setminDate] = useState("");
+  const [affiliateList, setaffiliateList] = useState([]);
   const [allCountry, setAllCountry] = useState<allCountryType[]>([]);
   const [games, setGames] = useState<IGames[] | []>([]);
   const [activeGame, setActiveGame] = useState<IGames | null>(null);
   const [imageUrl, setImageUrl] = useState("");
-  const [profileImage, setprofileImage] = useState<any>("/assets/images/profile.png")
-
+  const [profileImage, setprofileImage] = useState<any>(
+    "/assets/images/profile.png"
+  );
 
   const {
     register,
@@ -369,21 +377,21 @@ export default function Profile() {
     setUsername(null);
     setUserEmail(null);
     setUserId(null);
-    setstatus(2)
-    setCredit(0)
-    setPoints(0)
-    setcountry('')
-    setbirthday('')
+    setstatus(2);
+    setCredit(0);
+    setPoints(0);
+    setcountry("");
+    setbirthday("");
     destroyCookie(null, "token");
     destroyCookie(null, "username");
     destroyCookie(null, "userEmail");
     destroyCookie(null, "userId");
     destroyCookie(null, "status");
     destroyCookie(null, "credit");
-    destroyCookie(null,"points")
+    destroyCookie(null, "points");
     destroyCookie(null, "country");
-    destroyCookie(null,"date_of_birth")
-    destroyCookie(null,"image")
+    destroyCookie(null, "date_of_birth");
+    destroyCookie(null, "image");
     router.push("/");
   };
 
@@ -409,13 +417,19 @@ export default function Profile() {
 
   async function getGameSingleList() {
     setTab("single-list");
-    const res = await request(`player/game-one-to-one-list?player_id=${userId}&&page=${page}`, token);
+    const res = await request(
+      `player/game-one-to-one-list?player_id=${userId}&&page=${page}`,
+      token
+    );
     setGameSingleList(res?.data);
   }
 
   async function getGameTournamentList() {
     setTab("tournament-list");
-    const res = await request(`player/game-tournament-list?player_id=${userId}`, token);
+    const res = await request(
+      `player/game-tournament-list?player_id=${userId}`,
+      token
+    );
     setGameTournamentList(res?.data);
   }
 
@@ -425,7 +439,7 @@ export default function Profile() {
       `player/game-launch-list?player_id=${userId}&&page=${page}`,
       token
     );
-    setTotalItems(res?.last_page * res?.data?.length)
+    setTotalItems(res?.last_page * res?.data?.length);
     setLaunchedGame(res?.data);
   }
   async function getAvailableGame() {
@@ -434,15 +448,12 @@ export default function Profile() {
       `player/published-game-list?player_id=${userId}`,
       token
     );
-    
+
     // setTotalItems(res?.last_page * res?.data?.length)
     // setLaunchedGame(res?.data);
     setGames(res?.data);
     setActiveGame(res?.data?.length ? res?.data[0] : null);
   }
-
-  
-
 
   async function getRequestList() {
     setTab("request");
@@ -450,7 +461,7 @@ export default function Profile() {
       `player/game-request-list?player_id=${userId}`,
       token
     );
-    
+
     setRequestList(res?.data);
   }
 
@@ -474,13 +485,19 @@ export default function Profile() {
 
   async function getSingleResultList() {
     setTab("single-resultList");
-    const res = await request(`player/game-one-to-one-result-list?player_id=${userId}`, token);
+    const res = await request(
+      `player/game-one-to-one-result-list?player_id=${userId}`,
+      token
+    );
     setSingleResultList(res?.data);
   }
 
   async function getTournamentResultList() {
     setTab("tournament-resultList");
-    const res = await request(`player/game-tournament-result-list?player_id=${userId}`, token);
+    const res = await request(
+      `player/game-tournament-result-list?player_id=${userId}`,
+      token
+    );
     setTournamentResultList(res?.data);
   }
 
@@ -495,9 +512,9 @@ export default function Profile() {
 
   useEffect(() => {
     // getLaunchedGame()
-    getAvailableGame()
-    getProfile()
-  }, [])
+    getAvailableGame();
+    getProfile();
+  }, []);
 
   useEffect(() => {
     // getLaunchedGame();
@@ -505,9 +522,8 @@ export default function Profile() {
     handleConsole();
 
     var date = new Date();
-    var date1 = moment(date).format("YYYY-MM-DD")
+    var date1 = moment(date).format("YYYY-MM-DD");
     setminDate(date1);
-
   }, []);
 
   async function handleClassification() {
@@ -523,13 +539,12 @@ export default function Profile() {
 
   async function getProfile() {
     const res = await request(`player/profile?player_id=${userId}`, token);
-    console.log('.........res',res?.data);
-    setprofileImage(res?.data?.image)
+    console.log(".........res", res?.data);
+    setprofileImage(res?.data?.image);
     setCookie(null, "image", res?.data?.image, {
       maxAge: 30 * 24 * 60 * 60,
       path: "/",
     });
-  
   }
 
   async function handleEdit(value: ILaunchedGames) {
@@ -626,14 +641,12 @@ export default function Profile() {
   };
 
   const onLaunchSubmit: SubmitHandler<IGameLaunch> = async (data) => {
-  
-
-    let date         = new Date(data?.date + ' ' + data?.time);
+    let date = new Date(data?.date + " " + data?.time);
     let milliseconds = date.getTime();
-    let timeZone     = new Date().getTimezoneOffset() * 60 * 1000;
-    let utcTimeAndDate = new Date(milliseconds + timeZone)
-    let utcDate = moment(utcTimeAndDate).format('YYYY-MM-DD')
-    let utcTime = moment(utcTimeAndDate).format('HH:mm')
+    let timeZone = new Date().getTimezoneOffset() * 60 * 1000;
+    let utcTimeAndDate = new Date(milliseconds + timeZone);
+    let utcDate = moment(utcTimeAndDate).format("YYYY-MM-DD");
+    let utcTime = moment(utcTimeAndDate).format("HH:mm");
 
     if (credit >= data?.amount && status == 1) {
       const res = await postRequest(`player/game-launched`, token, {
@@ -657,12 +670,9 @@ export default function Profile() {
       } else {
         openNotificationWithIcon(res?.message, "error");
       }
-
     } else {
-      openNotificationWithIcon('insufficient Credit and Inactive', "error");
-
+      openNotificationWithIcon("insufficient Credit and Inactive", "error");
     }
-
   };
 
   async function handleAccept(value: IRequestList) {
@@ -680,8 +690,7 @@ export default function Profile() {
     }
   }
 
-  async function handleReject(value: IRequestList) {
-  }
+  async function handleReject(value: IRequestList) {}
 
   async function handleSendResult(value: any) {
     setResultSendGameList(value);
@@ -764,48 +773,44 @@ export default function Profile() {
   const handleGameStart = async (value: number) => {
     try {
       const res = await putRequest(`player/game-start`, token, {
-        game_id: value
-      })
-      if (res?.status == 'success') {
-        openNotificationWithIcon(res?.message, 'success');
-        getLaunchedGame()
+        game_id: value,
+      });
+      if (res?.status == "success") {
+        openNotificationWithIcon(res?.message, "success");
+        getLaunchedGame();
       } else {
-        openNotificationWithIcon(res?.message, 'error')
+        openNotificationWithIcon(res?.message, "error");
       }
     } catch (err: any) {
-      openNotificationWithIcon(err?.response?.message, "error")
+      openNotificationWithIcon(err?.response?.message, "error");
     }
-  }
+  };
 
   const handleGameCancel = async (value: number) => {
     try {
       const res = await putRequest(`player/game-cancel`, token, {
-        game_id: value
-      })
-      if (res?.status == 'success') {
-        openNotificationWithIcon(res?.message, 'success');
-        getLaunchedGame()
+        game_id: value,
+      });
+      if (res?.status == "success") {
+        openNotificationWithIcon(res?.message, "success");
+        getLaunchedGame();
       } else {
-        openNotificationWithIcon(res?.message, 'error')
+        openNotificationWithIcon(res?.message, "error");
       }
     } catch (err: any) {
-      openNotificationWithIcon(err?.response?.message, "error")
+      openNotificationWithIcon(err?.response?.message, "error");
     }
-  }
+  };
 
-
-  // paypal payment integration 
-
-
+  // paypal payment integration
 
   function handleMessages(e: any) {
-    setprice(e.target.value)
+    setprice(e.target.value);
   }
 
-
-
   const initialOptions = {
-    "client-id": "AVEnGvCBTj0x0mrp1Cy42mJRTy1sLGrPj1wIySCUL_tnqmmNuVAztUp5W0-3wXGMetk2G9tUb2-E7i1C",
+    "client-id":
+      "AVEnGvCBTj0x0mrp1Cy42mJRTy1sLGrPj1wIySCUL_tnqmmNuVAztUp5W0-3wXGMetk2G9tUb2-E7i1C",
     currency: "USD",
     intent: "capture",
     // "data-client-token": token,
@@ -820,8 +825,7 @@ export default function Profile() {
       payer_email: orderDetails?.payer?.email_address,
       amount: orderDetails?.purchase_units[0]?.amount?.value,
       currency: orderDetails?.purchase_units[0]?.amount?.currency_code,
-      status: orderDetails?.status
-
+      status: orderDetails?.status,
     });
     if (res?.status == "success") {
       openNotificationWithIcon(res?.message, "success");
@@ -831,11 +835,10 @@ export default function Profile() {
     }
   }
 
-
   const paypalScriptOptions: PayPalScriptOptions = {
     "client-id":
       "AVEnGvCBTj0x0mrp1Cy42mJRTy1sLGrPj1wIySCUL_tnqmmNuVAztUp5W0-3wXGMetk2G9tUb2-E7i1C",
-    currency: "USD"
+    currency: "USD",
   };
   function Button() {
     /**
@@ -888,11 +891,10 @@ export default function Profile() {
         {isPending ? <h2>Load Smart Payment Button...</h2> : null}
         {/* <PayPalButtons disabled={price ? false : true} {...paypalbuttonTransactionProps} /> */}
         <PayPalButtons
-          disabled={price >= 1000  ? false : true}
+          disabled={price >= 1000 ? false : true}
           // style: { layout: "vertical", innerHeight: 48, shape: 'rect' }
 
           createOrder={async (data, actions) => {
-
             return await actions.order.create({
               purchase_units: [
                 {
@@ -902,66 +904,46 @@ export default function Profile() {
                 },
               ],
             });
-
           }}
-
           onApprove={async (data, actions) => {
             const order = await actions.order?.capture();
-            setprice('')
-            alert(
-              `Transaction completed by ${order?.payer.name?.given_name}`
-            );
+            setprice("");
+            alert(`Transaction completed by ${order?.payer.name?.given_name}`);
             // handleApprove(data,orerID)
 
             // return actions.order.capture().then((details) => {
             //     const name = details.payer.name.given_name;
             //     alert(`Transaction completed by ${name}`);
             // });
-            handleRequestPaypal(order)
-
-
+            handleRequestPaypal(order);
           }}
-
           onError={(err: any) => {
-            console.log('paypal error', err);
-
+            console.log("paypal error", err);
           }}
-
           onCancel={() => {
-            alert(
-              `Your Transaction Cancel`
-            );
-
+            alert(`Your Transaction Cancel`);
           }}
-
         />
       </>
     );
   }
 
-  // depositList 
+  // depositList
 
   async function getDepositList() {
     setTab("depositList");
-    const res = await request(
-      `player/deposit-list?player_id=${userId}`,
-      token
-    );
-    
+    const res = await request(`player/deposit-list?player_id=${userId}`, token);
+
     setdepositList(res?.data.slice(0, 10));
   }
-
-
-
 
   //withdraw
 
   const onwithdrawSubmit: SubmitHandler<withDrawCredit> = async (data) => {
-
     if (credit > data?.amount && data?.amount >= 2000) {
       const res = await postRequest(`player/withdraw-store`, token, {
         player_id: userId,
-        credit: data?.amount
+        credit: data?.amount,
       });
       if (res?.status == "success") {
         openNotificationWithIcon(res?.message, "success");
@@ -970,9 +952,11 @@ export default function Profile() {
         openNotificationWithIcon(res?.message, "error");
       }
     } else {
-      openNotificationWithIcon('Insufficient Credit balance and min 2000', "error");
+      openNotificationWithIcon(
+        "Insufficient Credit balance and min 2000",
+        "error"
+      );
     }
-
   };
 
   async function getWithdrawList() {
@@ -985,9 +969,9 @@ export default function Profile() {
     setwithdrawList(res?.data);
   }
 
-  const [withcreditId, setwithcreditId] = useState<any>()
-  const [editcredit, seteditcredit] = useState<any>()
-  const [errorCredit, seterrorCredit] = useState('')
+  const [withcreditId, setwithcreditId] = useState<any>();
+  const [editcredit, seteditcredit] = useState<any>();
+  const [errorCredit, seterrorCredit] = useState("");
 
   async function handlewithdrawEdit(value: any) {
     value?.status == "2"
@@ -995,32 +979,29 @@ export default function Profile() {
       : openNotificationWithIcon("Could not Edit!", "error");
 
     setwithcreditId(value?.id);
-    seteditcredit(value?.credit)
+    seteditcredit(value?.credit);
   }
 
   const onWithdrawEditSubmit = async () => {
     if (editcredit) {
       const res = await putRequest(`player/withdraw-update`, token, {
         id: withcreditId,
-        credit: editcredit
-
+        credit: editcredit,
       });
       if (res?.status == "success") {
         openNotificationWithIcon(res?.message, "success");
         // window.location.reload();
-        setModal('')
-        seterrorCredit('')
+        setModal("");
+        seterrorCredit("");
       } else {
         openNotificationWithIcon(res?.message, "error");
       }
     } else {
-      seterrorCredit('This Field Is Required!')
+      seterrorCredit("This Field Is Required!");
     }
-
-  }
+  };
 
   const handlewithDrawDelete = async (value: any) => {
-
     if (value?.status == "2") {
       const res = await deleteRequest(`player/withdraw-delete`, token, {
         id: value?.id,
@@ -1029,63 +1010,52 @@ export default function Profile() {
       if (res?.status == "success") {
         openNotificationWithIcon(res?.message, "success");
         // window.location.reload();
-
       } else {
         openNotificationWithIcon(res?.message, "error");
       }
-
     } else {
-      openNotificationWithIcon('Could not delete', "error");
+      openNotificationWithIcon("Could not delete", "error");
     }
+  };
 
-
-  }
-
-  // payment list 
-  const [paymentList, setpaymentList] = useState([])
+  // payment list
+  const [paymentList, setpaymentList] = useState([]);
   async function getPaymentList() {
     setTab("paymentList");
-    const res = await request(
-      `player/payment-list?player_id=${userId}`,
-      token
-    );
+    const res = await request(`player/payment-list?player_id=${userId}`, token);
     // console.log('.................paymentList',res?.data);
 
     setpaymentList(res?.data);
   }
 
-
   // send review request
 
-  const [rating, setRating] = useState(0)
-  const [comment, setcomment] = useState('')
+  const [rating, setRating] = useState(0);
+  const [comment, setcomment] = useState("");
   const sendReview = async () => {
-    setTab("review")
-  }
+    setTab("review");
+  };
 
   const handleRating = (rate: number) => {
-    setRating(rate)
-  }
+    setRating(rate);
+  };
 
   const sendReviewAndComment = async () => {
-
     const res = await postRequest(`player/review-send`, token, {
       player_id: userId,
       rating: rating,
-      comment: comment
+      comment: comment,
     });
     if (res?.status == "success") {
       openNotificationWithIcon(res?.message, "success");
       window.location.reload();
-      setRating(0)
-      setcomment('')
-
+      setRating(0);
+      setcomment("");
     } else {
       openNotificationWithIcon(res?.message, "error");
     }
-  }
+  };
 
-  
   async function getAffiliateList() {
     setTab("affiliate list");
     const res = await request(
@@ -1096,39 +1066,33 @@ export default function Profile() {
     setaffiliateList(res?.data.slice(0, 10));
   }
 
- 
   // const { profile } = router.query
-  
-  
 
-  const linkGenerate =()=>{
-    setTab("link")
-  }
+  const linkGenerate = () => {
+    setTab("link");
+  };
 
-   const originUrl =
-    typeof window !== 'undefined' && window.location.origin
-        ? window.location.origin
-        : '';
+  const originUrl =
+    typeof window !== "undefined" && window.location.origin
+      ? window.location.origin
+      : "";
 
-        const [link, setlink] = useState(false)
-        const [createurl, setcreateurl] = useState('')
+  const [link, setlink] = useState(false);
+  const [createurl, setcreateurl] = useState("");
 
-  const linkUrl=()=>{
-    setlink(true)
-      const slug = nanoid(10)
-      const slug1 = nanoid(10)
-    
-      const urlLink = `${originUrl}${router.pathname}/${slug}&&plyerId${slug1}${userId}`
-      setcreateurl(urlLink)
+  const linkUrl = () => {
+    setlink(true);
+    const slug = nanoid(10);
+    const slug1 = nanoid(10);
 
- 
-  }
+    const urlLink = `${originUrl}${router.pathname}/${slug}&&plyerId${slug1}${userId}`;
+    setcreateurl(urlLink);
+  };
 
-  const copyToClipBoard = ()=>{
-    navigator.clipboard.writeText(createurl)
-    openNotificationWithIcon('Copied', "success");
-  }
-
+  const copyToClipBoard = () => {
+    navigator.clipboard.writeText(createurl);
+    openNotificationWithIcon("Copied", "success");
+  };
 
   useEffect(() => {
     (async () => {
@@ -1138,29 +1102,29 @@ export default function Profile() {
       setAllCountry(getAllCountry?.data);
     })();
   }, []);
-  
-  
-  const onEditProfileSubmit: SubmitHandler<RegistrationInputs> = async (data) => {
-  
-    const data1={
-        player_id: userId,
-        username: data?.username ? data?.username : username,
-        email: data?.email ? data?.email : userEmail,
-        date_of_birth: data?.dateOfBirth ? data?.dateOfBirth : birthday,
-        country: data?.country ? data?.country : country,
-        password: data?.password ?data?.password:'' ,
-        image: imageUrl? [imageUrl] :''
-    }
-    console.log('.........data1',data1);
-    
+
+  const onEditProfileSubmit: SubmitHandler<RegistrationInputs> = async (
+    data
+  ) => {
+    const data1 = {
+      player_id: userId,
+      username: data?.username ? data?.username : username,
+      email: data?.email ? data?.email : userEmail,
+      date_of_birth: data?.dateOfBirth ? data?.dateOfBirth : birthday,
+      country: data?.country ? data?.country : country,
+      password: data?.password ? data?.password : "",
+      image: imageUrl ? [imageUrl] : "",
+    };
+    console.log(".........data1", data1);
+
     const res = await putRequest(`player/edit`, token, {
-        player_id: userId,
-        username: data?.username ? data?.username : username,
-        email: data?.email ? data?.email : userEmail,
-        date_of_birth: data?.dateOfBirth ? data?.dateOfBirth : birthday,
-        country: data?.country ? data?.country : country,
-        password: data?.password ?data?.password:'' ,
-        image: imageUrl? [imageUrl] :''
+      player_id: userId,
+      username: data?.username ? data?.username : username,
+      email: data?.email ? data?.email : userEmail,
+      date_of_birth: data?.dateOfBirth ? data?.dateOfBirth : birthday,
+      country: data?.country ? data?.country : country,
+      password: data?.password ? data?.password : "",
+      image: imageUrl ? [imageUrl] : "",
     });
     if (res?.status) {
       openNotificationWithIcon(res?.message, "success");
@@ -1171,7 +1135,7 @@ export default function Profile() {
       setPoints(res?.data?.user?.points);
       setCredit(res?.data?.user?.credit);
       setstatus(res?.data?.user?.status);
-      setcountry(res?.data?.user?.country)
+      setcountry(res?.data?.user?.country);
       // setbirthday(res?.data?.user?.date_of_birth)
       // setCookie(null, "date_of_birth", res?.data?.user?.date_of_birth, {
       //   maxAge: res?.data?.expires_in,
@@ -1210,12 +1174,11 @@ export default function Profile() {
         path: "/",
       });
       setModal("");
-      window.location.reload()
-     } else {
-       openNotificationWithIcon(res?.message, "error");
-     }
+      window.location.reload();
+    } else {
+      openNotificationWithIcon(res?.message, "error");
+    }
   };
-
 
   const convertBase64 = (file: any): any => {
     return new Promise((resolve, reject) => {
@@ -1229,12 +1192,11 @@ export default function Profile() {
       };
     });
   };
-  
 
-  const handlePicChange = async (data:any) => {
+  const handlePicChange = async (data: any) => {
     console.log("data.........", data);
     let file = data[0];
-    const base64:any = await convertBase64(file);
+    const base64: any = await convertBase64(file);
     setImageUrl(base64);
   };
 
@@ -1256,9 +1218,6 @@ export default function Profile() {
     }
   }
 
-
-
-
   return (
     <div className={styles.main}>
       <div className={styles.container}>
@@ -1266,34 +1225,40 @@ export default function Profile() {
           <div>
             <div className={styles.profile__dashboard}>
               <div style={{ textAlign: "center", padding: "20px 0px" }}>
-                <div style={{position: "relative",zIndex:1}}>
-                 {profileImage == 0?  <Image
-                  src={"/assets/images/profile.png"}
-                  height={200}
-                  width={200}
-                /> 
-                :
-                 <Image
-                src={profileImage}
-                height={200}
-                width={200}
-              />}
-                
-               
+                <div style={{ position: "relative", zIndex: 1 }}>
+                  {profileImage == 0 ? (
+                    <Image
+                      src={"/assets/images/profile.png"}
+                      height={200}
+                      width={200}
+                    />
+                  ) : (
+                    <Image src={profileImage} height={200} width={200} />
+                  )}
 
-                <div style={{position: "absolute",zIndex:2,bottom:20,right:40}}>
-                <a
-                  className={styles.edit__delete__button1}
-                   onClick={() => setModal('edit profile')}
-                >
-                  <FaEdit color={"#000"} size={20}/>
-                 </a>
-                 </div>
+                  <div
+                    style={{
+                      position: "absolute",
+                      zIndex: 2,
+                      bottom: 20,
+                      right: 40,
+                    }}
+                  >
+                    <a
+                      className={styles.edit__delete__button1}
+                      onClick={() => setModal("edit profile")}
+                    >
+                      <FaEdit color={"#000"} size={20} />
+                    </a>
+                  </div>
                 </div>
-                
-                
-                <p style={{ fontSize: "14px", fontWeight: "600", }}>{username}</p>
-                <p style={{ fontSize: "14px", fontWeight: "600", }}>{userEmail}</p>
+
+                <p style={{ fontSize: "14px", fontWeight: "600" }}>
+                  {username}
+                </p>
+                <p style={{ fontSize: "14px", fontWeight: "600" }}>
+                  {userEmail}
+                </p>
                 <br />
                 <div>
                   {points != 0 ? (
@@ -1330,7 +1295,7 @@ export default function Profile() {
                       Credit: {credit}
                     </button>
                   ) : null}
-                  {honesty != '' ? (
+                  {honesty != "" ? (
                     <button
                       style={{
                         marginTop: "5px",
@@ -1352,7 +1317,9 @@ export default function Profile() {
                 <a>Available Games</a>
               </Link> */}
               <a
-                className={`${tab === "available-game" ? styles.border__bottom : null}`}
+                className={`${
+                  tab === "available-game" ? styles.border__bottom : null
+                }`}
                 onClick={() => setTab("available-game")}
               >
                 Available Games
@@ -1364,121 +1331,134 @@ export default function Profile() {
                 Launch Game
               </a>
               <a
-                className={`${tab === "launched" ? styles.border__bottom : null
-                  }`}
+                className={`${
+                  tab === "launched" ? styles.border__bottom : null
+                }`}
                 onClick={() => getLaunchedGame()}
               >
                 Launched List
               </a>
               <a
-                className={`${tab === "request" ? styles.border__bottom : null
-                  }`}
+                className={`${
+                  tab === "request" ? styles.border__bottom : null
+                }`}
                 onClick={() => getRequestList()}
               >
                 Request List
               </a>
               <a
-                className={`${tab === "single-list" ? styles.border__bottom : null}`}
+                className={`${
+                  tab === "single-list" ? styles.border__bottom : null
+                }`}
                 onClick={() => getGameSingleList()}
               >
                 Single Game List
               </a>
               <a
-                className={`${tab === "tournament-list" ? styles.border__bottom : null}`}
+                className={`${
+                  tab === "tournament-list" ? styles.border__bottom : null
+                }`}
                 onClick={() => getGameTournamentList()}
               >
                 Tournament Game List
               </a>
               <a
-                className={`${tab === "resultSendList" ? styles.border__bottom : null
-                  }`}
+                className={`${
+                  tab === "resultSendList" ? styles.border__bottom : null
+                }`}
                 onClick={() => getResultSendList()}
               >
                 Result Send List
               </a>
 
-
-
               <a
-                className={`${tab === "single-resultList" ? styles.border__bottom : null
-                  }`}
+                className={`${
+                  tab === "single-resultList" ? styles.border__bottom : null
+                }`}
                 onClick={() => getSingleResultList()}
               >
                 Single Result List
               </a>
               <a
-                className={`${tab === "tournament-resultList" ? styles.border__bottom : null
-                  }`}
+                className={`${
+                  tab === "tournament-resultList" ? styles.border__bottom : null
+                }`}
                 onClick={() => getTournamentResultList()}
               >
                 Tournament Result List
               </a>
               <a
-                className={`${tab === "dispute" ? styles.border__bottom : null
-                  }`}
+                className={`${
+                  tab === "dispute" ? styles.border__bottom : null
+                }`}
                 onClick={() => getResultDispute()}
               >
                 Result Dispute
               </a>
               <a
-                className={`${tab === "published" ? styles.border__bottom : null
-                  }`}
+                className={`${
+                  tab === "published" ? styles.border__bottom : null
+                }`}
                 onClick={() => getPublishedResult()}
               >
                 Published Result
               </a>
               <a
-                className={`${tab === "deposit" ? styles.border__bottom : null
-                  }`}
-                onClick={() => setTab('deposit')}
+                className={`${
+                  tab === "deposit" ? styles.border__bottom : null
+                }`}
+                onClick={() => setTab("deposit")}
               >
                 Deposit
               </a>
               <a
-                className={`${tab === "depositList" ? styles.border__bottom : null
-                  }`}
+                className={`${
+                  tab === "depositList" ? styles.border__bottom : null
+                }`}
                 onClick={() => getDepositList()}
               >
                 Deposit List
               </a>
               <a
-                className={`${tab === "withdraw" ? styles.border__bottom : null
-                  }`}
-                onClick={() => setTab('withdraw')}
+                className={`${
+                  tab === "withdraw" ? styles.border__bottom : null
+                }`}
+                onClick={() => setTab("withdraw")}
               >
                 Withdraw Credit
               </a>
               <a
-                className={`${tab === "withdrawList" ? styles.border__bottom : null
-                  }`}
+                className={`${
+                  tab === "withdrawList" ? styles.border__bottom : null
+                }`}
                 onClick={() => getWithdrawList()}
               >
                 Withdraw List
               </a>
               <a
-                className={`${tab === "paymentList" ? styles.border__bottom : null
-                  }`}
+                className={`${
+                  tab === "paymentList" ? styles.border__bottom : null
+                }`}
                 onClick={() => getPaymentList()}
               >
                 payment List
               </a>
               <a
-                className={`${tab === "review" ? styles.border__bottom : null
-                  }`}
+                className={`${tab === "review" ? styles.border__bottom : null}`}
                 onClick={() => sendReview()}
               >
                 Drop Review
               </a>
               <a
-                className={`${tab === "link" ? styles.border__bottom : null
-                  }`}
+                className={`${tab === "link" ? styles.border__bottom : null}`}
                 onClick={() => linkGenerate()}
               >
                 Affiliate Link
               </a>
               <a
-                className={`${tab === "affiliate list" ? styles.border__bottom : null
-                  }`}
+                className={`${
+                  tab === "affiliate list" ? styles.border__bottom : null
+                }`}
                 onClick={() => getAffiliateList()}
               >
                 Affiliate List
@@ -1527,17 +1507,37 @@ export default function Profile() {
                             <MdDeleteSweep />
                           </a>
                         </div>
-                        <div style={{ margin: 'auto 0px' }}>
-                          {item?.start ? <a className={styles.edit__delete__button} style={{ marginRight: '5px' }} onClick={() => handleGameStart(item?.gameId)}>Start</a> : null}
-                          {item?.cancel ? <a className={styles.edit__delete__button} onClick={() => handleGameCancel(item?.gameId)}>Cancel</a> : null}
+                        <div style={{ margin: "auto 0px" }}>
+                          {item?.start ? (
+                            <a
+                              className={styles.edit__delete__button}
+                              style={{ marginRight: "5px" }}
+                              onClick={() => handleGameStart(item?.gameId)}
+                            >
+                              Start
+                            </a>
+                          ) : null}
+                          {item?.cancel ? (
+                            <a
+                              className={styles.edit__delete__button}
+                              onClick={() => handleGameCancel(item?.gameId)}
+                            >
+                              Cancel
+                            </a>
+                          ) : null}
                         </div>
                       </div>
                       {launchedGame?.length - 1 == index ? null : <hr />}
                     </div>
                   ))}
                 </div>
-                <div style={{ textAlign: 'center', marginTop: '10px' }}>
-                  <Pagination defaultCurrent={1} total={launchedGame?.length} onChange={(page, pageSize) => setPage(page)} pageSize={totalItems} />
+                <div style={{ textAlign: "center", marginTop: "10px" }}>
+                  <Pagination
+                    defaultCurrent={1}
+                    total={launchedGame?.length}
+                    onChange={(page, pageSize) => setPage(page)}
+                    pageSize={totalItems}
+                  />
                 </div>
               </div>
             ) : tab === "launch" ? (
@@ -2035,8 +2035,13 @@ export default function Profile() {
               <div className={styles.launched__container}>
                 <h5>Deposit</h5>
                 <div className={styles.launched__game__list}>
-
-                  <div style={{ marginLeft: 20, alignItems: 'center', justifyContent: 'center' }}>
+                  <div
+                    style={{
+                      marginLeft: 20,
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
                     {/* <label className={styles.label}>Amount</label> */}
                     <p>Amount</p>
 
@@ -2045,23 +2050,30 @@ export default function Profile() {
                       className={styles.input}
                       placeholder="Minimum 1000"
                       type="number"
-
                       onChange={(e) => handleMessages(e)}
-                      style={{ width: '100%', borderRadius: 10, maxWidth: '200px', height: 35, padding: 5, marginBottom: 10 }}
+                      style={{
+                        width: "100%",
+                        borderRadius: 10,
+                        maxWidth: "200px",
+                        height: 35,
+                        padding: 5,
+                        marginBottom: 10,
+                      }}
                     />
                   </div>
 
-
-                  <div style={{ alignItems: 'center', justifyContent: 'center', marginLeft: 20, width: 100 }}>
-                   
+                  <div
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginLeft: 20,
+                      width: 100,
+                    }}
+                  >
                     <PayPalScriptProvider options={paypalScriptOptions}>
                       <Button />
                     </PayPalScriptProvider>
-                    
                   </div>
-
-
-
                 </div>
               </div>
             ) : tab === "depositList" ? (
@@ -2106,10 +2118,9 @@ export default function Profile() {
                         // onChange={(e) => handleMessages(e)}
                         {...register5("amount", { required: true })}
                       />
-                      {errors5.amount &&
-                        errors5.amount.type === "required" && (
-                          <span>This field is required</span>
-                        )}
+                      {errors5.amount && errors5.amount.type === "required" && (
+                        <span>This field is required</span>
+                      )}
                     </div>
                     <div>
                       <input
@@ -2131,7 +2142,6 @@ export default function Profile() {
                     <h6>Credit</h6>
                     <h6>Status</h6>
                     <h6>Action</h6>
-
                   </div>
                   <hr />
                   {withdrawList?.map((item: any, index) => (
@@ -2141,7 +2151,6 @@ export default function Profile() {
                         <p>{item?.credit}</p>
                         <p>{item?.status == "1" ? "Approved" : "Pending"}</p>
                         <div style={{ margin: "auto 0px" }}>
-
                           <a
                             className={styles.edit__delete__button}
                             onClick={() => handlewithdrawEdit(item)}
@@ -2155,7 +2164,6 @@ export default function Profile() {
                             <MdDeleteSweep />
                           </a>
                         </div>
-
                       </div>
                       {withdrawList?.length - 1 == index ? null : <hr />}
                     </div>
@@ -2175,7 +2183,6 @@ export default function Profile() {
                     <h6>Amount</h6>
                     <h6>currency</h6>
                     <h6>Date</h6>
-
                   </div>
                   <hr />
                   {paymentList?.map((item: any, index) => (
@@ -2186,8 +2193,6 @@ export default function Profile() {
                         <p>{item?.amount}</p>
                         <p>{item?.currency}</p>
                         <p>{item?.date}</p>
-
-
                       </div>
                       {withdrawList?.length - 1 == index ? null : <hr />}
                     </div>
@@ -2201,60 +2206,57 @@ export default function Profile() {
               <div className={styles.launched__container}>
                 <h5>Drop Your Review</h5>
                 <div className={styles.review__drop}>
-                  <div style={{ padding: '20px' }}>
+                  <div style={{ padding: "20px" }}>
                     <Rating onClick={handleRating} initialValue={rating} />
                   </div>
 
-                  <div style={{ marginLeft: 20,}}>
+                  <div style={{ marginLeft: 20 }}>
                     {/* <label className={styles.label}>Amount</label> */}
                     <p>Comment</p>
-                    <div style={{ width: '200px' }}>
+                    <div style={{ width: "200px" }}>
                       <input
                         className={styles.input}
                         type="text"
                         value={comment}
                         onChange={(e) => setcomment(e?.target?.value)}
-
                       />
                     </div>
-                    
                   </div>
-                  <div style={{marginTop:10,margin:20}} className={styles.button2}>
-                      <a onClick={() => sendReviewAndComment()}>
-                        <p>Confirm</p>
-                      </a>
-
-                    </div>
-
+                  <div
+                    style={{ marginTop: 10, margin: 20 }}
+                    className={styles.button2}
+                  >
+                    <a onClick={() => sendReviewAndComment()}>
+                      <p>Confirm</p>
+                    </a>
+                  </div>
                 </div>
-
               </div>
             ) : tab === "link" ? (
               <div className={styles.launched__container}>
                 <h5>Link Generate</h5>
                 <div className={styles.review__drop1}>
-                  <p style={{margin:20}}>Do you want to generate a link?</p>
-                  <div style={{margin:20}} className={styles.button3}>
-                      <a onClick={() => linkUrl()}>
-                        <p>Link Create</p>
-                      </a>
+                  <p style={{ margin: 20 }}>Do you want to generate a link?</p>
+                  <div style={{ margin: 20 }} className={styles.button3}>
+                    <a onClick={() => linkUrl()}>
+                      <p>Link Create</p>
+                    </a>
+                  </div>
 
-                    </div>
-
-                    {link ? 
+                  {link ? (
                     <div>
-                        
-                        <p style={{margin:20}}>{createurl}</p>
-                        
-                        <button style={{margin:20}} className={styles.button2}
-                          onClick={() => copyToClipBoard()}>
-                          Copy
+                      <p style={{ margin: 20 }}>{createurl}</p>
+
+                      <button
+                        style={{ margin: 20 }}
+                        className={styles.button2}
+                        onClick={() => copyToClipBoard()}
+                      >
+                        Copy
                       </button>
-                      </div>   
-                      : null}                
-
+                    </div>
+                  ) : null}
                 </div>
-
               </div>
             ) : tab === "affiliate list" ? (
               <div className={styles.launched__container}>
@@ -2286,30 +2288,38 @@ export default function Profile() {
             ) : tab === "available-game" ? (
               <div className={styles.launched__container}>
                 <div className={styles.available__games__container}>
-                      {games?.map((item, index) => (
-                        <div
-                          key={index}
-                          className={styles.single__games__container}
-                          onClick={() => setActiveGame(item)}
+                  {games?.map((item, index) => (
+                    <div
+                      key={index}
+                      className={styles.single__games__container}
+                      onClick={() => setActiveGame(item)}
+                    >
+                      <Image
+                        src={item?.classificationImage}
+                        height={80}
+                        width={100}
+                      />
+                      <h6
+                        style={{
+                          textAlign: "center",
+                          color: "#fff",
+                          fontWeight: "700",
+                        }}
+                      >
+                        {item?.classificationName}{" "}
+                        <span
+                          style={{
+                            backgroundColor: "white",
+                            color: "#F35237",
+                            padding: "0px 5px",
+                          }}
                         >
-                          <Image src={item?.classificationImage} height={80} width={100} />
-                          <h6
-                            style={{ textAlign: "center", color: "#fff", fontWeight: "700" }}
-                          >
-                            {item?.classificationName}{" "}
-                            <span
-                              style={{
-                                backgroundColor: "white",
-                                color: "#F35237",
-                                padding: "0px 5px",
-                              }}
-                            >
-                              {item?.games == 0 ? 0 : item?.games?.length}
-                            </span>
-                          </h6>
-                        </div>
-                      ))}
-                  </div>
+                          {item?.games == 0 ? 0 : item?.games?.length}
+                        </span>
+                      </h6>
+                    </div>
+                  ))}
+                </div>
                 <h5>Your Available Game List</h5>
                 <div className={styles.available__game__list}>
                   <div className={styles.available__game__header}>
@@ -2322,17 +2332,24 @@ export default function Profile() {
                     <h6>Action</h6>
                   </div>
                   <hr />
-                  {activeGame?.games == 0 ? null 
-                  : activeGame?.games?.map((item, index) => (
-                    <div key={index}>
-                      <div className={styles.available__game__header}>
-                        <p>{activeGame?.classificationName} </p>
-                        <p>{item?.launchGamePlayerUserName}</p>
-                        <p> {moment.utc(item?.utcDate + ' ' + item?.utcTime ).local().format('YYYY-MM-DD HH:mm')}</p>
-                        <p>{item?.game_type == "1" ? "Single" : "Team"}</p>
-                        <p>{item?.honesty}</p>
-                        <p>{item?.amount} $</p>
-                        {/* <div style={{ margin: "auto 0px" }}>
+                  {activeGame?.games == 0
+                    ? null
+                    : activeGame?.games?.map((item, index) => (
+                        <div key={index}>
+                          <div className={styles.available__game__header}>
+                            <p>{activeGame?.classificationName} </p>
+                            <p>{item?.launchGamePlayerUserName}</p>
+                            <p>
+                              {" "}
+                              {moment
+                                .utc(item?.utcDate + " " + item?.utcTime)
+                                .local()
+                                .format("YYYY-MM-DD HH:mm")}
+                            </p>
+                            <p>{item?.game_type == "1" ? "Single" : "Team"}</p>
+                            <p>{item?.honesty}</p>
+                            <p>{item?.amount} $</p>
+                            {/* <div style={{ margin: "auto 0px" }}>
                           <a
                             className={styles.edit__delete__button}
                             onClick={() => handleView(item)}
@@ -2352,27 +2369,30 @@ export default function Profile() {
                             <MdDeleteSweep />
                           </a>
                         </div> */}
-                        {credit >= item?.amount ? 
-                          <button
-                          className={styles.request__button}
-                           onClick={() => handleRequest(item)}
-                          >
-                             Request for Entry
-                           </button>
-                           : null
-                           }
-                      </div>
-                      { activeGame?.games == 0 ? null : activeGame?.games?.length - 1 == index ? null : <hr />}
-                      {/* {activeGame?.games?.length - 1 == index ? null : <hr />} */}
-                    </div>
-                  ))}
+                            {credit >= item?.amount ? (
+                              <button
+                                className={styles.request__button}
+                                onClick={() => handleRequest(item)}
+                              >
+                                Request for Entry
+                              </button>
+                            ) : null}
+                          </div>
+                          {activeGame?.games == 0 ? null : activeGame?.games
+                              ?.length -
+                              1 ==
+                            index ? null : (
+                            <hr />
+                          )}
+                          {/* {activeGame?.games?.length - 1 == index ? null : <hr />} */}
+                        </div>
+                      ))}
                 </div>
                 {/* <div style={{ textAlign: 'center', marginTop: '10px' }}>
                   <Pagination defaultCurrent={1} total={launchedGame?.length} onChange={(page, pageSize) => setPage(page)} pageSize={totalItems} />
                 </div> */}
               </div>
-            ) :
-              null}
+            ) : null}
           </div>
         </div>
       </div>
@@ -2752,17 +2772,19 @@ export default function Profile() {
               </span>{" "}
               {viewResult?.winPlayer}
             </p>
-            {viewResult?.screenShort != 0 && <a
-              href={`${viewResult?.screenShort}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Image
-                src={`${viewResult?.screenShort}`}
-                height={50}
-                width={50}
-              />
-            </a>}
+            {viewResult?.screenShort != 0 && (
+              <a
+                href={`${viewResult?.screenShort}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Image
+                  src={`${viewResult?.screenShort}`}
+                  height={50}
+                  width={50}
+                />
+              </a>
+            )}
           </div>
         </Modal>
       ) : modal === "update opinion" ? (
@@ -2809,109 +2831,105 @@ export default function Profile() {
                 type="number"
                 value={editcredit}
                 onChange={(e) => seteditcredit(e?.target?.value)}
-
               />
 
-              {errorCredit ?
-                <span style={{ color: 'red' }}>{errorCredit}</span>
-                : null
-              }
+              {errorCredit ? (
+                <span style={{ color: "red" }}>{errorCredit}</span>
+              ) : null}
             </div>
             <div className={styles.button1}>
               <a onClick={() => onWithdrawEditSubmit()}>
                 <p>Confirm</p>
               </a>
-
             </div>
-
           </div>
         </Modal>
       ) : modal == "edit profile" ? (
-          <Modal title={"Edit Profile"} handleClose={() => setModal("")}>
-     
-             <div>
-                
-                <div>
-                  <div className={styles.main1}>
-                    <form onSubmit={handleSubmit6(onEditProfileSubmit)}>
-                      {/* register your input into the hook by invoking the "register" function */}
-                      <div>
-                        <label className={styles.label}>User Name</label>
-                        <input
-                          className={styles.input}
-                          placeholder="Enter User Name"
-                          defaultValue={username}
-                          {...register6("username", { required: true })}
-                        />
-                        {/* errors will return when field validation fails  */}
-                        {errors6.username &&
-                          errors6.username.type === "required" && (
-                            <span>Username is required!</span>
-                          )}
-                        {/* {errors.phone && errors.phone.type === "pattern" && <span>Enter a valid phone number!</span>} */}
-                      </div>
+        <Modal title={"Edit Profile"} handleClose={() => setModal("")}>
+          <div>
+            <div>
+              <div className={styles.main1}>
+                <form onSubmit={handleSubmit6(onEditProfileSubmit)}>
+                  {/* register your input into the hook by invoking the "register" function */}
+                  <div>
+                    <label className={styles.label}>User Name</label>
+                    <input
+                      className={styles.input}
+                      placeholder="Enter User Name"
+                      defaultValue={username}
+                      {...register6("username", { required: true })}
+                    />
+                    {/* errors will return when field validation fails  */}
+                    {errors6.username &&
+                      errors6.username.type === "required" && (
+                        <span>Username is required!</span>
+                      )}
+                    {/* {errors.phone && errors.phone.type === "pattern" && <span>Enter a valid phone number!</span>} */}
+                  </div>
 
-                      {/* include validation with required or other standard HTML validation rules */}
-                      <div>
-                        <label className={styles.label}>Email</label>
-                        <input
-                          className={styles.input}
-                          placeholder="Email"
-                          type="email"
-                          defaultValue={userEmail}
-                          {...register6("email", { required: true })}
-                        />
-                        {/* errors will return when field validation fails  */}
-                        {errors6.email && errors6.email.type === "required" && (
-                          <span>Email is required</span>
-                        )}
-                        {/* {errors.password && errors.password.type === 'minLength' && <span>Minimum 6 character is required</span>} */}
-                      </div>
-                      <div>
-                        <label className={styles.label}>Change Password</label>
-                        <input
-                          className={styles.input}
-                          placeholder="Password"
-                          type="password"
-                          {...register6("password", {
-                            required: false,
-                            minLength: 8,
-                          })}
-                        />
-                        {/* errors will return when field validation fails  */}
-                        {errors6.password &&
-                          errors6.password.type === "required" && (
-                            <span>Password is required</span>
-                          )}
-                        {errors6.password &&
-                          errors6.password.type === "minLength" && (
-                            <span>Minimum 8 characters required!</span>
-                          )}
-                        {/* {errors.password && errors.password.type === 'minLength' && <span>Minimum 6 character is required</span>} */}
-                      </div>
-                      <div>
-                        <label className={styles.label}>Confirm change Password</label>
-                        <input
-                          className={styles.input}
-                          placeholder="Confirm Password"
-                          type="password"
-                          {...register6("confirmPassword", {
-                            required: false,
-                            minLength: 8,
-                          })}
-                        />
-                        {/* errors will return when field validation fails  */}
-                        {errors6.confirmPassword &&
-                          errors6.confirmPassword.type === "required" && (
-                            <span>Confirm Password is required</span>
-                          )}
-                        {errors6.confirmPassword &&
-                          errors6.confirmPassword.type === "minLength" && (
-                            <span>Minimum 8 characters required!</span>
-                          )}
-                        {/* {errors.password && errors.password.type === 'minLength' && <span>Minimum 6 character is required</span>} */}
-                      </div>
-                      {/* <div>
+                  {/* include validation with required or other standard HTML validation rules */}
+                  <div>
+                    <label className={styles.label}>Email</label>
+                    <input
+                      className={styles.input}
+                      placeholder="Email"
+                      type="email"
+                      defaultValue={userEmail}
+                      {...register6("email", { required: true })}
+                    />
+                    {/* errors will return when field validation fails  */}
+                    {errors6.email && errors6.email.type === "required" && (
+                      <span>Email is required</span>
+                    )}
+                    {/* {errors.password && errors.password.type === 'minLength' && <span>Minimum 6 character is required</span>} */}
+                  </div>
+                  <div>
+                    <label className={styles.label}>Change Password</label>
+                    <input
+                      className={styles.input}
+                      placeholder="Password"
+                      type="password"
+                      {...register6("password", {
+                        required: false,
+                        minLength: 8,
+                      })}
+                    />
+                    {/* errors will return when field validation fails  */}
+                    {errors6.password &&
+                      errors6.password.type === "required" && (
+                        <span>Password is required</span>
+                      )}
+                    {errors6.password &&
+                      errors6.password.type === "minLength" && (
+                        <span>Minimum 8 characters required!</span>
+                      )}
+                    {/* {errors.password && errors.password.type === 'minLength' && <span>Minimum 6 character is required</span>} */}
+                  </div>
+                  <div>
+                    <label className={styles.label}>
+                      Confirm change Password
+                    </label>
+                    <input
+                      className={styles.input}
+                      placeholder="Confirm Password"
+                      type="password"
+                      {...register6("confirmPassword", {
+                        required: false,
+                        minLength: 8,
+                      })}
+                    />
+                    {/* errors will return when field validation fails  */}
+                    {errors6.confirmPassword &&
+                      errors6.confirmPassword.type === "required" && (
+                        <span>Confirm Password is required</span>
+                      )}
+                    {errors6.confirmPassword &&
+                      errors6.confirmPassword.type === "minLength" && (
+                        <span>Minimum 8 characters required!</span>
+                      )}
+                    {/* {errors.password && errors.password.type === 'minLength' && <span>Minimum 6 character is required</span>} */}
+                  </div>
+                  {/* <div>
                         <label className={styles.label}>Birth Date</label>
                         <input
                           className={styles.input}
@@ -2926,65 +2944,67 @@ export default function Profile() {
                             <span>Date of Birth is required</span>
                           )}
                       </div> */}
-                      <div>
-                        <label className={styles.label}>Country</label>
-                        <select
-                          className={styles.input}
-                          {...register6("country", { required: true })}
-                        >
-                          <option value={country}>{country}</option>
-                          {allCountry?.map((item, index) => (
-                            <option value={item?.name?.common} key={index}>
-                              {item?.name?.common?.slice(0, 35)}
-                            </option>
-                          ))}
-                        </select>
-                        {/* <input
+                  <div>
+                    <label className={styles.label}>Country</label>
+                    <select
+                      className={styles.input}
+                      {...register6("country", { required: true })}
+                    >
+                      <option value={country}>{country}</option>
+                      {allCountry?.map((item, index) => (
+                        <option value={item?.name?.common} key={index}>
+                          {item?.name?.common?.slice(0, 35)}
+                        </option>
+                      ))}
+                    </select>
+                    {/* <input
                           className={styles.input}
                           placeholder="Enter your country"
                           type="text"
                           {...register2("country", { required: true })}
                         /> */}
-                        {/* errors will return when field validation fails  */}
-                        {errors6.country &&
-                          errors6.country.type === "required" && (
-                            <span>Country is required</span>
-                          )}
-                        {/* {errors.password && errors.password.type === 'minLength' && <span>Minimum 6 character is required</span>} */}
-                      </div>
+                    {/* errors will return when field validation fails  */}
+                    {errors6.country && errors6.country.type === "required" && (
+                      <span>Country is required</span>
+                    )}
+                    {/* {errors.password && errors.password.type === 'minLength' && <span>Minimum 6 character is required</span>} */}
+                  </div>
+                  <div>
+                    <label className={styles.label}>
+                      Your Profile Image <span style={{ color: "red" }}>*</span>
+                    </label>
+                    <input
+                      type="file"
+                      accept="image/png, image/gif, image/jpeg"
+                      onChange={(e) => handlePicChange(e.target.files)}
+                    />
+                    {imageUrl && (
                       <div>
-                        <label className={styles.label}>
-                          Your Profile Image <span style={{ color: "red" }}>*</span>
-                        </label>
-                        <input
-                          type="file"
-                          accept="image/png, image/gif, image/jpeg"
-                          onChange={(e) => handlePicChange(e.target.files)}
+                        <img
+                          src={imageUrl}
+                          style={{ height: "140px", width: "120px" }}
                         />
-                          {imageUrl &&  <div>
-                                                <img src={imageUrl}  style={{height:"140px",width:"120px"}}/>
-                                              </div>}
-                        {/* <Upload onChange={handlePicChange} listType="text" status="success">
+                      </div>
+                    )}
+                    {/* <Upload onChange={handlePicChange} listType="text" status="success">
                                     <Button icon={<UploadOutlined />}>Click to Upload</Button>
                                 </Upload> */}
-                        {/* {errors.image && errors.image.type === 'required' && <span>This image is required</span>} */}
-                      </div>
-
-                      
-                      <div style={{ textAlign: "center",marginBottom:'20px' }}>
-                        <input
-                          className={styles.button}
-                          type="submit"
-                          value="Edit Profile"
-                        />
-                      </div>
-                    </form>
+                    {/* {errors.image && errors.image.type === 'required' && <span>This image is required</span>} */}
                   </div>
-                </div>
+
+                  <div style={{ textAlign: "center", marginBottom: "20px" }}>
+                    <input
+                      className={styles.button}
+                      type="submit"
+                      value="Edit Profile"
+                    />
+                  </div>
+                </form>
               </div>
-          </Modal>
-      ) :
-        null}
+            </div>
+          </div>
+        </Modal>
+      ) : null}
     </div>
   );
 }
