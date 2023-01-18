@@ -1231,9 +1231,15 @@ export default function Profile() {
                       src={"/assets/images/profile.png"}
                       height={200}
                       width={200}
+                      alt="profile"
                     />
                   ) : (
-                    <Image src={profileImage} height={200} width={200} />
+                    <Image
+                      src={profileImage}
+                      height={200}
+                      width={200}
+                      alt="profile"
+                    />
                   )}
 
                   <div
@@ -2298,6 +2304,7 @@ export default function Profile() {
                         src={item?.classificationImage}
                         height={80}
                         width={100}
+                        alt="classificationImage"
                       />
                       <h6
                         style={{
@@ -2782,6 +2789,7 @@ export default function Profile() {
                   src={`${viewResult?.screenShort}`}
                   height={50}
                   width={50}
+                  alt="screenShort"
                 />
               </a>
             )}
@@ -2983,6 +2991,7 @@ export default function Profile() {
                         <img
                           src={imageUrl}
                           style={{ height: "140px", width: "120px" }}
+                          alt="profile"
                         />
                       </div>
                     )}

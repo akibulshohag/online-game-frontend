@@ -35,7 +35,7 @@ export default function LaunchGame() {
         <div className={styles.container}>
           <div className={styles.image__text}>
             <div>
-              <Image src="/assets/images/1.png" height={300} width={300} />
+              <Image src="/assets/images/1.png" height={300} width={300} alt="launch"/>
             </div>
             <div style={{margin: 'auto 20px'}}>
               <h5>Launch your game and get ready </h5>
@@ -63,7 +63,7 @@ export default function LaunchGame() {
           </div>
         </div>
         <div style={{textAlign: 'center', marginBottom:'-7px'}}>
-          <Image src="/assets/images/3.png" height={200} width={200} />
+          <Image src="/assets/images/3.png" height={200} width={200} alt="launch"/>
         </div>
       </div>
       {modal == 'launch' ? <Modal title="Launch Game" handleClose={() => setModal("")} >

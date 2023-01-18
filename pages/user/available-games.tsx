@@ -1,13 +1,10 @@
 import { notification } from "antd";
-import moment from "moment";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useStatus } from "../../context/ContextStatus";
-import postRequest from "../../lib/postRequest";
 import request from "../../lib/request";
 import styles from "../../styles/AvailableGames.module.css";
-import { useRouter } from "next/router";
-
 
 interface ISingleGame {
   gameId: number;
@@ -22,9 +19,9 @@ interface ISingleGame {
   round: number;
   utcTime: string;
   utcDate: string;
-  skill:string;
-  honesty:string;
-  count:number
+  skill: string;
+  honesty: string;
+  count: number;
 }
 interface IGames {
   classificationId: number;
@@ -35,7 +32,16 @@ interface IGames {
 }
 
 export default function AvailableGames() {
-  const { userId, setUserId, token, setToken,credit,modal,setModal,selectedChallenge } = useStatus();
+  const {
+    userId,
+    setUserId,
+    token,
+    setToken,
+    credit,
+    modal,
+    setModal,
+    selectedChallenge,
+  } = useStatus();
   const [games, setGames] = useState<IGames[] | []>([]);
   const [activeGame, setActiveGame] = useState<IGames | null>(null);
   const router = useRouter();
@@ -62,24 +68,16 @@ export default function AvailableGames() {
   //   })();
   // }, []);
 
-
   useEffect(() => {
     (async () => {
-      if(selectedChallenge === 'Challenges'){
-        const response = await request(
-          `challenge`,
-          null
-        );
+      if (selectedChallenge === "Challenges") {
+        const response = await request(`challenge`, null);
         setGames(response?.data);
         // setActiveGame(response?.data?.length ? response?.data[0] : null);
-      } else{
-        const response = await request(
-          `tournament`,
-          null
-        );
+      } else {
+        const response = await request(`tournament`, null);
         setGames(response?.data);
       }
-      
     })();
   }, [selectedChallenge]);
 
@@ -101,15 +99,13 @@ export default function AvailableGames() {
   //   }
   // }
 
-  const redirectPage =()=>{
-    if(token){
-      router.push('/user/profile')
-    } else{
-      setModal('login')
+  const redirectPage = () => {
+    if (token) {
+      router.push("/user/profile");
+    } else {
+      setModal("login");
     }
-  }
-
-
+  };
 
   return (
     <div className={styles.main}>
@@ -140,7 +136,7 @@ export default function AvailableGames() {
           >
             Available
           </span>{" "}
-           {selectedChallenge} Games
+          {selectedChallenge} Games
         </h3>
       </div>
       <div className={styles.available__games__container}>
@@ -150,7 +146,12 @@ export default function AvailableGames() {
             className={styles.single__games__container}
             onClick={() => redirectPage()}
           >
-            <Image src={item?.classificationImage} height={300} width={300} />
+            <Image
+              src={item?.classificationImage}
+              height={300}
+              width={300}
+              alt="classificationImage"
+            />
             <h5
               style={{ textAlign: "center", color: "#fff", fontWeight: "700" }}
             >

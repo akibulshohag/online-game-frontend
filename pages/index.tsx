@@ -72,6 +72,7 @@ const Home: NextPage = () => {
             src={`/assets/images/slider1.jpeg`}
             layout="fill"
             priority={true}
+            alt="slider"
             //  width='100%'
             //  height={900}
           />
@@ -130,6 +131,7 @@ const Home: NextPage = () => {
                     src={`${item?.classificationImage}`}
                     height={300}
                     width={300}
+                    alt="classificationImage"
                   />
                   <h3 style={{ color: "#000" }}>
                     {item?.classificationName} : {item?.count}
@@ -144,6 +146,7 @@ const Home: NextPage = () => {
                   src={`/assets/images/game/banner.png`}
                   height={300}
                   width={230}
+                  alt="classificationImage"
                 />
                 <h3 style={{ color: "#000" }}>Football</h3>
               </div>
@@ -153,6 +156,7 @@ const Home: NextPage = () => {
                   src={`/assets/images/game/banner.png`}
                   height={300}
                   width={230}
+                  alt="classificationImage"
                 />
               </div>
               <div>
@@ -160,6 +164,7 @@ const Home: NextPage = () => {
                   src={`/assets/images/game/banner.png`}
                   height={300}
                   width={230}
+                  alt="classificationImage"
                 />
               </div>
               <div>
@@ -167,6 +172,7 @@ const Home: NextPage = () => {
                   src={`/assets/images/game/banner.png`}
                   height={300}
                   width={230}
+                  alt="classificationImage"
                 />
               </div>
               <div>
@@ -174,6 +180,7 @@ const Home: NextPage = () => {
                   src={`/assets/images/game/banner.png`}
                   height={350}
                   width={230}
+                  alt="classificationImage"
                 />
               </div>
             </div>
@@ -195,15 +202,30 @@ const Home: NextPage = () => {
           <div style={{ margin: "auto 0px" }}>
             <a className={styles.download__button}>Download App Now</a>
             <p></p>
-            <Image src={`/assets/images/play.png`} height={90} width={220} />
-            <Image src={`/assets/images/app.png`} height={90} width={220} />
+            <Image
+              src={`/assets/images/play.png`}
+              height={90}
+              width={220}
+              alt="play store"
+            />
+            <Image
+              src={`/assets/images/app.png`}
+              height={90}
+              width={220}
+              alt="app store"
+            />
             <h6 style={{ color: "#000" }}>
               Download the UPA mobile app to create/accept
               challenges/tournaments and manage your account in the palm of your
               hand.{" "}
             </h6>
           </div>
-          <Image src={`/assets/images/mobile1.webp`} height={500} width={700} />
+          <Image
+            src={`/assets/images/mobile1.webp`}
+            height={500}
+            width={700}
+            alt="mobile"
+          />
         </Container>
       </div>
       {/* <div className={styles.unlimited__container}>
