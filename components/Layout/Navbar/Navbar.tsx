@@ -323,7 +323,7 @@ export default function Navbar() {
                 </Link>
               </div>
             </div>
-            <div className={styles.competition}>
+            {/* <div className={styles.competition}>
               <p style={{ color: "#fff" }}>Competition</p>
               <div className={styles.aboutUsHover}>
                 <a onClick={() => redirectChallange()}>
@@ -340,7 +340,7 @@ export default function Navbar() {
                   </p>
                 </a>
               </div>
-            </div>
+            </div> */}
             <Link href="/terms-and-conditions">
               <p style={{ color: "#fff", cursor: "pointer" }}>
                 Affiliate Program
@@ -354,7 +354,7 @@ export default function Navbar() {
                   )
                 }
               >
-                Contact Us
+                Contact
               </a>
             </div>
           </div>

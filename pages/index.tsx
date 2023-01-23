@@ -106,7 +106,7 @@ const Home: NextPage = () => {
       <Container>
         <div className={styles.games__container}>
           <h3 style={{ color: "black" }}>Mini Platform</h3>
-          <p>We are constantly adding new games</p>
+          <p>Play your Favourite Games for Cash Prizes</p>
           <div
             style={{
               position: "absolute",

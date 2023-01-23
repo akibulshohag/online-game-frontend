@@ -1,11 +1,27 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
+import { useStatus } from "../../../context/ContextStatus";
 import BottomFooter from "./BottomFooter";
 import styles from "./Footer.module.css";
 
 export default function Footer() {
   const { t, i18n } = useTranslation();
+  const router = useRouter();
+  const {
+    
+    setselectedChallenge,
+  } = useStatus();
+
+  const redirectChallange = () => {
+    router.push("/user/available-games");
+    setselectedChallenge("Challenges");
+  };
+  const redirectTournament = () => {
+    router.push("/user/available-games");
+    setselectedChallenge("Tournament");
+  };
   return (
     <div className={styles.main}>
       <div className={styles.footer}>
@@ -96,7 +112,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link href="/terms-and-conditions">
-                    <a>Terms and Condition</a>
+                    <a>Terms and Conditions</a>
                   </Link>
                 </li>
               </ul>
@@ -105,14 +121,14 @@ export default function Footer() {
               <h4>Competition</h4>
               <ul>
                 <li>
-                  <Link href="/">
-                    <a>Challenges</a>
-                  </Link>
+                 
+                    <a onClick={() =>redirectChallange()}>Challenges</a>
+                 
                 </li>
                 <li>
-                  <Link href="/">
-                    <a>Tournaments</a>
-                  </Link>
+                  
+                    <a onClick={() =>redirectTournament()}>Tournaments</a>
+                  
                 </li>
                 {/* <li>
                         <Link href="/"><a>Linkedin</a></Link>
@@ -168,7 +184,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <BottomFooter />
+      {/* <BottomFooter /> */}
     </div>
   );
 }
