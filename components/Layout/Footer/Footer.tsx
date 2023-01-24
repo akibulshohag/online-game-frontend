@@ -117,7 +117,7 @@ export default function Footer() {
                 </li>
               </ul>
             </div>
-            <div className={styles.page__info__content}>
+            {/* <div className={styles.page__info__content}>
               <h4>Competition</h4>
               <ul>
                 <li>
@@ -130,11 +130,8 @@ export default function Footer() {
                     <a onClick={() =>redirectTournament()}>Tournaments</a>
                   
                 </li>
-                {/* <li>
-                        <Link href="/"><a>Linkedin</a></Link>
-                    </li> */}
               </ul>
-            </div>
+            </div> */}
             <div className={styles.page__info__content}>
               <Link href="/terms-and-conditions">
                 <a>

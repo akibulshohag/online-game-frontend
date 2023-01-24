@@ -105,13 +105,13 @@ const Home: NextPage = () => {
       </div>
       <Container>
         <div className={styles.games__container}>
-          <h3 style={{ color: "black" }}>Mini Platform</h3>
+          <h3 style={{ color: "black" }}></h3>
           <p>Play your Favourite Games for Cash Prizes</p>
           <div
             style={{
               position: "absolute",
               right: "10px",
-              marginTop: "-140px",
+              marginTop: "-100px",
               backgroundColor: "#F35237",
               color: "white",
               padding: "8px 30px",
@@ -126,16 +126,14 @@ const Home: NextPage = () => {
           {games?.length > 0 ? (
             <div className={styles.games__grid__view}>
               {games.map((item, index) => (
-                <div key={index} onClick={() => setModal("signup")}>
+                <div key={index} style={{width: 300,height:300,position:'relative'}} onClick={() => setModal("signup")}>
                   <Image
                     src={`${item?.classificationImage}`}
-                    height={300}
-                    width={300}
+                   layout='fill'
+                   
                     alt="classificationImage"
                   />
-                  <h3 style={{ color: "#000" }}>
-                    {item?.classificationName} : {item?.count}
-                  </h3>
+                 
                 </div>
               ))}
             </div>
