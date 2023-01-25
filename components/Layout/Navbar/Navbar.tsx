@@ -62,6 +62,8 @@ type ForgotPassword = {
 
 export default function Navbar() {
   const [allCountry, setAllCountry] = useState<allCountryType[]>([]);
+  const [sidebar, setSidebar] = useState(false);
+
   const { t, i18n } = useTranslation();
   const { isFallback, events } = useRouter();
   const {
@@ -276,9 +278,7 @@ export default function Navbar() {
     });
   };
 
-  // useEffect(() => {
-  //   googleTranslateElementInit("google_translate_element");
-  // }, [1]);
+ 
 
   const redirectChallange = () => {
     router.push("/user/available-games");
@@ -287,6 +287,15 @@ export default function Navbar() {
   const redirectTournament = () => {
     router.push("/user/available-games");
     setselectedChallenge("Tournament");
+  };
+
+  const handleSidebar = () => {
+    setSidebar(!sidebar);
+    console.log("on");
+  };
+  const handleClose = () => {
+    setSidebar(!sidebar);
+   
   };
 
   return (
@@ -374,6 +383,18 @@ export default function Navbar() {
               Open An Account
             </a>
           )}
+           <div className={styles.hamburg} onClick={handleSidebar}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+                color={'#fff'}
+              >
+                <path fill="none" d="M0 0h24v24H0z" />
+                <path d="M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z" />
+              </svg>
+            </div>
           {token ? (
             <div className={styles.dropdown}>
               <Link href={`/user/profile`}>
@@ -398,87 +419,7 @@ export default function Navbar() {
             </div> */}
             </div>
           ) : null}
-          <div>
-            <div className={styles.aboutUs}>
-              {/* <script
-                type="text/javascript"
-                src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-              ></script> */}
-
-              {/* <div className={styles.language}>
-            <p style={{color:'#fff',cursor:'pointer'}}>
-              Language (
-                {selectedLanguage === 'en' ? 
-                  <>
-                  En <Image
-               style={{marginTop:5}}
-                src={`/assets/images/icons/kingdom.png`}
-                height={15}
-                width={15}
-                />
-                </>
-                : selectedLanguage === 'pr' ? 
-                <>
-                 Pr <Image
-              style={{marginTop:5}}
-               src={`/assets/images/icons/brazil.png`}
-               height={15}
-               width={15}
-               />
-               </>
-               : selectedLanguage === 'sp' ?
-               <>
-                 Sp <Image
-              style={{marginTop:5}}
-               src={`/assets/images/icons/spain.png`}
-               height={15}
-               width={15}
-               />
-               </>
-               : null
-              }
-                
-               )
-            </p>
-              
-            </div> */}
-              {/* <div className={styles.languageSelect}>
-                <div onClick={()=>clickLanguage('en')} className={styles.languageWithFlag}>
-                <p >
-                  English
-                </p>
-                <Image
-               src={`/assets/images/icons/kingdom.png`}
-               height={17}
-               width={17}
-               />
-                </div>
-                <div onClick={()=>clickLanguage('pr')} className={styles.languageWithFlag}>
-                <p>
-                  Portugues
-                </p>
-                <Image
-               src={`/assets/images/icons/brazil.png`}
-               height={17}
-               width={17}
-               />
-                </div>
-                <div onClick={()=>clickLanguage('sp')} className={styles.languageWithFlag}>
-                <p>
-                  Spanish
-                </p>
-                <Image
-               src={`/assets/images/icons/spain.png`}
-               height={17}
-               width={17}
-               />
-                </div>
-                
-             
-              
-              </div> */}
-            </div>
-          </div>
+          
         </div>
         {modal == "login" ? (
           <Modal title={"Login"} handleClose={() => setModal("")}>

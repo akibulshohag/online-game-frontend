@@ -64,17 +64,17 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.home__container}>
-        <div className={styles.video__overlay}></div>
+        {/* <div className={styles.video__overlay}></div> */}
         {/* <video src={"/assets/videos/gaming2.webm"} autoPlay loop muted /> */}
-        <div style={{ width: "100%", height: 900, position: "relative" }}>
+        <div className={styles.sliderImage}>
           <Image
             style={{ marginTop: 5 }}
             src={`/assets/images/slider1.jpeg`}
             layout="fill"
             priority={true}
             alt="slider"
-            //  width='100%'
-            //  height={900}
+            // width={'100%'}
+            // height={800}
           />
         </div>
 
@@ -108,28 +108,22 @@ const Home: NextPage = () => {
           <h3 style={{ color: "black" }}></h3>
           <p>Play your Favourite Games for Cash Prizes</p>
           <div
-            style={{
-              position: "absolute",
-              right: "10px",
-              marginTop: "-100px",
-              backgroundColor: "#F35237",
-              color: "white",
-              padding: "8px 30px",
-              cursor: "pointer",
-            }}
+            className={styles.playingNow}
           >
             <a onClick={() => setModal("signup")}>
               <p style={{ marginBottom: "0px" }}>Start playing Now!</p>
-              <h6 style={{ fontSize: "19px" }}>Create Account</h6>
+              <h6>Create Account</h6>
             </a>
           </div>
           {games?.length > 0 ? (
             <div className={styles.games__grid__view}>
               {games.map((item, index) => (
-                <div key={index} style={{width: 300,height:300,position:'relative'}} onClick={() => setModal("signup")}>
+                <div key={index}  onClick={() => setModal("signup")}>
                   <Image
                     src={`${item?.classificationImage}`}
-                   layout='fill'
+                    width={300}
+                    height={300}
+                   
                    
                     alt="classificationImage"
                   />
