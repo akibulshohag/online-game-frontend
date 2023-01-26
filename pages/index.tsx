@@ -121,7 +121,7 @@ const Home: NextPage = () => {
                 <div key={index}  onClick={() => setModal("signup")}>
                   <Image
                     src={`${item?.classificationImage}`}
-                    width={300}
+                    width={340}
                     height={300}
                    
                    

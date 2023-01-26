@@ -335,3 +335,26 @@
   color: white;
   background-color:#f35237;
 }
+
+
+/* responsive */
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .profile__container {
+   overflow-x: scroll;
+  }
+ 
+ 
+}
+@media (min-width:424px) and (max-width:768px){
+  .profile__container {
+    overflow-x: scroll;
+   }
+ 
+}
+@media (min-width:320px) and (max-width:423px){
+  .profile__container {
+    overflow-x: scroll;
+   }
+ 
+}

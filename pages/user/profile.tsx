@@ -2402,7 +2402,7 @@ export default function Profile() {
             ) : null}
           </div>
         </div>
-      </div>
+      </div> 
       {modal == "edit launch" ? (
         <Modal handleClose={() => setModal("")} title="Edit Game">
           <div className={styles.edit__form}>

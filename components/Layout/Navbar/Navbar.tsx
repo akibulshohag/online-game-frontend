@@ -16,6 +16,16 @@ import "../../../context/i18next";
 import googleTranslateElementInit from "../../../context/text";
 import postRequest from "../../../lib/postRequest";
 import styles from "./Navbar.module.css";
+import ActiveLink from '../../../components/ActiveLink'
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import {
+//   faArrowLeft,
+//   faCartShopping,
+//   faInbox,
+//   faRightFromBracket,
+//   faUser,
+//   faUserGroup
+// } from "@fortawesome/free-solid-svg-icons";
 
 // import document, { Html, Head, Main, NextScript } from 'next/document'
 
@@ -63,6 +73,7 @@ type ForgotPassword = {
 export default function Navbar() {
   const [allCountry, setAllCountry] = useState<allCountryType[]>([]);
   const [sidebar, setSidebar] = useState(false);
+  const [sideClose, setSideClose] = useState(false);
 
   const { t, i18n } = useTranslation();
   const { isFallback, events } = useRouter();
@@ -383,13 +394,99 @@ export default function Navbar() {
               Open An Account
             </a>
           )}
+          {sidebar ? (
+              <div
+                className={`${
+                  sideClose === true
+                    ? styles.side__mobile
+                    : styles.mobile__sidebar
+                }`}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    paddingRight: "15px",
+                    paddingBottom: "30px",
+                  }}
+                >
+                  <div onClick={handleClose}>
+                    <p style={{color:'#fff'}}>Close</p>
+                  </div>
+                </div>
+                  {token ? 
+                   <Link href={`/user/profile`}>
+                  <a>
+                    
+                    <span style={{color:'#fff'}}>Profile</span>
+                  </a>
+                  </Link>
+                  :null}
+                  <a>
+                    
+                    <span style={{color:'#fff'}}>About Us</span>
+                  </a>
+               
+                <Link
+                  href="/terms-and-conditions"
+                >
+                  <a>
+                    
+                    <span style={{color:'#f35237',marginLeft:15}}>Terms and Conditions</span>
+                  </a>
+                </Link>
+                <Link
+                  href="/privacy-policy"
+                >
+                  <a>
+                    
+                  <span style={{color:'#f35237',marginLeft:15}}>Privacy Policy</span>
+                  </a>
+                </Link>
+                <Link
+                  href="/terms-and-conditions"
+                >
+                  <a>
+                    
+                  <span style={{color:'#fff',}}>Affiliate Program</span>
+                  </a>
+                </Link>
+                
+                  <a onClick={() =>
+                  window.open(
+                    "mailto:hello@upaesports.com?subject=SendMail&body=Description"
+                  )
+                }>
+                    
+                  <span style={{color:'#fff'}}>Contact</span>
+                  
+                  </a>
+                  {token ?null : 
+                    <div>
+                    <a onClick={() => setModal("login")
+                      }>
+                      
+                    <span style={{color:'#fff'}}>Login</span>
+                    </a>
+                    <a onClick={() => setModal("signup")
+                      }>
+                      
+                    <span style={{color:'#fff'}}>Create an account</span>
+                    </a>
+                  </div>
+                  }
+                
+
+               
+              </div>
+            ) : null}
            <div className={styles.hamburg} onClick={handleSidebar}>
               <svg
+                style={{fill:"#fff"}}
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 width="24"
                 height="24"
-                color={'#fff'}
               >
                 <path fill="none" d="M0 0h24v24H0z" />
                 <path d="M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z" />
@@ -408,15 +505,6 @@ export default function Navbar() {
                   {/* <CgProfile size={35} /> */}
                 </a>
               </Link>
-              {/* <div className={styles.dropdown__content}>
-              <Link href="/user/profile">
-                <a>Profile</a>
-              </Link>
-              <Link href="/user/available-games">
-                <a>Available Games</a>
-              </Link>
-              <a onClick={handleLogout}>Logout</a>
-            </div> */}
             </div>
           ) : null}
           
