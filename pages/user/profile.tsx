@@ -1235,7 +1235,7 @@ export default function Profile() {
                     />
                   ) : (
                     <Image
-                      src={"/assets/images/profile.png"}
+                      src={profileImage}
                       height={200}
                       width={200}
                       alt="profile"
