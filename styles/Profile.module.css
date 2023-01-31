@@ -336,6 +336,63 @@
   background-color:#f35237;
 }
 
+/* challenge */
+.challenges{
+  padding:1px 0px;
+  position: relative;
+  z-index: 25;
+}
+.challengesList{
+  display: none;
+  position:absolute;
+  background-color:rgb(175, 164, 164);
+  z-index: 2;
+  top:30px;
+  left:15px;
+  height: 250px;
+}
+.challenges:hover .challengesList{
+  display: block;
+}
+
+/* tournaments */
+.tournaments{
+  padding:1px 0px;
+  position: relative;
+  z-index: 1;
+}
+.tournamentsList{
+  display: none;
+  position:absolute;
+  background-color:rgb(175, 164, 164);
+  z-index: 10;
+  top:30px;
+  left:15px;
+  height: 250px;
+}
+.tournaments:hover .tournamentsList{
+  display: block;
+}
+/* tournaments */
+.affiliate{
+  padding:1px 0px;
+  position: relative;
+  z-index: ;
+}
+.affiliateList{
+  display: none;
+  position:absolute;
+  background-color:rgb(175, 164, 164);
+  z-index: 15;
+  top:30px;
+  left:15px;
+  height: 80px;
+}
+.affiliate:hover .affiliateList{
+  display: block;
+}
+
+
 
 /* responsive */
 

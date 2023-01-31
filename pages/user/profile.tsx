@@ -1235,7 +1235,7 @@ export default function Profile() {
                     />
                   ) : (
                     <Image
-                      src={profileImage}
+                      src={"/assets/images/profile.png"}
                       height={200}
                       width={200}
                       alt="profile"
@@ -1322,52 +1322,221 @@ export default function Profile() {
               {/* <Link href={"/user/available-games"}>
                 <a>Available Games</a>
               </Link> */}
-              <a
-                className={`${
-                  tab === "available-game" ? styles.border__bottom : null
-                }`}
-                onClick={() => setTab("available-game")}
+              <div
+                style={{
+                  padding: "1px 0px",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
               >
-                Available Games
-              </a>
-              <a
-                className={`${tab === "launch" ? styles.border__bottom : null}`}
-                onClick={() => setTab("launch")}
+                <a
+                  className={`${
+                    tab === "deposit" ? styles.border__bottom : null
+                  }`}
+                  onClick={() => setTab("deposit")}
+                >
+                  Deposit
+                </a>
+                <a
+                  className={`${
+                    tab === "withdraw" ? styles.border__bottom : null
+                  }`}
+                  onClick={() => setTab("withdraw")}
+                >
+                  Withdraw Credit
+                </a>
+              </div>
+              <div
+                style={{
+                  padding: "1px 0px",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
               >
-                Launch Game
-              </a>
-              <a
-                className={`${
-                  tab === "launched" ? styles.border__bottom : null
-                }`}
-                onClick={() => getLaunchedGame()}
-              >
-                Launched List
-              </a>
-              <a
-                className={`${
-                  tab === "request" ? styles.border__bottom : null
-                }`}
-                onClick={() => getRequestList()}
-              >
-                Request List
-              </a>
-              <a
-                className={`${
-                  tab === "single-list" ? styles.border__bottom : null
-                }`}
-                onClick={() => getGameSingleList()}
-              >
-                Single Game List
-              </a>
-              <a
-                className={`${
-                  tab === "tournament-list" ? styles.border__bottom : null
-                }`}
-                onClick={() => getGameTournamentList()}
-              >
-                Tournament Game List
-              </a>
+                <a
+                  className={`${
+                    tab === "depositList" ? styles.border__bottom : null
+                  }`}
+                  onClick={() => getDepositList()}
+                >
+                  Deposit List
+                </a>
+                <a
+                  className={`${
+                    tab === "withdrawList" ? styles.border__bottom : null
+                  }`}
+                  onClick={() => getWithdrawList()}
+                >
+                  Withdraw List
+                </a>
+              </div>
+
+              <div className={styles.challenges}>
+                <div style={{ marginTop: 10 }}>
+                  <a
+                    className={`${
+                      tab === "withdrawList" ? styles.border__bottom : null
+                    }`}
+                  >
+                    Challenges
+                  </a>
+                </div>
+                <div className={styles.challengesList}>
+                  <div style={{ marginTop: 10 }}>
+                    <a
+                      className={`${
+                        tab === "launch" ? styles.border__bottom : null
+                      }`}
+                      onClick={() => setTab("launch")}
+                    >
+                      Launch New Challenge
+                    </a>
+                  </div>
+                  <div style={{ marginTop: 10 }}>
+                    <a
+                      className={`${
+                        tab === "available-game" ? styles.border__bottom : null
+                      }`}
+                      onClick={() => setTab("available-game")}
+                    >
+                      Available Challenges
+                    </a>
+                  </div>
+                  <div style={{ marginTop: 10 }}>
+                    <a
+                      className={`${
+                        tab === "launched" ? styles.border__bottom : null
+                      }`}
+                      onClick={() => getLaunchedGame()}
+                    >
+                      Launched List Challenges
+                    </a>
+                  </div>
+                  <div style={{ marginTop: 10 }}>
+                    <a
+                      className={`${
+                        tab === "single-list" ? styles.border__bottom : null
+                      }`}
+                      onClick={() => getGameSingleList()}
+                    >
+                      Challenges List
+                    </a>
+                  </div>
+                  <div style={{ marginTop: 10 }}>
+                    <a
+                      className={`${
+                        tab === "request" ? styles.border__bottom : null
+                      }`}
+                      onClick={() => getRequestList()}
+                    >
+                      Request Challenges
+                    </a>
+                  </div>
+                  <div style={{ marginTop: 10 }}>
+                    <a
+                      className={`${
+                        tab === "single-resultList"
+                          ? styles.border__bottom
+                          : null
+                      }`}
+                      onClick={() => getSingleResultList()}
+                    >
+                      Challenges Result List
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div className={styles.tournaments}>
+                <div style={{ marginTop: 10 }}>
+                  <a
+                    className={`${
+                      tab === "withdrawList" ? styles.border__bottom : null
+                    }`}
+                  >
+                    Tournaments
+                  </a>
+                </div>
+                <div className={styles.tournamentsList}>
+                  <div style={{ marginTop: 10 }}>
+                    <a
+                      className={`${
+                        tab === "launch" ? styles.border__bottom : null
+                      }`}
+                      onClick={() => setTab("launch")}
+                    >
+                      Launch New Tournaments
+                    </a>
+                  </div>
+                  <div style={{ marginTop: 10 }}>
+                    <a
+                      className={`${
+                        tab === "available-game" ? styles.border__bottom : null
+                      }`}
+                      onClick={() => setTab("available-game")}
+                    >
+                      Available Tournaments
+                    </a>
+                  </div>
+                  <div style={{ marginTop: 10 }}>
+                    <a
+                      className={`${
+                        tab === "launched" ? styles.border__bottom : null
+                      }`}
+                      onClick={() => getLaunchedGame()}
+                    >
+                      My launched Tournaments
+                    </a>
+                  </div>
+                  <div style={{ marginTop: 10 }}>
+                    <a
+                      className={`${
+                        tab === "tournament-resultList"
+                          ? styles.border__bottom
+                          : null
+                      }`}
+                      onClick={() => getTournamentResultList()}
+                    >
+                      Accepted Tournaments
+                    </a>
+                  </div>
+                  <div style={{ marginTop: 10 }}>
+                    <a
+                      className={`${
+                        tab === "published" ? styles.border__bottom : null
+                      }`}
+                      onClick={() => getPublishedResult()}
+                    >
+                      Played Tournaments
+                    </a>
+                  </div>
+                  <div style={{ marginTop: 10 }}>
+                    <a
+                      className={`${
+                        tab === "tournament-list" ? styles.border__bottom : null
+                      }`}
+                      onClick={() => getGameTournamentList()}
+                    >
+                      Tournaments List
+                    </a>
+                  </div>
+                  <div style={{ marginTop: 10 }}>
+                    <a
+                      className={`${
+                        tab === "request" ? styles.border__bottom : null
+                      }`}
+                      onClick={() => getRequestList()}
+                    >
+                      Requested Tournaments
+                    </a>
+                  </div>
+                </div>
+              </div>
+             
+
               <a
                 className={`${
                   tab === "resultSendList" ? styles.border__bottom : null
@@ -1379,68 +1548,13 @@ export default function Profile() {
 
               <a
                 className={`${
-                  tab === "single-resultList" ? styles.border__bottom : null
-                }`}
-                onClick={() => getSingleResultList()}
-              >
-                Single Result List
-              </a>
-              <a
-                className={`${
-                  tab === "tournament-resultList" ? styles.border__bottom : null
-                }`}
-                onClick={() => getTournamentResultList()}
-              >
-                Tournament Result List
-              </a>
-              <a
-                className={`${
                   tab === "dispute" ? styles.border__bottom : null
                 }`}
                 onClick={() => getResultDispute()}
               >
                 Result Dispute
               </a>
-              <a
-                className={`${
-                  tab === "published" ? styles.border__bottom : null
-                }`}
-                onClick={() => getPublishedResult()}
-              >
-                Published Result
-              </a>
-              <a
-                className={`${
-                  tab === "deposit" ? styles.border__bottom : null
-                }`}
-                onClick={() => setTab("deposit")}
-              >
-                Deposit
-              </a>
-              <a
-                className={`${
-                  tab === "depositList" ? styles.border__bottom : null
-                }`}
-                onClick={() => getDepositList()}
-              >
-                Deposit List
-              </a>
-              <a
-                className={`${
-                  tab === "withdraw" ? styles.border__bottom : null
-                }`}
-                onClick={() => setTab("withdraw")}
-              >
-                Withdraw Credit
-              </a>
-              <a
-                className={`${
-                  tab === "withdrawList" ? styles.border__bottom : null
-                }`}
-                onClick={() => getWithdrawList()}
-              >
-                Withdraw List
-              </a>
+
               <a
                 className={`${
                   tab === "paymentList" ? styles.border__bottom : null
@@ -1449,6 +1563,39 @@ export default function Profile() {
               >
                 payment List
               </a>
+              <div className={styles.affiliate}>
+                <div style={{ marginTop: 10 }}>
+                  <a
+                    className={`${
+                      tab === "withdrawList" ? styles.border__bottom : null
+                    }`}
+                  >
+                    Affiliate page
+                  </a>
+                </div>
+                <div className={styles.affiliateList}>
+                  <div style={{ marginTop: 10 }}>
+                    <a
+                      className={`${
+                        tab === "link" ? styles.border__bottom : null
+                      }`}
+                      onClick={() => linkGenerate()}
+                    >
+                      Affiliate Link
+                    </a>
+                  </div>
+                  <div style={{ marginTop: 10 }}>
+                    <a
+                      className={`${
+                        tab === "affiliate list" ? styles.border__bottom : null
+                      }`}
+                      onClick={() => getAffiliateList()}
+                    >
+                      Affiliate List
+                    </a>
+                  </div>
+                </div>
+              </div>
               <a
                 className={`${tab === "review" ? styles.border__bottom : null}`}
                 onClick={() => sendReview()}
@@ -1456,19 +1603,12 @@ export default function Profile() {
                 Drop Review
               </a>
               <a
-                className={`${tab === "link" ? styles.border__bottom : null}`}
-                onClick={() => linkGenerate()}
+                className={`${tab === "edit profile" ? styles.border__bottom : null}`}
+                onClick={() => {setModal("edit profile"),setTab('edit profile')}}
               >
-                Affiliate Link
+                Edit Profile
               </a>
-              <a
-                className={`${
-                  tab === "affiliate list" ? styles.border__bottom : null
-                }`}
-                onClick={() => getAffiliateList()}
-              >
-                Affiliate List
-              </a>
+
               <a onClick={handleLogout}>Log out</a>
             </div>
           </div>
@@ -2300,17 +2440,18 @@ export default function Profile() {
                       className={styles.single__games__container}
                       onClick={() => setActiveGame(item)}
                     >
-                      <Image
+                      {/* <Image
                         src={item?.classificationImage}
                         height={80}
                         width={100}
                         alt="classificationImage"
-                      />
+                      /> */}
                       <h6
                         style={{
                           textAlign: "center",
                           color: "#fff",
                           fontWeight: "700",
+                          marginTop: "10px",
                         }}
                       >
                         {item?.classificationName}{" "}
@@ -2402,7 +2543,7 @@ export default function Profile() {
             ) : null}
           </div>
         </div>
-      </div> 
+      </div>
       {modal == "edit launch" ? (
         <Modal handleClose={() => setModal("")} title="Edit Game">
           <div className={styles.edit__form}>
