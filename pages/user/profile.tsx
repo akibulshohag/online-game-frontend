@@ -1235,7 +1235,7 @@ export default function Profile() {
                     />
                   ) : (
                     <Image
-                      src={profileImage}
+                      src={"/assets/images/profile.png"}
                       height={200}
                       width={200}
                       alt="profile"
@@ -1319,45 +1319,30 @@ export default function Profile() {
                   ) : null}
                 </div>
               </div>
-              {/* <Link href={"/user/available-games"}>
-                <a>Available Games</a>
-              </Link> */}
-              <div
-                style={{
-                  padding: "1px 0px",
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <a
+             
+              <div className={styles.diposit}>
+                <div style={{ marginTop: 10 }}>
+                  <a
+                    className={`${
+                      tab === "none" ? styles.border__bottom : null
+                    }`}
+                  >
+                    Deposit
+                  </a>
+                </div>
+                <div className={styles.dipositList}>
+                  <div style={{ marginTop: 10 }}>
+                  <a
                   className={`${
                     tab === "deposit" ? styles.border__bottom : null
                   }`}
                   onClick={() => setTab("deposit")}
                 >
-                  Deposit
+                   Deposit Create
                 </a>
-                <a
-                  className={`${
-                    tab === "withdraw" ? styles.border__bottom : null
-                  }`}
-                  onClick={() => setTab("withdraw")}
-                >
-                  Withdraw Credit
-                </a>
-              </div>
-              <div
-                style={{
-                  padding: "1px 0px",
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <a
+                  </div>
+                  <div style={{ marginTop: 10 }}>
+                  <a
                   className={`${
                     tab === "depositList" ? styles.border__bottom : null
                   }`}
@@ -1365,7 +1350,42 @@ export default function Profile() {
                 >
                   Deposit List
                 </a>
-                <a
+                  </div>
+                  <div style={{ marginTop: 10 }}>
+                  <a
+                className={`${
+                  tab === "paymentList" ? styles.border__bottom : null
+                }`}
+                onClick={() => getPaymentList()}
+              >
+                Payment List
+              </a>
+                  </div>
+                </div>
+              </div>
+              <div className={styles.withdraw}>
+                <div style={{ marginTop: 10 }}>
+                  <a
+                    className={`${
+                      tab === "none" ? styles.border__bottom : null
+                    }`}
+                  >
+                    Withdraw
+                  </a>
+                </div>
+                <div className={styles.withdrawList}>
+                  <div style={{ marginTop: 10 }}>
+                  <a
+                  className={`${
+                    tab === "withdraw" ? styles.border__bottom : null
+                  }`}
+                  onClick={() => setTab("withdraw")}
+                >
+                  Withdraw Credit
+                </a>
+                  </div>
+                  <div style={{ marginTop: 10 }}>
+                  <a
                   className={`${
                     tab === "withdrawList" ? styles.border__bottom : null
                   }`}
@@ -1373,13 +1393,16 @@ export default function Profile() {
                 >
                   Withdraw List
                 </a>
+                  </div>
+                </div>
               </div>
+              
 
               <div className={styles.challenges}>
                 <div style={{ marginTop: 10 }}>
                   <a
                     className={`${
-                      tab === "withdrawList" ? styles.border__bottom : null
+                      tab === "none" ? styles.border__bottom : null
                     }`}
                   >
                     Challenges
@@ -1454,7 +1477,7 @@ export default function Profile() {
                 <div style={{ marginTop: 10 }}>
                   <a
                     className={`${
-                      tab === "withdrawList" ? styles.border__bottom : null
+                      tab === "none" ? styles.border__bottom : null
                     }`}
                   >
                     Tournaments
@@ -1468,7 +1491,7 @@ export default function Profile() {
                       }`}
                       onClick={() => setTab("launch")}
                     >
-                      Launch New Tournaments
+                      Launch New Tournament
                     </a>
                   </div>
                   <div style={{ marginTop: 10 }}>
@@ -1536,17 +1559,19 @@ export default function Profile() {
                 </div>
               </div>
              
-
-              <a
-                className={`${
-                  tab === "resultSendList" ? styles.border__bottom : null
-                }`}
-                onClick={() => getResultSendList()}
-              >
-                Result Send List
-              </a>
-
-              <a
+              <div className={styles.disputes}>
+                <div style={{ marginTop: 10 }}>
+                  <a
+                    className={`${
+                      tab === "none" ? styles.border__bottom : null
+                    }`}
+                  >
+                    Disputes
+                  </a>
+                </div>
+                <div className={styles.disputesList}>
+                  <div style={{ marginTop: 10 }}>
+                  <a
                 className={`${
                   tab === "dispute" ? styles.border__bottom : null
                 }`}
@@ -1554,20 +1579,38 @@ export default function Profile() {
               >
                 Result Dispute
               </a>
+                  </div>
+                  <div style={{ marginTop: 10 }}>
+                    
+                    <a
+                      className={`${
+                        tab === "resultSendList" ? styles.border__bottom : null
+                      }`}
+                      onClick={() => getResultSendList()}
+                    >
+                      Submit Result
+                    </a>
+                       </div>
+                  
+                  
+                  
+                  
+                  
+                </div>
+              </div>
 
-              <a
-                className={`${
-                  tab === "paymentList" ? styles.border__bottom : null
-                }`}
-                onClick={() => getPaymentList()}
-              >
-                payment List
-              </a>
+              
+             
+
+
+              
+
+              
               <div className={styles.affiliate}>
                 <div style={{ marginTop: 10 }}>
                   <a
                     className={`${
-                      tab === "withdrawList" ? styles.border__bottom : null
+                      tab === "none" ? styles.border__bottom : null
                     }`}
                   >
                     Affiliate page

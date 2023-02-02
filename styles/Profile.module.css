@@ -336,18 +336,55 @@
   background-color:#f35237;
 }
 
+
+/* deposit */
+.diposit{
+  padding:1px 0px;
+  position: relative;
+  margin:2px 0px;
+}
+.dipositList{
+  display: none;
+  position:absolute;
+  background-color:rgb(175, 164, 164);
+  z-index: 100;
+  top:35px;
+  left:15px;
+  height:120px;
+}
+.diposit:hover .dipositList{
+  display: block;
+}
+/* withdraw */
+.withdraw{
+  padding:1px 0px;
+  position: relative;
+  margin:2px 0px;
+}
+.withdrawList{
+  display: none;
+  position:absolute;
+  background-color:rgb(175, 164, 164);
+  z-index: 80;
+  top:35px;
+  left:15px;
+  height: 80px;
+}
+.withdraw:hover .withdrawList{
+  display: block;
+}
 /* challenge */
 .challenges{
   padding:1px 0px;
   position: relative;
-  z-index: 25;
+  margin:2px 0px;
 }
 .challengesList{
   display: none;
   position:absolute;
   background-color:rgb(175, 164, 164);
-  z-index: 2;
-  top:30px;
+  z-index: 60;
+  top:35px;
   left:15px;
   height: 250px;
 }
@@ -359,32 +396,50 @@
 .tournaments{
   padding:1px 0px;
   position: relative;
-  z-index: 1;
+  margin:2px 0px;
 }
 .tournamentsList{
   display: none;
   position:absolute;
   background-color:rgb(175, 164, 164);
-  z-index: 10;
-  top:30px;
+  z-index: 40;
+  top:35px;
   left:15px;
   height: 250px;
 }
 .tournaments:hover .tournamentsList{
   display: block;
 }
-/* tournaments */
+/* disputes */
+.disputes{
+  padding:1px 0px;
+  position: relative;
+  margin:2px 0px;
+}
+.disputesList{
+  display: none;
+  position:absolute;
+  background-color:rgb(175, 164, 164);
+  z-index: 35;
+  top:35px;
+  left:15px;
+  height: 80px;
+}
+.disputes:hover .disputesList{
+  display: block;
+}
+/* affiliate */
 .affiliate{
   padding:1px 0px;
   position: relative;
-  z-index: ;
+  margin:2px 0px;
 }
 .affiliateList{
   display: none;
   position:absolute;
   background-color:rgb(175, 164, 164);
-  z-index: 15;
-  top:30px;
+  z-index: 20;
+  top:35px;
   left:15px;
   height: 80px;
 }
