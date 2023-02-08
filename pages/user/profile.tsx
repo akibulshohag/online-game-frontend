@@ -1235,7 +1235,7 @@ export default function Profile() {
                     />
                   ) : (
                     <Image
-                      src={"/assets/images/profile.png"}
+                      src={profileImage}
                       height={200}
                       width={200}
                       alt="profile"
@@ -1338,7 +1338,7 @@ export default function Profile() {
                   }`}
                   onClick={() => setTab("deposit")}
                 >
-                   Deposit Create
+                   Make a Deposit
                 </a>
                   </div>
                   <div style={{ marginTop: 10 }}>
@@ -1370,7 +1370,7 @@ export default function Profile() {
                       tab === "none" ? styles.border__bottom : null
                     }`}
                   >
-                    Withdraw
+                    Withdrawal
                   </a>
                 </div>
                 <div className={styles.withdrawList}>
@@ -1381,7 +1381,7 @@ export default function Profile() {
                   }`}
                   onClick={() => setTab("withdraw")}
                 >
-                  Withdraw Credit
+                 Request a Withdrawal
                 </a>
                   </div>
                   <div style={{ marginTop: 10 }}>
@@ -1436,7 +1436,7 @@ export default function Profile() {
                       }`}
                       onClick={() => getLaunchedGame()}
                     >
-                      Launched List Challenges
+                       My Launched Challenges
                     </a>
                   </div>
                   <div style={{ marginTop: 10 }}>
@@ -1446,7 +1446,7 @@ export default function Profile() {
                       }`}
                       onClick={() => getGameSingleList()}
                     >
-                      Challenges List
+                      Accepted Challenges
                     </a>
                   </div>
                   <div style={{ marginTop: 10 }}>
@@ -1456,7 +1456,7 @@ export default function Profile() {
                       }`}
                       onClick={() => getRequestList()}
                     >
-                      Request Challenges
+                      Requested Challenges
                     </a>
                   </div>
                   <div style={{ marginTop: 10 }}>
@@ -1468,7 +1468,7 @@ export default function Profile() {
                       }`}
                       onClick={() => getSingleResultList()}
                     >
-                      Challenges Result List
+                      Challenges Results
                     </a>
                   </div>
                 </div>
@@ -1511,7 +1511,7 @@ export default function Profile() {
                       }`}
                       onClick={() => getLaunchedGame()}
                     >
-                      My launched Tournaments
+                      My Launched Tournaments
                     </a>
                   </div>
                   <div style={{ marginTop: 10 }}>
@@ -1577,7 +1577,7 @@ export default function Profile() {
                 }`}
                 onClick={() => getResultDispute()}
               >
-                Result Dispute
+               My Disputes
               </a>
                   </div>
                   <div style={{ marginTop: 10 }}>
@@ -1613,7 +1613,7 @@ export default function Profile() {
                       tab === "none" ? styles.border__bottom : null
                     }`}
                   >
-                    Affiliate page
+                    Affiliate Page
                   </a>
                 </div>
                 <div className={styles.affiliateList}>
