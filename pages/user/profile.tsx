@@ -1543,7 +1543,7 @@ export default function Profile() {
                       }`}
                       onClick={() => getGameTournamentList()}
                     >
-                      Tournaments List
+                      Tournaments Games List
                     </a>
                   </div>
                   <div style={{ marginTop: 10 }}>
@@ -1658,7 +1658,7 @@ export default function Profile() {
           <div>
             {tab === "launched" ? (
               <div className={styles.launched__container}>
-                <h5>Your Launched Game List</h5>
+                <h5>My Launched Game List</h5>
                 <div className={styles.launched__game__list}>
                   <div className={styles.launched__game__header}>
                     <h6>Game Classification Name</h6>
@@ -1824,8 +1824,8 @@ export default function Profile() {
                           onChange={(e) => setGameType(Number(e.target.value))}
                         >
                           <option value="">Select Game Type</option>
-                          <option value={1}>Single</option>
-                          <option value={2}>Team</option>
+                          <option value={1}>Challenges</option>
+                          <option value={2}>Tournaments</option>
                         </select>
                         {errors2.game_type &&
                           errors2.game_type.type === "required" && (
@@ -1974,7 +1974,7 @@ export default function Profile() {
               </div>
             ) : tab === "tournament-list" ? (
               <div className={styles.launched__container}>
-                <h5>Tournament Game List</h5>
+                <h5>Tournaments Game List</h5>
                 <div className={styles.launched__game__list}>
                   <div className={styles.game__list__header}>
                     <h6>ID</h6>
@@ -2012,7 +2012,7 @@ export default function Profile() {
               </div>
             ) : tab === "single-resultList" ? (
               <div className={styles.launched__container}>
-                <h5>Single Result List</h5>
+                <h5>Challenges Results</h5>
                 <div className={styles.launched__game__list}>
                   <div className={styles.result__list__header}>
                     <h6>Game Classification Name</h6>
@@ -2124,7 +2124,7 @@ export default function Profile() {
               </div>
             ) : tab === "resultSendList" ? (
               <div className={styles.launched__container}>
-                <h5>Result Send List</h5>
+                <h5>Submit Result</h5>
                 <div className={styles.launched__game__list}>
                   <div className={styles.result__send__header}>
                     <h6>Game No.</h6>
@@ -2150,7 +2150,7 @@ export default function Profile() {
               </div>
             ) : tab === "published" ? (
               <div className={styles.launched__container}>
-                <h5>Published Result</h5>
+                <h5>Played Tournaments</h5>
                 <div className={styles.launched__game__list}>
                   <div className={styles.result__publish__header}>
                     <h6>Game No.</h6>
@@ -2197,7 +2197,7 @@ export default function Profile() {
               </div>
             ) : tab === "dispute" ? (
               <div className={styles.launched__container}>
-                <h5>Result Dispute</h5>
+                <h5>My Disputes</h5>
                 <div className={styles.launched__game__list}>
                   <div className={styles.result__publish__header}>
                     <h6>Game No.</h6>
@@ -2222,7 +2222,7 @@ export default function Profile() {
               </div>
             ) : tab === "deposit" ? (
               <div className={styles.launched__container}>
-                <h5>Deposit</h5>
+                <h5>Make a Deposit</h5>
                 <div className={styles.launched__game__list}>
                   <div
                     style={{
@@ -2295,7 +2295,7 @@ export default function Profile() {
             ) : tab === "withdraw" ? (
               <div className={styles.launch__game__container}>
                 <h5 style={{ textAlign: "center", margin: "10px 0px" }}>
-                  Withdraw Your Credit
+                Request a Withdrawal
                 </h5>
                 <div className={styles.edit__form}>
                   <form onSubmit={handleSubmit5(onwithdrawSubmit)}>
@@ -2324,7 +2324,7 @@ export default function Profile() {
               </div>
             ) : tab === "withdrawList" ? (
               <div className={styles.launched__container}>
-                <h5>Your Withdraw List</h5>
+                <h5>Withdraw List</h5>
                 <div className={styles.launched__game__list}>
                   <div className={styles.launched__game__header}>
                     <h6>Sl</h6>
@@ -2364,7 +2364,7 @@ export default function Profile() {
               </div>
             ) : tab === "paymentList" ? (
               <div className={styles.launched__container}>
-                <h5>Your payment List</h5>
+                <h5>Payment List</h5>
                 <div className={styles.launched__game__list}>
                   <div className={styles.launched__game__header}>
                     <h6>Sl</h6>
@@ -2423,7 +2423,7 @@ export default function Profile() {
               </div>
             ) : tab === "link" ? (
               <div className={styles.launched__container}>
-                <h5>Link Generate</h5>
+                <h5>Affiliate Link Generate</h5>
                 <div className={styles.review__drop1}>
                   <p style={{ margin: 20 }}>Do you want to generate a link?</p>
                   <div style={{ margin: 20 }} className={styles.button3}>
@@ -2449,7 +2449,7 @@ export default function Profile() {
               </div>
             ) : tab === "affiliate list" ? (
               <div className={styles.launched__container}>
-                <h5>Deposit List</h5>
+                <h5>Affiliate list</h5>
                 <div className={styles.launched__game__list}>
                   <div className={styles.deposit_list_header}>
                     <h6>Sl</h6>
