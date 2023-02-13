@@ -1516,6 +1516,16 @@ export default function Profile() {
                   </div>
                   <div style={{ marginTop: 10 }}>
                     <a
+                     className={`${
+                      tab === "tournament-list" ? styles.border__bottom : null
+                    }`}
+                    onClick={() => getGameTournamentList()}
+                    >
+                      Accepted Tournaments
+                    </a>
+                  </div>
+                  <div style={{ marginTop: 10 }}>
+                    <a
                       className={`${
                         tab === "tournament-resultList"
                           ? styles.border__bottom
@@ -1523,7 +1533,7 @@ export default function Profile() {
                       }`}
                       onClick={() => getTournamentResultList()}
                     >
-                      Accepted Tournaments
+                      Played Tournaments
                     </a>
                   </div>
                   <div style={{ marginTop: 10 }}>
@@ -1533,17 +1543,7 @@ export default function Profile() {
                       }`}
                       onClick={() => getPublishedResult()}
                     >
-                      Played Tournaments
-                    </a>
-                  </div>
-                  <div style={{ marginTop: 10 }}>
-                    <a
-                      className={`${
-                        tab === "tournament-list" ? styles.border__bottom : null
-                      }`}
-                      onClick={() => getGameTournamentList()}
-                    >
-                      Tournaments Games List
+                      Tournaments Games Result
                     </a>
                   </div>
                   <div style={{ marginTop: 10 }}>
@@ -1893,7 +1893,7 @@ export default function Profile() {
               </div>
             ) : tab === "request" ? (
               <div className={styles.launched__container}>
-                <h5>Game Request List</h5>
+                <h5>Requested Challenges</h5>
                 <div className={styles.launched__game__list}>
                   <div className={styles.request__list__header}>
                     <h6>Game Name</h6>
@@ -1974,7 +1974,7 @@ export default function Profile() {
               </div>
             ) : tab === "tournament-list" ? (
               <div className={styles.launched__container}>
-                <h5>Tournaments Game List</h5>
+                <h5>Accepted Tournaments</h5>
                 <div className={styles.launched__game__list}>
                   <div className={styles.game__list__header}>
                     <h6>ID</h6>
@@ -2068,7 +2068,7 @@ export default function Profile() {
               </div>
             ) : tab === "tournament-resultList" ? (
               <div className={styles.launched__container}>
-                <h5>Tournament Result List</h5>
+                <h5>Played Tournaments</h5>
                 <div className={styles.launched__game__list}>
                   <div className={styles.result__list__header}>
                     <h6>Game Classification Name</h6>
@@ -2150,7 +2150,7 @@ export default function Profile() {
               </div>
             ) : tab === "published" ? (
               <div className={styles.launched__container}>
-                <h5>Played Tournaments</h5>
+                <h5>Tournaments Games Result</h5>
                 <div className={styles.launched__game__list}>
                   <div className={styles.result__publish__header}>
                     <h6>Game No.</h6>
