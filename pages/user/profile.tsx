@@ -439,9 +439,25 @@ export default function Profile() {
       `player/game-launch-list?player_id=${userId}&&page=${page}`,
       token
     );
-    setTotalItems(res?.last_page * res?.data?.length);
-    setLaunchedGame(res?.data);
+    if( res?.data?.length > 0 ) {
+   const fill = res?.data?.filter((item:any)=>item?.game_type == '1')
+    setLaunchedGame(fill);
+    setTotalItems(res?.last_page * fill?.length);
+    }
   }
+  async function getLaunchedTournaments() {
+    setTab("launchedTournaments");
+    const res = await request(
+      `player/game-launch-list?player_id=${userId}&&page=${page}`,
+      token
+    );
+    if( res?.data?.length > 0 ) {
+   const fill = res?.data?.filter((item:any)=>item?.game_type == '2')
+    setLaunchedGame(fill);
+    setTotalItems(res?.last_page * fill?.length);
+    }
+  }
+
   async function getAvailableGame() {
     setTab("available-game");
     const res = await request(
@@ -457,6 +473,15 @@ export default function Profile() {
 
   async function getRequestList() {
     setTab("request");
+    const res = await request(
+      `player/game-request-list?player_id=${userId}`,
+      token
+    );
+
+    setRequestList(res?.data);
+  }
+  async function getRequestListTournaments() {
+    setTab("requestTournaments");
     const res = await request(
       `player/game-request-list?player_id=${userId}`,
       token
@@ -539,7 +564,7 @@ export default function Profile() {
 
   async function getProfile() {
     const res = await request(`player/profile?player_id=${userId}`, token);
-    console.log(".........res", res?.data);
+    
     setprofileImage(res?.data?.image);
     setCookie(null, "image", res?.data?.image, {
       maxAge: 30 * 24 * 60 * 60,
@@ -1487,9 +1512,9 @@ export default function Profile() {
                   <div style={{ marginTop: 10 }}>
                     <a
                       className={`${
-                        tab === "launch" ? styles.border__bottom : null
+                        tab === "Launch Tournaments" ? styles.border__bottom : null
                       }`}
-                      onClick={() => setTab("launch")}
+                      onClick={() => setTab("Launch Tournaments")}
                     >
                       Launch New Tournament
                     </a>
@@ -1497,9 +1522,9 @@ export default function Profile() {
                   <div style={{ marginTop: 10 }}>
                     <a
                       className={`${
-                        tab === "available-game" ? styles.border__bottom : null
+                        tab === "Available-Tournaments" ? styles.border__bottom : null
                       }`}
-                      onClick={() => setTab("available-game")}
+                      onClick={() => setTab("Available-Tournaments")}
                     >
                       Available Tournaments
                     </a>
@@ -1507,9 +1532,9 @@ export default function Profile() {
                   <div style={{ marginTop: 10 }}>
                     <a
                       className={`${
-                        tab === "launched" ? styles.border__bottom : null
+                        tab === "launchedTournaments" ? styles.border__bottom : null
                       }`}
-                      onClick={() => getLaunchedGame()}
+                      onClick={() => getLaunchedTournaments()}
                     >
                       My Launched Tournaments
                     </a>
@@ -1549,9 +1574,9 @@ export default function Profile() {
                   <div style={{ marginTop: 10 }}>
                     <a
                       className={`${
-                        tab === "request" ? styles.border__bottom : null
+                        tab === "requestTournaments" ? styles.border__bottom : null
                       }`}
-                      onClick={() => getRequestList()}
+                      onClick={() => getRequestListTournaments()}
                     >
                       Requested Tournaments
                     </a>
@@ -1598,12 +1623,6 @@ export default function Profile() {
                   
                 </div>
               </div>
-
-              
-             
-
-
-              
 
               
               <div className={styles.affiliate}>
@@ -1658,7 +1677,7 @@ export default function Profile() {
           <div>
             {tab === "launched" ? (
               <div className={styles.launched__container}>
-                <h5>My Launched Game List</h5>
+                <h5>My Launched Challenges</h5>
                 <div className={styles.launched__game__list}>
                   <div className={styles.launched__game__header}>
                     <h6>Game Classification Name</h6>
@@ -1732,7 +1751,7 @@ export default function Profile() {
             ) : tab === "launch" ? (
               <div className={styles.launch__game__container}>
                 <h5 style={{ textAlign: "center", margin: "10px 0px" }}>
-                  Please, fill up the form to launch your game
+                  Please, fill up the form to launch new Challenges
                 </h5>
                 <div className={styles.edit__form}>
                   <form onSubmit={handleSubmit2(onLaunchSubmit)}>
@@ -1936,7 +1955,7 @@ export default function Profile() {
               </div>
             ) : tab === "single-list" ? (
               <div className={styles.launched__container}>
-                <h5>Single Game List</h5>
+                <h5>Accepted Challenges</h5>
                 <div className={styles.launched__game__list}>
                   <div className={styles.game__list__header}>
                     <h6>ID</h6>
@@ -2511,7 +2530,7 @@ export default function Profile() {
                     </div>
                   ))}
                 </div>
-                <h5>Your Available Game List</h5>
+                <h5>Your Available Challenges</h5>
                 <div className={styles.available__game__list}>
                   <div className={styles.available__game__header}>
                     <h6>Game Name</h6>
@@ -2583,7 +2602,394 @@ export default function Profile() {
                   <Pagination defaultCurrent={1} total={launchedGame?.length} onChange={(page, pageSize) => setPage(page)} pageSize={totalItems} />
                 </div> */}
               </div>
-            ) : null}
+            ) :tab === "requestTournaments" ? (
+              <div className={styles.launched__container}>
+                <h5>Requested Tournaments</h5>
+                <div className={styles.launched__game__list}>
+                  <div className={styles.request__list__header}>
+                    <h6>Game Name</h6>
+                    <h6>Player Name</h6>
+                    <h6>Skill</h6>
+                    <h6>Honesty</h6>
+                    <h6>Player Country</h6>
+                    <h6>Amount</h6>
+                    <h6>Action</h6>
+                  </div>
+                  <hr />
+                  {requestList?.map((item, index) => (
+                    <div key={index}>
+                      <div className={styles.request__list__header}>
+                        <p>{item?.gameClassificationName}</p>
+                        <p>{item?.playerUserName}</p>
+                        <p>{item?.skill}</p>
+                        <p>{item?.honesty}</p>
+                        <p>{item?.playerCountry}</p>
+                        <p>{item?.gameAmount}</p>
+                        <div style={{ margin: "auto 0px" }}>
+                          <a
+                            className={styles.accept__button}
+                            onClick={() => handleAccept(item)}
+                          >
+                            Accept
+                          </a>{" "}
+                          {/* <a
+                            className={styles.reject__button}
+                            onClick={() => handleReject(item)}
+                          >
+                            Reject
+                          </a> */}
+                        </div>
+                      </div>
+                      {requestList?.length - 1 == index ? null : <hr />}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ): tab === "launchedTournaments" ? (
+              <div className={styles.launched__container}>
+                <h5>My Launched Tournaments</h5>
+                <div className={styles.launched__game__list}>
+                  <div className={styles.launched__game__header}>
+                    <h6>Game Classification Name</h6>
+                    <h6>Date</h6>
+                    <h6>Time</h6>
+                    <h6>Game Type</h6>
+                    <h6>Action</h6>
+                    <h6></h6>
+                  </div>
+                  <hr />
+                  {launchedGame?.map((item, index) => (
+                    <div key={index}>
+                      <div className={styles.launched__game__header}>
+                        <p>{item?.classificationName}</p>
+                        <p>{item?.date}</p>
+                        <p>{item?.time}</p>
+                        <p>{item?.game_type == "1" ? "Single" : "Team"}</p>
+                        <div style={{ margin: "auto 0px" }}>
+                          <a
+                            className={styles.edit__delete__button}
+                            onClick={() => handleView(item)}
+                          >
+                            <AiFillEye />
+                          </a>{" "}
+                          <a
+                            className={styles.edit__delete__button}
+                            onClick={() => handleEdit(item)}
+                          >
+                            <FaEdit />
+                          </a>{" "}
+                          <a
+                            className={styles.edit__delete__button}
+                            onClick={() => handleDelete(item)}
+                          >
+                            <MdDeleteSweep />
+                          </a>
+                        </div>
+                        <div style={{ margin: "auto 0px" }}>
+                          {item?.start ? (
+                            <a
+                              className={styles.edit__delete__button}
+                              style={{ marginRight: "5px" }}
+                              onClick={() => handleGameStart(item?.gameId)}
+                            >
+                              Start
+                            </a>
+                          ) : null}
+                          {item?.cancel ? (
+                            <a
+                              className={styles.edit__delete__button}
+                              onClick={() => handleGameCancel(item?.gameId)}
+                            >
+                              Cancel
+                            </a>
+                          ) : null}
+                        </div>
+                      </div>
+                      {launchedGame?.length - 1 == index ? null : <hr />}
+                    </div>
+                  ))}
+                </div>
+                <div style={{ textAlign: "center", marginTop: "10px" }}>
+                  <Pagination
+                    defaultCurrent={1}
+                    total={launchedGame?.length}
+                    onChange={(page, pageSize) => setPage(page)}
+                    pageSize={totalItems}
+                  />
+                </div>
+              </div>
+            ): tab === "Launch Tournaments" ? (
+              <div className={styles.launch__game__container}>
+                <h5 style={{ textAlign: "center", margin: "10px 0px" }}>
+                  Please, fill up the form to launch new Tournaments
+                </h5>
+                <div className={styles.edit__form}>
+                  <form onSubmit={handleSubmit2(onLaunchSubmit)}>
+                    <div>
+                      <label className={styles.label}>
+                        Game Classification Name
+                      </label>
+                      <select
+                        className={styles.input}
+                        {...register2("game_classification_id", {
+                          required: true,
+                        })}
+                      >
+                        <option value="">
+                          Select game classification name
+                        </option>
+                        {gameClassifications?.map((item, index) => (
+                          <option key={index} value={item?.id}>
+                            {item?.classification}
+                          </option>
+                        ))}
+                      </select>
+                      {errors2.game_classification_id &&
+                        errors2.game_classification_id.type === "required" && (
+                          <span>This field is required</span>
+                        )}
+                    </div>
+                    <div>
+                      <label className={styles.label}>Game Link</label>
+                      <input
+                        className={styles.input}
+                        type="text"
+                        {...register2("link")}
+                      />
+                      {/* {errors2.link && errors2.link.type === "required" && (
+                        <span>This field is required</span>
+                      )} */}
+                    </div>
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr",
+                        gridGap: "10px",
+                      }}
+                    >
+                      <div>
+                        <label className={styles.label}>Date</label>
+                        <input
+                          className={styles.input}
+                          type="date"
+                          min={minDate}
+                          {...register2("date", { required: true })}
+                        />
+                        {errors2.date && errors2.date.type === "required" && (
+                          <span>This field is required</span>
+                        )}
+                      </div>
+                      <div>
+                        <label className={styles.label}>Time</label>
+                        <input
+                          className={styles.input}
+                          type="time"
+                          {...register2("time", { required: true })}
+                        />
+                        {errors2.time && errors2.time.type === "required" && (
+                          <span>This field is required</span>
+                        )}
+                      </div>
+                    </div>
+                    <div>
+                      <div>
+                        <label className={styles.label}>Amount</label>
+                        <input
+                          className={styles.input}
+                          type="number"
+                          min="1"
+                          {...register2("amount", { required: true })}
+                        />
+                        {errors2.amount &&
+                          errors2.amount.type === "required" && (
+                            <span>This field is required</span>
+                          )}
+                      </div>
+                      <div>
+                        <label className={styles.label}>Game Type</label>
+                        <select
+                          className={styles.input}
+                          {...register2("game_type", { required: true })}
+                          onChange={(e) => setGameType(Number(e.target.value))}
+                        >
+                          <option value="">Select Game Type</option>
+                          <option value={1}>Challenges</option>
+                          <option value={2}>Tournaments</option>
+                        </select>
+                        {errors2.game_type &&
+                          errors2.game_type.type === "required" && (
+                            <span>This field is required</span>
+                          )}
+                      </div>
+                      <div>
+                        <label className={styles.label}>Gaming Console</label>
+                        <select
+                          className={styles.input}
+                          {...register2("console_id", { required: true })}
+                        >
+                          <option value="">Select Gaming Console</option>
+                          {gamingConsole?.map((item, index) => (
+                            <option value={item?.id} key={item?.id}>
+                              {item?.name}
+                            </option>
+                          ))}
+                        </select>
+                        {errors2.console_id &&
+                          errors2.console_id.type === "required" && (
+                            <span>This field is required</span>
+                          )}
+                      </div>
+                      <div>
+                        <label className={styles.label}>Rules</label>
+                        <input
+                          className={styles.input}
+                          type="text"
+                          {...register2("rules")}
+                        />
+                      </div>
+                    </div>
+                    {gameType !== 1 ? (
+                      <div>
+                        <label className={styles.label}>
+                          Participated Member
+                        </label>
+                        <input
+                          className={styles.input}
+                          type="number"
+                          {...register2("participated_member")}
+                          onChange={(e) =>
+                            handleParticipatedMember(Number(e.target.value))
+                          }
+                        />
+                        {!isValid && (
+                          <span>Participated Member is not valid</span>
+                        )}
+                        {errors2.participated_member &&
+                          errors2.participated_member.type === "required" && (
+                            <span>This field is required</span>
+                          )}
+                      </div>
+                    ) : null}
+                    <div>
+                      <input
+                        type="submit"
+                        value="Confirm"
+                        className={styles.button}
+                      />
+                    </div>
+                  </form>
+                </div>
+              </div>
+            ): tab === "Available-Tournaments" ? (
+              <div className={styles.launched__container}>
+                <div className={styles.available__games__container}>
+                  {games?.map((item, index) => (
+                    <div
+                      key={index}
+                      className={styles.single__games__container}
+                      onClick={() => setActiveGame(item)}
+                    >
+                      {/* <Image
+                        src={item?.classificationImage}
+                        height={80}
+                        width={100}
+                        alt="classificationImage"
+                      /> */}
+                      <h6
+                        style={{
+                          textAlign: "center",
+                          color: "#fff",
+                          fontWeight: "700",
+                          marginTop: "10px",
+                        }}
+                      >
+                        {item?.classificationName}{" "}
+                        <span
+                          style={{
+                            backgroundColor: "white",
+                            color: "#F35237",
+                            padding: "0px 5px",
+                          }}
+                        >
+                          {item?.games == 0 ? 0 : item?.games?.length}
+                        </span>
+                      </h6>
+                    </div>
+                  ))}
+                </div>
+                <h5>Your Available Tournaments</h5>
+                <div className={styles.available__game__list}>
+                  <div className={styles.available__game__header}>
+                    <h6>Game Name</h6>
+                    <h6>Launch Player</h6>
+                    <h6>Start Time</h6>
+                    <h6>Round</h6>
+                    <h6>Honesty</h6>
+                    <h6>Entry Fee</h6>
+                    <h6>Action</h6>
+                  </div>
+                  <hr />
+                  {activeGame?.games == 0
+                    ? null
+                    : activeGame?.games?.map((item, index) => (
+                        <div key={index}>
+                          <div className={styles.available__game__header}>
+                            <p>{activeGame?.classificationName} </p>
+                            <p>{item?.launchGamePlayerUserName}</p>
+                            <p>
+                              {" "}
+                              {moment
+                                .utc(item?.utcDate + " " + item?.utcTime)
+                                .local()
+                                .format("YYYY-MM-DD HH:mm")}
+                            </p>
+                            <p>{item?.game_type == "1" ? "Single" : "Team"}</p>
+                            <p>{item?.honesty}</p>
+                            <p>{item?.amount} $</p>
+                            {/* <div style={{ margin: "auto 0px" }}>
+                          <a
+                            className={styles.edit__delete__button}
+                            onClick={() => handleView(item)}
+                          >
+                            <AiFillEye />
+                          </a>{" "}
+                          <a
+                            className={styles.edit__delete__button}
+                            onClick={() => handleEdit(item)}
+                          >
+                            <FaEdit />
+                          </a>{" "}
+                          <a
+                            className={styles.edit__delete__button}
+                            onClick={() => handleDelete(item)}
+                          >
+                            <MdDeleteSweep />
+                          </a>
+                        </div> */}
+                            {credit >= item?.amount ? (
+                              <button
+                                className={styles.request__button}
+                                onClick={() => handleRequest(item)}
+                              >
+                                Request for Entry
+                              </button>
+                            ) : null}
+                          </div>
+                          {activeGame?.games == 0 ? null : activeGame?.games
+                              ?.length -
+                              1 ==
+                            index ? null : (
+                            <hr />
+                          )}
+                          {/* {activeGame?.games?.length - 1 == index ? null : <hr />} */}
+                        </div>
+                      ))}
+                </div>
+                {/* <div style={{ textAlign: 'center', marginTop: '10px' }}>
+                  <Pagination defaultCurrent={1} total={launchedGame?.length} onChange={(page, pageSize) => setPage(page)} pageSize={totalItems} />
+                </div> */}
+              </div>
+            ): null}
           </div>
         </div>
       </div>
