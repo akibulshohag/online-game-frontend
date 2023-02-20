@@ -422,6 +422,7 @@ export default function Profile() {
       token
     );
     setGameSingleList(res?.data);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   async function getGameTournamentList() {
@@ -431,6 +432,7 @@ export default function Profile() {
       token
     );
     setGameTournamentList(res?.data);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   async function getLaunchedGame() {
@@ -444,6 +446,7 @@ export default function Profile() {
     setLaunchedGame(fill);
     setTotalItems(res?.last_page * fill?.length);
     }
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
   async function getLaunchedTournaments() {
     setTab("launchedTournaments");
@@ -456,6 +459,7 @@ export default function Profile() {
     setLaunchedGame(fill);
     setTotalItems(res?.last_page * fill?.length);
     }
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   async function getAvailableGame() {
@@ -479,6 +483,7 @@ export default function Profile() {
     );
 
     setRequestList(res?.data);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
   async function getRequestListTournaments() {
     setTab("requestTournaments");
@@ -488,6 +493,7 @@ export default function Profile() {
     );
 
     setRequestList(res?.data);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   async function getPublishedResult() {
@@ -497,6 +503,7 @@ export default function Profile() {
       token
     );
     setPublishedResult(res?.data);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   async function getResultDispute() {
@@ -506,6 +513,7 @@ export default function Profile() {
       token
     );
     setResultDispute(res?.data[0]?.data);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   async function getSingleResultList() {
@@ -515,6 +523,8 @@ export default function Profile() {
       token
     );
     setSingleResultList(res?.data);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    
   }
 
   async function getTournamentResultList() {
@@ -524,6 +534,7 @@ export default function Profile() {
       token
     );
     setTournamentResultList(res?.data);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   async function getResultSendList() {
@@ -533,6 +544,7 @@ export default function Profile() {
       token
     );
     setResultSendList(res?.data);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   useEffect(() => {
@@ -992,6 +1004,7 @@ export default function Profile() {
     );
 
     setwithdrawList(res?.data);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   const [withcreditId, setwithcreditId] = useState<any>();
@@ -1086,15 +1099,18 @@ export default function Profile() {
     const res = await request(
       `player/affiliate-list?player_id=${userId}`,
       token
+      
     );
 
     setaffiliateList(res?.data.slice(0, 10));
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   // const { profile } = router.query
 
   const linkGenerate = () => {
     setTab("link");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const originUrl =
@@ -1243,6 +1259,25 @@ export default function Profile() {
     }
   }
 
+  const shareOnFacebook = () => {
+    const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${createurl}`)}`;
+    window.open(shareUrl, '_blank');
+  };
+
+  const shareOnWhatsApp = () => {
+    const shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(`${createurl}`)}`;
+    window.open(shareUrl, '_blank');
+  };
+
+    function handleClick(event:any) {
+      event.preventDefault();
+    }
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+
   return (
     <div className={styles.main}>
       <div className={styles.container}>
@@ -1260,7 +1295,7 @@ export default function Profile() {
                     />
                   ) : (
                     <Image
-                      src={profileImage}
+                      src={"/assets/images/profile.png"}
                       height={200}
                       width={200}
                       alt="profile"
@@ -1404,7 +1439,7 @@ export default function Profile() {
                   className={`${
                     tab === "withdraw" ? styles.border__bottom : null
                   }`}
-                  onClick={() => setTab("withdraw")}
+                  onClick={() => {setTab("withdraw"),scrollToTop()}}
                 >
                  Request a Withdrawal
                 </a>
@@ -1439,7 +1474,7 @@ export default function Profile() {
                       className={`${
                         tab === "launch" ? styles.border__bottom : null
                       }`}
-                      onClick={() => setTab("launch")}
+                      onClick={() => {setTab("launch"),scrollToTop()}}
                     >
                       Launch New Challenge
                     </a>
@@ -1449,7 +1484,7 @@ export default function Profile() {
                       className={`${
                         tab === "available-game" ? styles.border__bottom : null
                       }`}
-                      onClick={() => setTab("available-game")}
+                      onClick={() => {setTab("available-game"),scrollToTop()}}
                     >
                       Available Challenges
                     </a>
@@ -1514,7 +1549,7 @@ export default function Profile() {
                       className={`${
                         tab === "Launch Tournaments" ? styles.border__bottom : null
                       }`}
-                      onClick={() => setTab("Launch Tournaments")}
+                      onClick={() => {setTab("Launch Tournaments"),scrollToTop()}}
                     >
                       Launch New Tournament
                     </a>
@@ -1524,7 +1559,7 @@ export default function Profile() {
                       className={`${
                         tab === "Available-Tournaments" ? styles.border__bottom : null
                       }`}
-                      onClick={() => setTab("Available-Tournaments")}
+                      onClick={() => {setTab("Available-Tournaments"),scrollToTop()}}
                     >
                       Available Tournaments
                     </a>
@@ -1641,7 +1676,7 @@ export default function Profile() {
                       className={`${
                         tab === "link" ? styles.border__bottom : null
                       }`}
-                      onClick={() => linkGenerate()}
+                      onClick={() => {linkGenerate()}}
                     >
                       Affiliate Link
                     </a>
@@ -2443,7 +2478,7 @@ export default function Profile() {
             ) : tab === "link" ? (
               <div className={styles.launched__container}>
                 <h5>Affiliate Link Generate</h5>
-                <div className={styles.review__drop1}>
+                <div className={styles.review__drop2}>
                   <p style={{ margin: 20 }}>Do you want to generate a link?</p>
                   <div style={{ margin: 20 }} className={styles.button3}>
                     <a onClick={() => linkUrl()}>
@@ -2462,6 +2497,17 @@ export default function Profile() {
                       >
                         Copy
                       </button>
+                      <div style={{marginLeft:20,display:'flex',flexDirection:'row',alignItems: 'center'}}>
+                        <p>Share Link:</p>
+                        <div style={{display:'flex',flexDirection:'row'}}>
+                          <div onClick={()=>shareOnFacebook()} style={{marginLeft:10}}>
+                         <Image src={'/assets/images/icons/facebook.png'} width={40} height={40} alt="facebook"/>  
+                         </div>
+                          <div onClick={()=>shareOnWhatsApp()} style={{marginLeft:10}}>
+                         <Image src={'/assets/images/icons/whatsapp.png'} width={40} height={40} alt="facebook"/>  
+                         </div>
+                        </div>
+                      </div>
                     </div>
                   ) : null}
                 </div>
