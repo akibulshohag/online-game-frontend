@@ -60,6 +60,7 @@ type RegistrationInputs = {
   dateOfBirth: string;
   country: string;
   phone: string;
+  term:boolean;
 };
 
 type ForgotPassword = {
@@ -828,18 +829,30 @@ export default function Navbar() {
                               </option>
                             ))}
                           </select>
-                          {/* <input
-                          className={styles.input}
-                          placeholder="Enter your country"
-                          type="text"
-                          {...register2("country", { required: true })}
-                        /> */}
-                          {/* errors will return when field validation fails  */}
+                         
                           {errors2.country &&
                             errors2.country.type === "required" && (
                               <span>Country is required</span>
                             )}
                           {/* {errors.password && errors.password.type === 'minLength' && <span>Minimum 6 character is required</span>} */}
+                        </div>
+                        <div style={{marginLeft:0}}>
+                          <div style={{display: 'flex',alignItems:'center'}}>
+                          <input
+                          style={{width:'20px'}}
+                            
+                            placeholder="Note"
+                            type="checkbox"
+                            {...register2("term", { required: true })}
+                          />
+                          <p style={{fontSize:13}} className="ml-5 text-[12px] underline decoration-dashed cursor-pointer hover:text-green-600">
+                            Yes, I agree to Terms & Conditions
+                          </p>
+                          </div>
+                          {errors2.term && errors2.term.type === "required" && (
+                            <span className="text-red-500 text-[12px]">Please Accept the terms & condition</span>
+                          )}
+                          
                         </div>
                         {/* <div className={styles.password}>
                         <p>Forgot your password</p>
