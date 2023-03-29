@@ -316,6 +316,9 @@ const Home: NextPage = () => {
           </div>
         </Container>
       </div> */}
+      <div style={{position: "absolute",top: "0",right:'0'}}>
+      <iframe src="https://tawk.to/chat/6275f6acb0d10b6f3e71030a/1g2ecn4sa" height="500px"></iframe>
+      </div>
     </div>
   );
 };
