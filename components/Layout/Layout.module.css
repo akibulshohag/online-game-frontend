@@ -1,3 +1,10 @@
 .main{
     min-height: 100vh;
 }
+
+.fixed__section {
+    position: fixed;
+    bottom: 0px;
+    right: 240px;
+    z-index: 1;
+  }

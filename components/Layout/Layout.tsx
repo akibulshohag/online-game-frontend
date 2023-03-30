@@ -3,6 +3,7 @@ import { Fragment } from "react";
 import Footer from "./Footer/Footer";
 import styles from "./Layout.module.css";
 import Navbar from "./Navbar/Navbar";
+import Chat from "../../components/Chat/chat";
 
 type Props = {
   children: JSX.Element;
@@ -29,6 +30,9 @@ const {profile} = router.query
       { router.query.profile  ?  null :
       <Footer />
       }
+      <div className={styles.fixed__section}>
+         <Chat/>
+      </div>
     </div>
   );
 }
