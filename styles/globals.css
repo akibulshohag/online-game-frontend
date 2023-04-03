@@ -100,9 +100,9 @@ hr {
   width: 300px;
   height: 400px;
   z-index: 100000;
-  position:absolute;
+  position:fixed;
   top: 500px;
-
+  right: 0px;
 }
 .shoutText {
 	border: 1px solid #696969;

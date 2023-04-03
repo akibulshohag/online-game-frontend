@@ -3,8 +3,10 @@
 }
 
 .fixed__section {
-    position: fixed;
+    position: absolute;
     bottom: 0px;
     right: 240px;
     z-index: 1;
+    background-color: red;
+    
   }
