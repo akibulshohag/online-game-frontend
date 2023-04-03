@@ -687,6 +687,9 @@ export default function Profile() {
     let utcDate = moment(utcTimeAndDate).format("YYYY-MM-DD");
     let utcTime = moment(utcTimeAndDate).format("HH:mm");
 
+  console.log('........date',data?.amount);
+  
+      
     if (credit >= data?.amount && status == 1) {
       const res = await postRequest(`player/game-launched`, token, {
         game_classification_id: data?.game_classification_id,
@@ -3284,6 +3287,7 @@ export default function Profile() {
                   <option value={0}>Select Winner</option>
                   <option value={1}>Winner</option>
                   <option value={2}>Draw</option>
+                  <option value={3}>Lose</option>
                   <option value={4}>No Play</option>
                 </select>
               </div>
