@@ -1,10 +1,6 @@
 import Head from 'next/head';
-import styles from './chat.module.css'
-import { useRef } from 'react';
 
 function MyPage() {
-  
-
   return (
     <div>
       <Head>
