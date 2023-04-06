@@ -1,13 +1,14 @@
 import Head from 'next/head';
-import styles from '../styles/Navbar.module.css'
+import styles from './chat.module.css'
+import { useRef } from 'react';
 
 function MyPage() {
+  
+
   return (
     <div>
       <Head>
         <script src="https://www.shoutbox.com/chat/"></script>
-
-        <link rel="stylesheet" href="/styles.css" />
       </Head>
 
       <div   id="shoutbox">

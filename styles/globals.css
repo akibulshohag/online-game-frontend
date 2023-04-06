@@ -65,47 +65,54 @@ hr {
   .shoutInput {
     position: absolute;
     bottom: 0;
-    /* left: 0; */
     right: 0;
     border-top: 1px solid #CCC;
     width: 300px;
-    z-index: 100000;
     
+}
+.shoutInput input{
+  height: 30px;
+  background-color: #F88921;
+  color: #fff;
 }
 
 .shoutChat {
   position: absolute;
-  /* left: 0; */
   right: 0;
-  /* top: 520px; */
-  bottom: 5;
+  bottom: 32px;
   overflow-y: auto;
   overflow-x: hidden;
   width: 300px;
-  /* height: 400px; */
-  z-index: 100000;
 }
 
 .shoutBoxHeader {
-	background-color:#222;
-	box-shadow: 2px 2px 3px 0px #000;
+	background-color:#0A1861;
 	border-radius:2px;
 	border:1px solid #666;
+  color: #fff;
 }
 
 .shoutBoxContainer {
-	/* background-image: url(https://www.shoutbox.com/chat/bg/black.jpg); */
   background-color: #CCC;
-	/* color:white; */
   width: 300px;
-  height: 400px;
+  height: 250px;
   z-index: 100000;
   position:fixed;
-  top: 500px;
+  /* top: 500px; */
   right: 0px;
+  bottom: 0;
+  /* display: none; */
 }
 .shoutText {
-	border: 1px solid #696969;
+	border: 1px  #0A1861;
+  margin-top: 3px;
+}
+div.shoutText{
+  background-color: #fff;
+}
+#shoutBoxHeaderText{
+  top: 0;
+  margin-left: 5px;
 }
 
 

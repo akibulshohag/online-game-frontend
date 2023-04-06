@@ -1,0 +1,52 @@
+.shoutInput {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border-top: 1px solid #CCC;
+    width: 300px;
+    
+}
+.shoutInput input{
+  height: 30px;
+  background-color: #F88921;
+  color: #fff;
+}
+
+.shoutChat {
+  position: absolute;
+  right: 0;
+  bottom: 32px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 300px;
+}
+
+.shoutBoxHeader {
+	background-color:#0A1861;
+	border-radius:2px;
+	border:1px solid #666;
+  color: #fff;
+}
+
+.shoutBoxContainer {
+  background-color: #CCC;
+  width: 250px;
+  height: 250px;
+  z-index: 100000;
+  position:fixed;
+  /* top: 500px; */
+  right: 0px;
+  bottom: 0;
+  /* display: none; */
+}
+.shoutText {
+	border: 1px  #0A1861;
+  margin-top: 3px;
+}
+div.shoutText{
+  background-color: #fff;
+}
+#shoutBoxHeaderText{
+  top: 0;
+  margin-left: 5px;
+}
