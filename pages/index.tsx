@@ -213,10 +213,10 @@ const Home: NextPage = () => {
               hand.{" "}
             </h6>
           </div>
-          <Image
-            src={`/assets/images/mobile1.webp`}
-            height={500}
-            width={700}
+          {/* <div></div> */}
+          <img
+          className={styles.mobileImage}
+            src={`/assets/images/game/mobile.jpeg`}
             alt="mobile"
           />
         </Container>

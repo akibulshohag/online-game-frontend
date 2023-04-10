@@ -187,7 +187,7 @@
 .download__app__container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-gap: 20px;
+  grid-gap: 40px;
   text-align: center;
 }
 .download__app__container p {
@@ -220,6 +220,10 @@
 .playingNow h6{
   font-size: 19px;
 }
+.mobileImage{
+  width:400px;
+  height: 600px;
+}
 
 /* responsive */
   
@@ -244,6 +248,11 @@
     padding: 5px 15px;
     margin-top: -110px;
   }
+ 
+  .download__app__container {
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+  }
 }
 @media (min-width: 425px) and (max-width: 600px) {
   .sliderImage {
@@ -261,6 +270,10 @@
     padding: 10px 15px;
     font-size: 15px;
   }
+  .mobileImage{
+    width:200px;
+    height: 400px;
+  }
 }
 @media (min-width: 601px) and (max-width: 768px) {
   .sliderImage {
@@ -274,6 +287,10 @@
   .video__content h1{
     font-size: 40px;
   }
+  .mobileImage{
+    width:300px;
+    height: 400px;
+  }
 }
 @media (min-width: 769px) and (max-width: 1024px) {
   .sliderImage {
@@ -285,5 +302,9 @@
   
     height: 75%;
     
+  }
+  .mobileImage{
+    width:300px;
+    height: 400px;
   }
 }
