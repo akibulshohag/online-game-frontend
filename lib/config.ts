@@ -1,3 +1,4 @@
+// const hostname = `https://ultimateplayersarena.com`;
 const hostname = `https://ultimateplayersarena.com`;
 // const hostname = `http://192.168.68.117/onlinegame/public`;
 // const hostname = `http://192.168.5.244:`;
