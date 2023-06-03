@@ -2,7 +2,7 @@
      export default function googleTranslateElementIni(hello){
   
           
-         new google.translate.TranslateElement({ pageLanguage:'en', includedLanguages: 'en,es,pt',autoDisplay: false,multilanguagePage: false, layout: google.translate.TranslateElement.InlineLayout.SIMPLE }, hello);
+         window.google.translate.TranslateElement({ pageLanguage:'en', includedLanguages: 'en,es,pt',autoDisplay: false,multilanguagePage: true, layout:window.google.translate.TranslateElement.InlineLayout.SIMPLE }, hello);
       
        
     };

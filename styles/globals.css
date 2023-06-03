@@ -53,6 +53,13 @@ hr {
    color:#e3692d !important;
 
 }
+.goog-te-combo{
+  display: none !important;
+}
+
+.VIpgJd-ZVi9od-ORHb-OEVmcd{
+  display: none !important;
+}
 
 .goog-te-menu2{
   color: #130047 !important;
@@ -60,6 +67,7 @@ hr {
 .goog-te-banner-frame{
   display:none !important;
   }
+  
 
 
   .shoutInput {

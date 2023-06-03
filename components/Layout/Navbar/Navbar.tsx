@@ -16,7 +16,7 @@ import "../../../context/i18next";
 import googleTranslateElementInit from "../../../context/text";
 import postRequest from "../../../lib/postRequest";
 import styles from "./Navbar.module.css";
-import ActiveLink from '../../../components/ActiveLink'
+import ActiveLink from "../../../components/ActiveLink";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import {
 //   faArrowLeft,
@@ -29,8 +29,7 @@ import ActiveLink from '../../../components/ActiveLink'
 
 // import document, { Html, Head, Main, NextScript } from 'next/document'
 
-import jquery from "jquery";
-const $: JQueryStatic = jquery;
+import Head from "next/head";
 
 type countryName = {
   common: string;
@@ -60,7 +59,7 @@ type RegistrationInputs = {
   dateOfBirth: string;
   country: string;
   phone: string;
-  term:boolean;
+  term: boolean;
 };
 
 type ForgotPassword = {
@@ -290,8 +289,6 @@ export default function Navbar() {
     });
   };
 
- 
-
   const redirectChallange = () => {
     router.push("/user/available-games");
     setselectedChallenge("Challenges");
@@ -307,11 +304,21 @@ export default function Navbar() {
   };
   const handleClose = () => {
     setSidebar(!sidebar);
-   
   };
+
+  useEffect(() => {
+    // function googleTranslateElementInit() {
+    //   new google.translate.TranslateElement(
+    //     { pageLanguage: "en" },
+    //     "google_translate_element"
+    //   );
+    // }
+    googleTranslateElementInit('google_translate_element')
+  }, []);
 
   return (
     <>
+    
       <div className={styles.main}>
         <div className={styles.container}>
           <div>
@@ -396,103 +403,95 @@ export default function Navbar() {
             </a>
           )}
           {sidebar ? (
+            <div
+              className={`${
+                sideClose === true
+                  ? styles.side__mobile
+                  : styles.mobile__sidebar
+              }`}
+            >
               <div
-                className={`${
-                  sideClose === true
-                    ? styles.side__mobile
-                    : styles.mobile__sidebar
-                }`}
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  paddingRight: "15px",
+                  paddingBottom: "30px",
+                }}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    paddingRight: "15px",
-                    paddingBottom: "30px",
-                  }}
-                >
-                  <div onClick={handleClose}>
-                    <p style={{color:'#fff'}}>Close</p>
-                  </div>
+                <div onClick={handleClose}>
+                  <p style={{ color: "#fff" }}>Close</p>
                 </div>
-                  {token ? 
-                   <Link href={`/user/profile`}>
+              </div>
+              {token ? (
+                <Link href={`/user/profile`}>
                   <a>
-                    
-                    <span style={{color:'#fff'}}>Profile</span>
-                  </a>
-                  </Link>
-                  :null}
-                  <a>
-                    
-                    <span style={{color:'#fff'}}>About Us</span>
-                  </a>
-               
-                <Link
-                  href="/terms-and-conditions"
-                >
-                  <a>
-                    
-                    <span style={{color:'#f35237',marginLeft:15}}>Terms and Conditions</span>
+                    <span style={{ color: "#fff" }}>Profile</span>
                   </a>
                 </Link>
-                <Link
-                  href="/privacy-policy"
-                >
-                  <a>
-                    
-                  <span style={{color:'#f35237',marginLeft:15}}>Privacy Policy</span>
-                  </a>
-                </Link>
-                <Link
-                  href="/terms-and-conditions"
-                >
-                  <a>
-                    
-                  <span style={{color:'#fff',}}>Affiliate Program</span>
-                  </a>
-                </Link>
-                
-                  <a onClick={() =>
+              ) : null}
+              <a>
+                <span style={{ color: "#fff" }}>About Us</span>
+              </a>
+
+              <Link href="/terms-and-conditions">
+                <a>
+                  <span style={{ color: "#f35237", marginLeft: 15 }}>
+                    Terms and Conditions
+                  </span>
+                </a>
+              </Link>
+              <Link href="/privacy-policy">
+                <a>
+                  <span style={{ color: "#f35237", marginLeft: 15 }}>
+                    Privacy Policy
+                  </span>
+                </a>
+              </Link>
+              <Link href="/terms-and-conditions">
+                <a>
+                  <span style={{ color: "#fff" }}>Affiliate Program</span>
+                </a>
+              </Link>
+
+              <a
+                onClick={() =>
                   window.open(
                     "mailto:hello@upaesports.com?subject=SendMail&body=Description"
                   )
-                }>
-                    
-                  <span style={{color:'#fff'}}>Contact</span>
-                  
-                  </a>
-                  {token ?null : 
-                    <div>
-                    <a onClick={() => setModal("login")
-                      }>
-                      
-                    <span style={{color:'#fff'}}>Login</span>
-                    </a>
-                    <a onClick={() => setModal("signup")
-                      }>
-                      
-                    <span style={{color:'#fff'}}>Create an account</span>
-                    </a>
-                  </div>
-                  }
-                
-
-               
-              </div>
-            ) : null}
-           <div className={styles.hamburg} onClick={handleSidebar}>
-              <svg
-                style={{fill:"#fff"}}
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                width="24"
-                height="24"
+                }
               >
-                <path fill="none" d="M0 0h24v24H0z" />
-                <path d="M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z" />
-              </svg>
+                <span style={{ color: "#fff" }}>Contact</span>
+              </a>
+              {token ? null : (
+                <div>
+                  <a onClick={() => setModal("login")}>
+                    <span style={{ color: "#fff" }}>Login</span>
+                  </a>
+                  <a onClick={() => setModal("signup")}>
+                    <span style={{ color: "#fff" }}>Create an account</span>
+                  </a>
+                </div>
+              )}
             </div>
+          ) : null}
+          <div id="google_translate_element">
+            <script
+              type="text/javascript"
+              src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+            ></script>
+          </div>
+          <div className={styles.hamburg} onClick={handleSidebar}>
+            <svg
+              style={{ fill: "#fff" }}
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="24"
+              height="24"
+            >
+              <path fill="none" d="M0 0h24v24H0z" />
+              <path d="M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z" />
+            </svg>
+          </div>
           {token ? (
             <div className={styles.dropdown}>
               <Link href={`/user/profile`}>
@@ -508,7 +507,6 @@ export default function Navbar() {
               </Link>
             </div>
           ) : null}
-          
         </div>
         {modal == "login" ? (
           <Modal title={"Login"} handleClose={() => setModal("")}>
@@ -829,30 +827,35 @@ export default function Navbar() {
                               </option>
                             ))}
                           </select>
-                         
+
                           {errors2.country &&
                             errors2.country.type === "required" && (
                               <span>Country is required</span>
                             )}
                           {/* {errors.password && errors.password.type === 'minLength' && <span>Minimum 6 character is required</span>} */}
                         </div>
-                        <div style={{marginLeft:0}}>
-                          <div style={{display: 'flex',alignItems:'center'}}>
-                          <input
-                          style={{width:'20px'}}
-                            
-                            placeholder="Note"
-                            type="checkbox"
-                            {...register2("term", { required: true })}
-                          />
-                          <p style={{fontSize:13}} className="ml-5 text-[12px] underline decoration-dashed cursor-pointer hover:text-green-600">
-                            Yes, I agree to Terms & Conditions
-                          </p>
+                        <div style={{ marginLeft: 0 }}>
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <input
+                              style={{ width: "20px" }}
+                              placeholder="Note"
+                              type="checkbox"
+                              {...register2("term", { required: true })}
+                            />
+                            <p
+                              style={{ fontSize: 13 }}
+                              className="ml-5 text-[12px] underline decoration-dashed cursor-pointer hover:text-green-600"
+                            >
+                              Yes, I agree to Terms & Conditions
+                            </p>
                           </div>
                           {errors2.term && errors2.term.type === "required" && (
-                            <span className="text-red-500 text-[12px]">Please Accept the terms & condition</span>
+                            <span className="text-red-500 text-[12px]">
+                              Please Accept the terms & condition
+                            </span>
                           )}
-                          
                         </div>
                         {/* <div className={styles.password}>
                         <p>Forgot your password</p>
