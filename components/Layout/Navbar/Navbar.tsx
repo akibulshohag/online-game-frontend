@@ -30,6 +30,7 @@ import ActiveLink from "../../../components/ActiveLink";
 // import document, { Html, Head, Main, NextScript } from 'next/document'
 
 import Head from "next/head";
+import Script from "next/script";
 
 type countryName = {
   common: string;
@@ -306,19 +307,13 @@ export default function Navbar() {
     setSidebar(!sidebar);
   };
 
-  useEffect(() => {
-    // function googleTranslateElementInit() {
-    //   new google.translate.TranslateElement(
-    //     { pageLanguage: "en" },
-    //     "google_translate_element"
-    //   );
-    // }
-    googleTranslateElementInit('google_translate_element')
-  }, []);
+  
 
   return (
     <>
-    
+    {/* <Head>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    </Head> */}
       <div className={styles.main}>
         <div className={styles.container}>
           <div>
@@ -474,12 +469,9 @@ export default function Navbar() {
               )}
             </div>
           ) : null}
-          <div id="google_translate_element">
-            <script
-              type="text/javascript"
-              src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-            ></script>
-          </div>
+          {/* <div id="google_translate_element">
+          <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+          </div> */}
           <div className={styles.hamburg} onClick={handleSidebar}>
             <svg
               style={{ fill: "#fff" }}
