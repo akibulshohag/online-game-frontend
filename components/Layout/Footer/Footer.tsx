@@ -6,6 +6,7 @@ import { useStatus } from "../../../context/ContextStatus";
 import BottomFooter from "./BottomFooter";
 import styles from "./Footer.module.css";
 
+
 export default function Footer() {
   const { t, i18n } = useTranslation();
   const router = useRouter();

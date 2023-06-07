@@ -2,6 +2,8 @@ import styles from "./BottomFooter.module.css";
 export default function BottomFooter() {
   return (
     <div className={styles.main}>
+      
+
       <p>
         Ultimate Players Arena is not endorsed by, directly affiliated with, maintained or
         sponsored by Apple Inc, Electronic Arts, Activision Blizzard, Take-Two

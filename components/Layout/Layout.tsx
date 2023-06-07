@@ -3,7 +3,8 @@ import { Fragment, useState } from "react";
 import Chat from "../../components/Chat/chat";
 import Footer from "./Footer/Footer";
 import styles from "./Layout.module.css";
-import Navbar from "./Navbar/Navbar";
+// import Navbar from "./Navbar/Navbar";
+import Navbars from './Navbar/Navbar'
 import { parseCookies, setCookie } from "nookies";
 
 type Props = {
@@ -28,7 +29,7 @@ export default function Layout({ children }: Props) {
 
   return (
     <div className={styles.main}>
-      {router.query.profile ? null : <Navbar />}
+      {router.query.profile ? null : <Navbars />}
       <Fragment>{children}</Fragment>
       {router.query.profile ? null : <Footer />}
       {/* {cookie?.hideChat  == "show" ? ( */}

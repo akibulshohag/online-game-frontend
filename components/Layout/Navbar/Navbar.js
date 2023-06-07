@@ -22,40 +22,40 @@ import ActiveLink from "../../../components/ActiveLink";
 import Head from "next/head";
 import Script from "next/script";
 
-type countryName = {
-  common: string;
-  official: string;
-};
-type allCountryType = {
-  name: countryName;
-  independent: boolean;
-  status: string;
-  unMember: boolean;
-  region: string;
-  subregion: string;
-  landlocked: boolean;
-  flag: string;
-  population: number;
-  fifa: string;
-};
-type LoginInputs = {
-  email: string;
-  password: string;
-};
-type RegistrationInputs = {
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  dateOfBirth: string;
-  country: string;
-  phone: string;
-  term: boolean;
-};
+// type countryName = {
+//   common: string;
+//   official: string;
+// };
+// type allCountryType = {
+//   name: countryName;
+//   independent: boolean;
+//   status: string;
+//   unMember: boolean;
+//   region: string;
+//   subregion: string;
+//   landlocked: boolean;
+//   flag: string;
+//   population: number;
+//   fifa: string;
+// };
+// type LoginInputs = {
+//   email: string;
+//   password: string;
+// };
+// type RegistrationInputs = {
+//   username: string;
+//   email: string;
+//   password: string;
+//   confirmPassword: string;
+//   dateOfBirth: string;
+//   country: string;
+//   phone: string;
+//   term: boolean;
+// };
 
-type ForgotPassword = {
-  email: string;
-};
+// type ForgotPassword = {
+//   email: string;
+// };
 
 
 
@@ -64,7 +64,7 @@ type ForgotPassword = {
 // }
 
 export default function Navbar() {
-  const [allCountry, setAllCountry] = useState<allCountryType[]>([]);
+  const [allCountry, setAllCountry] = useState([]);
   const [sidebar, setSidebar] = useState(false);
   const [sideClose, setSideClose] = useState(false);
 
@@ -101,25 +101,25 @@ export default function Navbar() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<LoginInputs>();
+  } = useForm();
   const {
     register: register2,
     handleSubmit: handleSubmit2,
     watch: watch2,
     formState: { errors: errors2 },
-  } = useForm<RegistrationInputs>();
+  } = useForm();
   const {
     register: register3,
     handleSubmit: handleSubmit3,
     watch: watch3,
     formState: { errors: errors3 },
-  } = useForm<ForgotPassword>();
+  } = useForm();
   // const { loginModal } = useContext(ContextStatus)
 
   const openNotificationWithIcon = (
-    message: string,
-    type: string,
-    err?: string
+    message,
+    type,
+    err
   ) => {
     if (type == "success" || type == "error" || type == "warning") {
       notification[type]({ message: message });
@@ -138,7 +138,7 @@ export default function Navbar() {
 
   // console.log("all country.........", allCountry);
 
-  const onLoginSubmit: SubmitHandler<LoginInputs> = async (data) => {
+  const onLoginSubmit= async (data) => {
     console.log(data);
     const res = await postRequest(`player-login`, null, {
       email: data?.email,
@@ -200,7 +200,7 @@ export default function Navbar() {
     }
   };
 
-  const onForgotPasswordSubmit: SubmitHandler<ForgotPassword> = async (
+  const onForgotPasswordSubmit = async (
     data
   ) => {
     console.log(data);
@@ -217,7 +217,7 @@ export default function Navbar() {
     }
   };
 
-  const onRegistrationSubmit: SubmitHandler<RegistrationInputs> = async (
+  const onRegistrationSubmit = async (
     data
   ) => {
     console.log(data);
@@ -273,7 +273,7 @@ export default function Navbar() {
     }
   };
 
-  const clickLanguage = (lang: string) => {
+  const clickLanguage = (lang) => {
     i18n.changeLanguage(lang);
     setselectedLanguage(lang);
     setCookie(null, "language", lang, {
@@ -307,10 +307,10 @@ export default function Navbar() {
   //  }, 'google_translate_element');
 
   // }
-  // useEffect(() => {
+  useEffect(() => {
    
-  //   window.googleTranslateElementInit = googleTranslateElementInit;
-  // }, []);
+    window.googleTranslateElementInit = googleTranslateElementInit;
+  }, []);
 
   
 

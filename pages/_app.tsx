@@ -9,11 +9,14 @@ import "../styles/globals.css";
 function MyApp({ Component, pageProps }: AppProps) {
 
   return (
+   
     <StatusProvider>
+      
       <Layout>
         <Component {...pageProps} />
       </Layout>
     </StatusProvider>
+  
 
   );
 }
