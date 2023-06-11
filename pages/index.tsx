@@ -215,7 +215,7 @@ const Home: NextPage = () => {
           {/* <div></div> */}
           <img
           className={styles.mobileImage}
-            src={`/assets/images/game/mobile.jpeg`}
+            src={`/assets/images/phone.png`}
             alt="mobile"
           />
         </Container>

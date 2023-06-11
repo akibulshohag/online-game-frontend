@@ -221,8 +221,8 @@
   font-size: 19px;
 }
 .mobileImage{
-  width:400px;
-  height: 600px;
+  width:300px;
+  height: 550px;
 }
 
 .connect__mobile{
@@ -294,7 +294,7 @@
     font-size: 40px;
   }
   .mobileImage{
-    width:300px;
+    width:250px;
     height: 400px;
   }
 }
@@ -310,7 +310,7 @@
     
   }
   .mobileImage{
-    width:300px;
+    width:250px;
     height: 400px;
   }
 }
