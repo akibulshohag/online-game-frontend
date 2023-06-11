@@ -185,11 +185,7 @@ const Home: NextPage = () => {
       </Container>
       <div style={{ margin: "50px 0px" }}>
         <h2
-          style={{
-            textAlign: "center",
-            marginBottom: "50px",
-            fontWeight: "700",
-          }}
+          style={{}}
           className={styles.connect__mobile}
         >
           CONNECT WITH OUR MOBILE APP

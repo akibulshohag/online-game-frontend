@@ -225,6 +225,12 @@
   height: 600px;
 }
 
+.connect__mobile{
+  text-align: center;
+            margin-bottom: 50px;
+            font-weight: 700;
+}
+
 /* responsive */
   
 
