@@ -454,7 +454,7 @@ export default function Navbar() {
                 </a>
               </Link>
 
-              <a
+              {/* <a
                 onClick={() =>
                   window.open(
                     "mailto:hello@upaesports.com?subject=SendMail&body=Description"
@@ -462,7 +462,7 @@ export default function Navbar() {
                 }
               >
                 <span style={{ color: "#fff" }}>Contact</span>
-              </a>
+              </a> */}
               {token ? null : (
                 <div>
                   <a onClick={() => setModal("login")}>
@@ -518,7 +518,7 @@ export default function Navbar() {
                     <div className={styles.border}></div>
                   </div>
                   <div className={styles.container__google}>
-                    <div className={styles.google__box}>
+                    <div className={styles.google__box1}>
                       <div className={styles.image__border}>
                         <Image
                           src={`/assets/images/icons/google.jpg`}
@@ -532,7 +532,7 @@ export default function Navbar() {
                         <FaAngleRight />
                       </div>
                     </div>
-                    <div className={styles.google__box}>
+                    <div className={styles.google__box1}>
                       <div className={styles.image__border}>
                         <Image
                           src={`/assets/images/icons/facebook.png`}
@@ -651,7 +651,7 @@ export default function Navbar() {
                     <div className={styles.border}></div>
                   </div>
                   <div className={styles.container__google}>
-                    <div className={styles.google__box}>
+                    <div className={styles.google__box1}>
                       <div className={styles.image__border}>
                         <Image
                           src={`/assets/images/icons/google.jpg`}
@@ -665,7 +665,7 @@ export default function Navbar() {
                         <FaAngleRight />
                       </div>
                     </div>
-                    <div className={styles.google__box}>
+                    <div className={styles.google__box1}>
                       <div className={styles.image__border}>
                         <Image
                           src={`/assets/images/icons/facebook.png`}

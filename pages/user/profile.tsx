@@ -859,16 +859,18 @@ export default function Profile() {
   };
 
   async function handleRequestPaypal(orderDetails: any) {
-    console.log("request sending button working...........", orderDetails);
-    const res = await postRequest(`player/deposit-store`, token, {
-      player_id: userId,
+    let data ={
+      player_id: Number(userId),
       payment_id: orderDetails?.id,
       payer_id: orderDetails?.payer?.payer_id,
       payer_email: orderDetails?.payer?.email_address,
-      amount: orderDetails?.purchase_units[0]?.amount?.value,
+      amount: Number(orderDetails?.purchase_units[0]?.amount?.value),
       currency: orderDetails?.purchase_units[0]?.amount?.currency_code,
       status: orderDetails?.status,
-    });
+    }
+    console.log("request sending button working...........", data);
+    
+    const res = await postRequest(`player/deposit-store`, token, data);
     if (res?.status == "success") {
       openNotificationWithIcon(res?.message, "success");
       // window.location.reload();
@@ -933,7 +935,7 @@ export default function Profile() {
         {isPending ? <h2>Load Smart Payment Button...</h2> : null}
         {/* <PayPalButtons disabled={price ? false : true} {...paypalbuttonTransactionProps} /> */}
         <PayPalButtons
-          disabled={price >= 1000 ? false : true}
+          // disabled={price >= 1000 ? false : true}
           // style: { layout: "vertical", innerHeight: 48, shape: 'rect' }
 
           createOrder={async (data, actions) => {
@@ -949,6 +951,8 @@ export default function Profile() {
           }}
           onApprove={async (data, actions) => {
             const order = await actions.order?.capture();
+            console.log('.........order',order);
+            
             setprice("");
             alert(`Transaction completed by ${order?.payer.name?.given_name}`);
             // handleApprove(data,orerID)
@@ -1300,7 +1304,7 @@ export default function Profile() {
                     />
                   ) : (
                     <Image
-                      src={profileImage}
+                      src={"/assets/images/profile.png"}
                       height={200}
                       width={200}
                       alt="profile"

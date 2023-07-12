@@ -33,7 +33,7 @@ export default function Layout({ children }: Props) {
       <Fragment>{children}</Fragment>
       {router.query.profile ? null : <Footer />}
       {/* {cookie?.hideChat  == "show" ? ( */}
-        <div >
+        <div className={styles.shoutbox}>
           <Chat />
         </div>
       {/* ) : <div onClick={()=>hideChat("show")} className={styles.chatHere}>

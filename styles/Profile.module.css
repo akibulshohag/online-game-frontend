@@ -470,7 +470,7 @@
    }
  
 }
-@media (min-width:320px) and (max-width:423px){
+@media (min-width:270px) and (max-width:423px){
   .profile__container {
     overflow-x: scroll;
    }

@@ -375,7 +375,7 @@ export default function Navbar() {
                 Affiliate Program
               </p>
             </Link>
-            <div style={{ color: "#fff" }}>
+            {/* <div style={{ color: "#fff" }}>
               <a
                 onClick={() =>
                   window.open(
@@ -385,7 +385,7 @@ export default function Navbar() {
               >
                 Contact
               </a>
-            </div>
+            </div> */}
           </div>
           {token ? null : (
             <a
@@ -454,7 +454,7 @@ export default function Navbar() {
                 </a>
               </Link>
 
-              <a
+              {/* <a
                 onClick={() =>
                   window.open(
                     "mailto:hello@upaesports.com?subject=SendMail&body=Description"
@@ -462,7 +462,7 @@ export default function Navbar() {
                 }
               >
                 <span style={{ color: "#fff" }}>Contact</span>
-              </a>
+              </a> */}
               {token ? null : (
                 <div>
                   <a onClick={() => setModal("login")}>
