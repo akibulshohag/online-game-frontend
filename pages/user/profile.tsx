@@ -241,6 +241,7 @@ interface ISingleGame {
   utcDate: string;
   skill: string;
   honesty: string;
+  console: string;
 }
 
 interface ProfileInputs {
@@ -318,7 +319,7 @@ export default function Profile() {
   const [profileImage, setprofileImage] = useState<any>(
     "/assets/images/profile.png"
   );
-
+  
   const {
     register,
     handleSubmit,
@@ -935,7 +936,7 @@ export default function Profile() {
         {isPending ? <h2>Load Smart Payment Button...</h2> : null}
         {/* <PayPalButtons disabled={price ? false : true} {...paypalbuttonTransactionProps} /> */}
         <PayPalButtons
-          // disabled={price >= 1000 ? false : true}
+          disabled={price >= 1000 ? false : true}
           // style: { layout: "vertical", innerHeight: 48, shape: 'rect' }
 
           createOrder={async (data, actions) => {
@@ -2588,9 +2589,10 @@ export default function Profile() {
                 <h5>Your Available Challenges</h5>
                 <div className={styles.available__game__list}>
                   <div className={styles.available__game__header}>
-                    <h6>Game Name</h6>
-                    <h6>Launch Player</h6>
+                    <h6>Game</h6>
+                    <h6>Player</h6>
                     <h6>Start Time</h6>
+                    <h6>Console</h6>
                     <h6>Round</h6>
                     <h6>Honesty</h6>
                     <h6>Entry Fee</h6>
@@ -2609,8 +2611,14 @@ export default function Profile() {
                               {moment
                                 .utc(item?.utcDate + " " + item?.utcTime)
                                 .local()
-                                .format("YYYY-MM-DD HH:mm")}
+                                .format("YYYY-MM-DD")}
+                                <br/>
+                              {moment
+                                .utc(item?.utcDate + " " + item?.utcTime)
+                                .local()
+                                .format("HH:mm")}
                             </p>
+                            <p>{item?.console}</p>
                             <p>{item?.game_type == "1" ? "Single" : "Team"}</p>
                             <p>{item?.honesty}</p>
                             <p>{item?.amount} $</p>
@@ -2975,9 +2983,10 @@ export default function Profile() {
                 <h5>Your Available Tournaments</h5>
                 <div className={styles.available__game__list}>
                   <div className={styles.available__game__header}>
-                    <h6>Game Name</h6>
-                    <h6>Launch Player</h6>
+                    <h6>Name</h6>
+                    <h6>Player</h6>
                     <h6>Start Time</h6>
+                    <h6>Console</h6>
                     <h6>Round</h6>
                     <h6>Honesty</h6>
                     <h6>Entry Fee</h6>
@@ -2996,8 +3005,17 @@ export default function Profile() {
                               {moment
                                 .utc(item?.utcDate + " " + item?.utcTime)
                                 .local()
-                                .format("YYYY-MM-DD HH:mm")}
+                                .format("YYYY-MM-DD")}
                             </p>
+                            <br/>
+                            <p>
+                              {" "}
+                              {moment
+                                .utc(item?.utcDate + " " + item?.utcTime)
+                                .local()
+                                .format("HH:mm")}
+                            </p>
+                            <p>{item?.console}</p>
                             <p>{item?.game_type == "1" ? "Single" : "Team"}</p>
                             <p>{item?.honesty}</p>
                             <p>{item?.amount} $</p>

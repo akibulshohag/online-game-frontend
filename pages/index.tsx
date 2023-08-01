@@ -122,7 +122,7 @@ const Home: NextPage = () => {
           {games?.length > 0 ? (
             <div className={styles.games__grid__view}>
               {games.map((item, index) => (
-                <div key={index}  onClick={() => setModal("signup")}>
+                <div key={index}  onClick={() => redirectPage()}>
                   <Image
                     src={`${item?.classificationImage}`}
                     width={340}

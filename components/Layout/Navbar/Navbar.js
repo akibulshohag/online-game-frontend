@@ -220,57 +220,61 @@ export default function Navbar() {
   const onRegistrationSubmit = async (
     data
   ) => {
-    console.log(data);
-    const registrationResponse = await postRequest(
-      `player-registration`,
-      null,
-      {
-        username: data?.username,
-        email: data?.email,
-        phone: data?.phone,
-        date_of_birth: data?.dateOfBirth,
-        country: data?.country,
-        password: data?.password,
-      }
-    );
-    // console.log("response from registration.........", registrationResponse);
-    if (registrationResponse?.status == "success") {
-      openNotificationWithIcon(registrationResponse?.message, "success");
-      setToken(registrationResponse?.response?.access_token);
-      setUsername(registrationResponse?.response?.user?.username);
-      setUserEmail(registrationResponse?.response?.user?.email);
-      setUserId(registrationResponse?.response?.user?.id);
-      setCookie(null, "token", registrationResponse?.response?.access_token, {
-        maxAge: registrationResponse?.response?.expires_in,
-        path: "/",
-      });
-      setCookie(
+     if(data.password == data?.confirmPassword){
+      const registrationResponse = await postRequest(
+        `player-registration`,
         null,
-        "username",
-        registrationResponse?.response?.user?.username,
         {
-          maxAge: registrationResponse?.response?.expires_in,
-          path: "/",
+          username: data?.username,
+          email: data?.email,
+          phone: data?.phone,
+          date_of_birth: data?.dateOfBirth,
+          country: data?.country,
+          password: data?.password,
         }
       );
-      setCookie(
-        null,
-        "userEmail",
-        registrationResponse?.response?.user?.email,
-        {
+      
+      if (registrationResponse?.status == "success") {
+        openNotificationWithIcon(registrationResponse?.message, "success");
+        setToken(registrationResponse?.response?.access_token);
+        setUsername(registrationResponse?.response?.user?.username);
+        setUserEmail(registrationResponse?.response?.user?.email);
+        setUserId(registrationResponse?.response?.user?.id);
+        setCookie(null, "token", registrationResponse?.response?.access_token, {
           maxAge: registrationResponse?.response?.expires_in,
           path: "/",
-        }
-      );
-      setCookie(null, "userId", registrationResponse?.response?.user?.id, {
-        maxAge: registrationResponse?.response?.expires_in,
-        path: "/",
-      });
-      setModal("");
-      router.push("/user/profile");
-    } else {
-      openNotificationWithIcon(registrationResponse?.message, "error");
-    }
+        });
+        setCookie(
+          null,
+          "username",
+          registrationResponse?.response?.user?.username,
+          {
+            maxAge: registrationResponse?.response?.expires_in,
+            path: "/",
+          }
+        );
+        setCookie(
+          null,
+          "userEmail",
+          registrationResponse?.response?.user?.email,
+          {
+            maxAge: registrationResponse?.response?.expires_in,
+            path: "/",
+          }
+        );
+        setCookie(null, "userId", registrationResponse?.response?.user?.id, {
+          maxAge: registrationResponse?.response?.expires_in,
+          path: "/",
+        });
+        setModal("");
+        router.push("/user/profile");
+      } else {
+        openNotificationWithIcon(registrationResponse?.message, "error");
+      } 
+     }else{
+      openNotificationWithIcon("password and confirm password doesn't match", "error");
+     }
+    
   };
 
   const clickLanguage = (lang) => {
@@ -286,9 +290,9 @@ export default function Navbar() {
     router.push("/user/available-games");
     setselectedChallenge("Challenges");
   };
-  const redirectTournament = () => {
-    router.push("/user/available-games");
-    setselectedChallenge("Tournament");
+  const redirectTerms = () => {
+    router.push("/terms-and-conditions");
+    setModal("");
   };
 
   const handleSidebar = () => {
@@ -847,7 +851,7 @@ export default function Navbar() {
                               style={{ fontSize: 13 }}
                               className="ml-5 text-[12px] underline decoration-dashed cursor-pointer hover:text-green-600"
                             >
-                              Yes, I agree to Terms & Conditions
+                              Yes, I agree to <span onClick={redirectTerms} style={{color:'#F88921',cursor:'pointer',textDecoration:'underline'}}>Terms & Conditions</span>
                             </p>
                           </div>
                           {errors2.term && errors2.term.type === "required" && (

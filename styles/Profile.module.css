@@ -319,7 +319,7 @@
 }
 .available__game__header {
   display: grid;
-  grid-template-columns: 120px 170px 150px 100px 100px 100px 170px;
+  grid-template-columns: 100px 150px 120px 140px 80px 80px 100px 170px;
   grid-gap: 15px;
 }
 .available__game__header h6 {
@@ -336,6 +336,7 @@
   font-weight: 700;
   color: #f35237;
   margin: 3px 3px;
+  height: 30px;
 }
 .request__button:hover{
   color: white;
