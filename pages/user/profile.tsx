@@ -688,10 +688,11 @@ export default function Profile() {
     let utcDate = moment(utcTimeAndDate).format("YYYY-MM-DD");
     let utcTime = moment(utcTimeAndDate).format("HH:mm");
 
-
-  
-      
-    if (credit >= data?.amount && status == 1) {
+    let b = new Date((new Date().toJSON()).split('.')[0])
+    let a = new Date(utcDate +"T"+utcTime)
+    
+    if(a > b){
+     if (credit >= data?.amount && status == 1) {
       const res = await postRequest(`player/game-launched`, token, {
         game_classification_id: data?.game_classification_id,
         player_id: userId,
@@ -716,6 +717,13 @@ export default function Profile() {
     } else {
       openNotificationWithIcon("insufficient Credit and Inactive", "error");
     }
+      
+    }else{
+      openNotificationWithIcon("Do not select previous time", "error");
+      
+    }
+      
+    
   };
 
   async function handleAccept(value: IRequestList) {
@@ -936,7 +944,7 @@ export default function Profile() {
         {isPending ? <h2>Load Smart Payment Button...</h2> : null}
         {/* <PayPalButtons disabled={price ? false : true} {...paypalbuttonTransactionProps} /> */}
         <PayPalButtons
-          disabled={price >= 1000 ? false : true}
+          disabled={price >= 10 ? false : true}
           // style: { layout: "vertical", innerHeight: 48, shape: 'rect' }
 
           createOrder={async (data, actions) => {
@@ -987,7 +995,7 @@ export default function Profile() {
   //withdraw
 
   const onwithdrawSubmit: SubmitHandler<withDrawCredit> = async (data) => {
-    if (credit > data?.amount && data?.amount >= 2000) {
+    if (credit > data?.amount && data?.amount >= 20) {
       const res = await postRequest(`player/withdraw-store`, token, {
         player_id: userId,
         credit: data?.amount,
@@ -1000,7 +1008,7 @@ export default function Profile() {
       }
     } else {
       openNotificationWithIcon(
-        "Insufficient Credit balance and min 2000",
+        "Insufficient Credit balance and min 20",
         "error"
       );
     }
@@ -1252,21 +1260,27 @@ export default function Profile() {
   };
 
   async function handleRequest(gameDetails: ISingleGame) {
-    console.log("request sending button working...........", gameDetails);
-    const res = await postRequest(`player/game-request-send`, token, {
+     
+    let b = new Date((new Date().toJSON()).split('.')[0])
+    let a = new Date(gameDetails?.utcDate +"T"+ gameDetails?.utcTime)
+
+     if(a > b){
+       const res = await postRequest(`player/game-request-send`, token, {
       game_id: gameDetails?.gameId,
       launch_player_id: gameDetails?.launchGamePlayerId,
       accept_player_id: Number(userId),
       game_type: Number(gameDetails?.game_type),
       status: 2,
     });
-    // console.log("response.........", res);
     if (res?.status == "success") {
       openNotificationWithIcon(res?.message, "success");
       window.location.reload();
     } else {
       openNotificationWithIcon(res?.message, "error");
-    }
+    }       
+     }else{
+      openNotificationWithIcon('Game Expired', "error");   
+     }
   }
 
   const shareOnFacebook = () => {
@@ -1848,7 +1862,7 @@ export default function Profile() {
                           className={styles.input}
                           type="date"
                           min={minDate}
-                          {...register2("date", { required: true })}
+                          {...register2("date", { required: true ,})}
                         />
                         {errors2.date && errors2.date.type === "required" && (
                           <span>This field is required</span>
@@ -1859,7 +1873,8 @@ export default function Profile() {
                         <input
                           className={styles.input}
                           type="time"
-                          {...register2("time", { required: true })}
+                         
+                          {...register2("time", { required: true, })}
                         />
                         {errors2.time && errors2.time.type === "required" && (
                           <span>This field is required</span>
@@ -2301,7 +2316,7 @@ export default function Profile() {
                     <input
                       value={price}
                       className={styles.input}
-                      placeholder="Minimum 1000"
+                      placeholder="Minimum 10"
                       type="number"
                       onChange={(e) => handleMessages(e)}
                       style={{
@@ -2616,7 +2631,7 @@ export default function Profile() {
                               {moment
                                 .utc(item?.utcDate + " " + item?.utcTime)
                                 .local()
-                                .format("HH:mm")}
+                                .format("HH:mm ")}
                             </p>
                             <p>{item?.console}</p>
                             <p>{item?.game_type == "1" ? "Single" : "Team"}</p>
@@ -3006,10 +3021,7 @@ export default function Profile() {
                                 .utc(item?.utcDate + " " + item?.utcTime)
                                 .local()
                                 .format("YYYY-MM-DD")}
-                            </p>
-                            <br/>
-                            <p>
-                              {" "}
+                                <br/>
                               {moment
                                 .utc(item?.utcDate + " " + item?.utcTime)
                                 .local()
@@ -3309,7 +3321,7 @@ export default function Profile() {
                   <option value={0}>Select Winner</option>
                   <option value={1}>Winner</option>
                   <option value={2}>Draw</option>
-                  <option value={3}>Lose</option>
+                  {/* <option value={3}>Lose</option> */}
                   <option value={4}>No Play</option>
                 </select>
               </div>
