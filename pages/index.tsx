@@ -200,12 +200,12 @@ const Home: NextPage = () => {
               width={220}
               alt="play store"
             />
-            <Image
+            {/* <Image
               src={`/assets/images/app.png`}
               height={90}
               width={220}
               alt="app store"
-            />
+            /> */}
             <h6 style={{ color: "#000" }}>
               Download the UPA mobile app to create/accept
               challenges/tournaments and manage your account in the palm of your
