@@ -688,7 +688,7 @@ export default function Profile() {
     let utcDate = moment(utcTimeAndDate).format("YYYY-MM-DD");
     let utcTime = moment(utcTimeAndDate).format("HH:mm");
 
-  console.log('........date',data?.amount);
+
   
       
     if (credit >= data?.amount && status == 1) {
