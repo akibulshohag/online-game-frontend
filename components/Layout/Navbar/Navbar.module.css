@@ -388,9 +388,9 @@
   .dropdown{
     display: none;
   }
-  .google__box1{
+  /* .google__box1{
     display: none;
-  }
+  } */
 }
 @media (min-width:426px) and (max-width:600px) {
   .container {
@@ -412,9 +412,9 @@
   .middleContainer a{
     font-size: 12px;
   }
-  .google__box1{
+  /* .google__box1{
     display: none;
-  }
+  } */
   
 }
 @media (min-width:601px) and (max-width:768px) {

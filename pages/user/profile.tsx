@@ -428,6 +428,8 @@ export default function Profile() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  
+
   async function getGameTournamentList() {
     setTab("tournament-list");
     const res = await request(
@@ -444,12 +446,16 @@ export default function Profile() {
       `player/game-launch-list?player_id=${userId}&&page=${page}`,
       token
     );
+    // console.log('...........res launched game',res?.data);
+    
     if( res?.data?.length > 0 ) {
-   const fill = res?.data?.filter((item:any)=>item?.game_type == '1')
+   const fill = res?.data?.filter((item:any)=>item?.game_type == '1' )
     setLaunchedGame(fill);
     setTotalItems(res?.last_page * fill?.length);
     }
     window.scrollTo({ top: 0, behavior: "smooth" });
+    console.log('................gameList',launchedGame);
+
   }
   async function getLaunchedTournaments() {
     setTab("launchedTournaments");
@@ -1530,7 +1536,8 @@ export default function Profile() {
                       }`}
                       onClick={() => getGameSingleList()}
                     >
-                      Accepted Challenges
+                      {/* Accepted Challenges */}
+                      Send Results Challenges
                     </a>
                   </div>
                   <div style={{ marginTop: 10 }}>
@@ -1540,7 +1547,8 @@ export default function Profile() {
                       }`}
                       onClick={() => getRequestList()}
                     >
-                      Requested Challenges
+                      {/* Requested Challenges */}
+                      Accepted Challenges
                     </a>
                   </div>
                   <div style={{ marginTop: 10 }}>
@@ -1605,7 +1613,8 @@ export default function Profile() {
                     }`}
                     onClick={() => getGameTournamentList()}
                     >
-                      Accepted Tournaments
+                      {/* Accepted Tournaments */}
+                      Send Result Tournaments
                     </a>
                   </div>
                   <div style={{ marginTop: 10 }}>
@@ -1637,7 +1646,8 @@ export default function Profile() {
                       }`}
                       onClick={() => getRequestListTournaments()}
                     >
-                      Requested Tournaments
+                      {/* Requested Tournaments */}
+                      Accepted Tournaments
                     </a>
                   </div>
                 </div>
@@ -1972,7 +1982,8 @@ export default function Profile() {
               </div>
             ) : tab === "request" ? (
               <div className={styles.launched__container}>
-                <h5>Requested Challenges</h5>
+                {/* <h5>Requested Challenges</h5> */}
+                <h5>Accepted Challenges</h5>
                 <div className={styles.launched__game__list}>
                   <div className={styles.request__list__header}>
                     <h6>Game Name</h6>
@@ -2015,7 +2026,8 @@ export default function Profile() {
               </div>
             ) : tab === "single-list" ? (
               <div className={styles.launched__container}>
-                <h5>Accepted Challenges</h5>
+                {/* <h5>Accepted Challenges</h5> */}
+                <h5>Send Results Challenges</h5>
                 <div className={styles.launched__game__list}>
                   <div className={styles.game__list__header}>
                     <h6>ID</h6>
@@ -2053,7 +2065,8 @@ export default function Profile() {
               </div>
             ) : tab === "tournament-list" ? (
               <div className={styles.launched__container}>
-                <h5>Accepted Tournaments</h5>
+                {/* <h5>Accepted Tournaments</h5> */}
+                <h5>Send Result Tournaments</h5>
                 <div className={styles.launched__game__list}>
                   <div className={styles.game__list__header}>
                     <h6>ID</h6>
@@ -2682,7 +2695,8 @@ export default function Profile() {
               </div>
             ) :tab === "requestTournaments" ? (
               <div className={styles.launched__container}>
-                <h5>Requested Tournaments</h5>
+                {/* <h5>Requested Tournaments</h5> */}
+                <h5>Accepted Tournaments</h5>
                 <div className={styles.launched__game__list}>
                   <div className={styles.request__list__header}>
                     <h6>Game Name</h6>

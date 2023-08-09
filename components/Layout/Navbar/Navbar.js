@@ -136,7 +136,6 @@ export default function Navbar() {
     })();
   }, []);
 
-  // console.log("all country.........", allCountry);
 
   const onLoginSubmit= async (data) => {
     console.log(data);
@@ -145,7 +144,6 @@ export default function Navbar() {
       password: data?.password,
       device_token: "",
     });
-    console.log("response from login.........", res);
     if (res?.status) {
       openNotificationWithIcon(res?.message, "success");
       setToken(res?.data?.access_token);
@@ -225,6 +223,7 @@ export default function Navbar() {
         `player-registration`,
         null,
         {
+          fullName:data?.fullName,
           username: data?.username,
           email: data?.email,
           phone: data?.phone,
@@ -240,6 +239,26 @@ export default function Navbar() {
         setUsername(registrationResponse?.response?.user?.username);
         setUserEmail(registrationResponse?.response?.user?.email);
         setUserId(registrationResponse?.response?.user?.id);
+        setcountry(registrationResponse?.response?.user?.country);
+        setstatus(registrationResponse?.response?.user?.status);
+        setPoints(registrationResponse?.response?.user?.points);
+      setCredit(registrationResponse?.response?.user?.credit);
+      setCookie(null, "credit",registrationResponse?.response?.user?.credit, {
+        maxAge:registrationResponse?.response?.expires_in,
+        path: "/",
+      });
+      setCookie(null, "points",registrationResponse?.response?.user?.points, {
+        maxAge:registrationResponse?.response?.expires_in,
+        path: "/",
+      });
+        setCookie(null, "status", registrationResponse?.response?.user?.status, {
+          maxAge:registrationResponse?.response?.expires_in,
+          path: "/",
+        });
+        setCookie(null, "country", registrationResponse?.response?.user?.country, {
+          maxAge:registrationResponse?.response?.expires_in,
+          path: "/",
+        });
         setCookie(null, "token", registrationResponse?.response?.access_token, {
           maxAge: registrationResponse?.response?.expires_in,
           path: "/",
@@ -711,6 +730,20 @@ export default function Navbar() {
                     <div className={styles.main1}>
                       <form onSubmit={handleSubmit2(onRegistrationSubmit)}>
                         {/* register your input into the hook by invoking the "register" function */}
+                        <div>
+                          <label className={styles.label}>Full Name</label>
+                          <input
+                            className={styles.input}
+                            placeholder="Full Name"
+                            {...register2("fullName", { required: true })}
+                          />
+                          {/* errors will return when field validation fails  */}
+                          {errors2.fullName &&
+                            errors2.fullName.type === "required" && (
+                              <span>fullName is required!</span>
+                            )}
+                          {/* {errors.phone && errors.phone.type === "pattern" && <span>Enter a valid phone number!</span>} */}
+                        </div>
                         <div>
                           <label className={styles.label}>User Name</label>
                           <input
