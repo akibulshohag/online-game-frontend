@@ -223,7 +223,7 @@ export default function Navbar() {
         `player-registration`,
         null,
         {
-          fullName:data?.fullName,
+          full_name:data?.fullName,
           username: data?.username,
           email: data?.email,
           phone: data?.phone,
