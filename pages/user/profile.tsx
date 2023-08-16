@@ -490,7 +490,7 @@ export default function Profile() {
       `player/game-request-list?player_id=${userId}`,
       token
     );
-
+    
     setRequestList(res?.data);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
