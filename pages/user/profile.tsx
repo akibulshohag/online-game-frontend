@@ -449,12 +449,12 @@ export default function Profile() {
     // console.log('...........res launched game',res?.data);
     
     if( res?.data?.length > 0 ) {
-   const fill = res?.data?.filter((item:any)=>item?.game_type == '1' )
+   const fill = res?.data?.filter((item:any)=>item?.game_type == '1'&& item?.gamePosition == "1" )
     setLaunchedGame(fill);
     setTotalItems(res?.last_page * fill?.length);
     }
     window.scrollTo({ top: 0, behavior: "smooth" });
-    console.log('................gameList',launchedGame);
+    
 
   }
   async function getLaunchedTournaments() {
